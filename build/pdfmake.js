@@ -71,7 +71,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 122);
+/******/ 	return __webpack_require__(__webpack_require__.s = 123);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -190,8 +190,8 @@ module.exports = {
 
 
 
-var base64 = __webpack_require__(124)
-var ieee754 = __webpack_require__(125)
+var base64 = __webpack_require__(125)
+var ieee754 = __webpack_require__(126)
 var isArray = __webpack_require__(77)
 
 exports.Buffer = Buffer
@@ -1986,9 +1986,9 @@ if (typeof __e == 'number') __e = core; // eslint-disable-line no-undef
 
 var global = __webpack_require__(11);
 var core = __webpack_require__(2);
-var ctx = __webpack_require__(20);
+var ctx = __webpack_require__(21);
 var hide = __webpack_require__(13);
-var has = __webpack_require__(18);
+var has = __webpack_require__(19);
 var PROTOTYPE = 'prototype';
 
 var $export = function (type, name, source) {
@@ -2070,7 +2070,7 @@ $exports.store = store;
 /***/ (function(module, exports, __webpack_require__) {
 
 // Thank's IE8 for his funny defineProperty
-module.exports = !__webpack_require__(19)(function () {
+module.exports = !__webpack_require__(20)(function () {
   return Object.defineProperty({}, 'a', { get: function () { return 7; } }).a != 7;
 });
 
@@ -2080,7 +2080,7 @@ module.exports = !__webpack_require__(19)(function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 var anObject = __webpack_require__(14);
-var IE8_DOM_DEFINE = __webpack_require__(90);
+var IE8_DOM_DEFINE = __webpack_require__(91);
 var toPrimitive = __webpack_require__(57);
 var dP = Object.defineProperty;
 
@@ -2396,7 +2396,7 @@ if (typeof __g == 'number') __g = global; // eslint-disable-line no-undef
 (function() {
   var NumberT, PropertyDescriptor;
 
-  NumberT = __webpack_require__(22).Number;
+  NumberT = __webpack_require__(23).Number;
 
   exports.resolveLength = function(length, stream, parent) {
     var res;
@@ -2542,7 +2542,7 @@ var objectKeys = Object.keys || function (obj) {
 module.exports = Duplex;
 
 /*<replacement>*/
-var util = __webpack_require__(25);
+var util = __webpack_require__(26);
 util.inherits = __webpack_require__(15);
 /*</replacement>*/
 
@@ -2633,410 +2633,7 @@ Duplex.prototype._destroy = function (err, cb) {
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// to indexed object, toObject with fallback for non-array-like ES3 strings
-var IObject = __webpack_require__(53);
-var defined = __webpack_require__(55);
-module.exports = function (it) {
-  return IObject(defined(it));
-};
-
-
-/***/ }),
-/* 18 */
-/***/ (function(module, exports) {
-
-var hasOwnProperty = {}.hasOwnProperty;
-module.exports = function (it, key) {
-  return hasOwnProperty.call(it, key);
-};
-
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports) {
-
-module.exports = function (exec) {
-  try {
-    return !!exec();
-  } catch (e) {
-    return true;
-  }
-};
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// optional / simple context binding
-var aFunction = __webpack_require__(92);
-module.exports = function (fn, that, length) {
-  aFunction(fn);
-  if (that === undefined) return fn;
-  switch (length) {
-    case 1: return function (a) {
-      return fn.call(that, a);
-    };
-    case 2: return function (a, b) {
-      return fn.call(that, a, b);
-    };
-    case 3: return function (a, b, c) {
-      return fn.call(that, a, b, c);
-    };
-  }
-  return function (/* ...args */) {
-    return fn.apply(that, arguments);
-  };
-};
-
-
-/***/ }),
-/* 21 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-/* WEBPACK VAR INJECTION */(function(process) {/* eslint-disable node/no-deprecated-api */
-
-
-
-var buffer = __webpack_require__(1)
-var Buffer = buffer.Buffer
-
-var safer = {}
-
-var key
-
-for (key in buffer) {
-  if (!buffer.hasOwnProperty(key)) continue
-  if (key === 'SlowBuffer' || key === 'Buffer') continue
-  safer[key] = buffer[key]
-}
-
-var Safer = safer.Buffer = {}
-for (key in Buffer) {
-  if (!Buffer.hasOwnProperty(key)) continue
-  if (key === 'allocUnsafe' || key === 'allocUnsafeSlow') continue
-  Safer[key] = Buffer[key]
-}
-
-safer.Buffer.prototype = Buffer.prototype
-
-if (!Safer.from || Safer.from === Uint8Array.from) {
-  Safer.from = function (value, encodingOrOffset, length) {
-    if (typeof value === 'number') {
-      throw new TypeError('The "value" argument must not be of type number. Received type ' + typeof value)
-    }
-    if (value && typeof value.length === 'undefined') {
-      throw new TypeError('The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type ' + typeof value)
-    }
-    return Buffer(value, encodingOrOffset, length)
-  }
-}
-
-if (!Safer.alloc) {
-  Safer.alloc = function (size, fill, encoding) {
-    if (typeof size !== 'number') {
-      throw new TypeError('The "size" argument must be of type number. Received type ' + typeof size)
-    }
-    if (size < 0 || size >= 2 * (1 << 30)) {
-      throw new RangeError('The value "' + size + '" is invalid for option "size"')
-    }
-    var buf = Buffer(size)
-    if (!fill || fill.length === 0) {
-      buf.fill(0)
-    } else if (typeof encoding === 'string') {
-      buf.fill(fill, encoding)
-    } else {
-      buf.fill(fill)
-    }
-    return buf
-  }
-}
-
-if (!safer.kStringMaxLength) {
-  try {
-    safer.kStringMaxLength = process.binding('buffer').kStringMaxLength
-  } catch (e) {
-    // we can't determine kStringMaxLength in environments where process.binding
-    // is unsupported, so let's not set it
-  }
-}
-
-if (!safer.constants) {
-  safer.constants = {
-    MAX_LENGTH: safer.kMaxLength
-  }
-  if (safer.kStringMaxLength) {
-    safer.constants.MAX_STRING_LENGTH = safer.kStringMaxLength
-  }
-}
-
-module.exports = safer
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// Generated by CoffeeScript 1.7.1
-(function() {
-  var DecodeStream, Fixed, NumberT,
-    __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-  DecodeStream = __webpack_require__(50);
-
-  NumberT = (function() {
-    function NumberT(type, endian) {
-      this.type = type;
-      this.endian = endian != null ? endian : 'BE';
-      this.fn = this.type;
-      if (this.type[this.type.length - 1] !== '8') {
-        this.fn += this.endian;
-      }
-    }
-
-    NumberT.prototype.size = function() {
-      return DecodeStream.TYPES[this.type];
-    };
-
-    NumberT.prototype.decode = function(stream) {
-      return stream['read' + this.fn]();
-    };
-
-    NumberT.prototype.encode = function(stream, val) {
-      return stream['write' + this.fn](val);
-    };
-
-    return NumberT;
-
-  })();
-
-  exports.Number = NumberT;
-
-  exports.uint8 = new NumberT('UInt8');
-
-  exports.uint16be = exports.uint16 = new NumberT('UInt16', 'BE');
-
-  exports.uint16le = new NumberT('UInt16', 'LE');
-
-  exports.uint24be = exports.uint24 = new NumberT('UInt24', 'BE');
-
-  exports.uint24le = new NumberT('UInt24', 'LE');
-
-  exports.uint32be = exports.uint32 = new NumberT('UInt32', 'BE');
-
-  exports.uint32le = new NumberT('UInt32', 'LE');
-
-  exports.int8 = new NumberT('Int8');
-
-  exports.int16be = exports.int16 = new NumberT('Int16', 'BE');
-
-  exports.int16le = new NumberT('Int16', 'LE');
-
-  exports.int24be = exports.int24 = new NumberT('Int24', 'BE');
-
-  exports.int24le = new NumberT('Int24', 'LE');
-
-  exports.int32be = exports.int32 = new NumberT('Int32', 'BE');
-
-  exports.int32le = new NumberT('Int32', 'LE');
-
-  exports.floatbe = exports.float = new NumberT('Float', 'BE');
-
-  exports.floatle = new NumberT('Float', 'LE');
-
-  exports.doublebe = exports.double = new NumberT('Double', 'BE');
-
-  exports.doublele = new NumberT('Double', 'LE');
-
-  Fixed = (function(_super) {
-    __extends(Fixed, _super);
-
-    function Fixed(size, endian, fracBits) {
-      if (fracBits == null) {
-        fracBits = size >> 1;
-      }
-      Fixed.__super__.constructor.call(this, "Int" + size, endian);
-      this._point = 1 << fracBits;
-    }
-
-    Fixed.prototype.decode = function(stream) {
-      return Fixed.__super__.decode.call(this, stream) / this._point;
-    };
-
-    Fixed.prototype.encode = function(stream, val) {
-      return Fixed.__super__.encode.call(this, stream, val * this._point | 0);
-    };
-
-    return Fixed;
-
-  })(NumberT);
-
-  exports.Fixed = Fixed;
-
-  exports.fixed16be = exports.fixed16 = new Fixed(16, 'BE');
-
-  exports.fixed16le = new Fixed(16, 'LE');
-
-  exports.fixed32be = exports.fixed32 = new Fixed(32, 'BE');
-
-  exports.fixed32le = new Fixed(32, 'LE');
-
-}).call(this);
-
-
-/***/ }),
-/* 23 */
-/***/ (function(module, exports) {
-
-module.exports = {};
-
-
-/***/ }),
-/* 24 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var $at = __webpack_require__(196)(true);
-
-// 21.1.3.27 String.prototype[@@iterator]()
-__webpack_require__(60)(String, 'String', function (iterated) {
-  this._t = String(iterated); // target
-  this._i = 0;                // next index
-// 21.1.5.2.1 %StringIteratorPrototype%.next()
-}, function () {
-  var O = this._t;
-  var index = this._i;
-  var point;
-  if (index >= O.length) return { value: undefined, done: true };
-  point = $at(O, index);
-  this._i += point.length;
-  return { value: point, done: false };
-});
-
-
-/***/ }),
-/* 25 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(Buffer) {// Copyright Joyent, Inc. and other Node contributors.
-//
-// Permission is hereby granted, free of charge, to any person obtaining a
-// copy of this software and associated documentation files (the
-// "Software"), to deal in the Software without restriction, including
-// without limitation the rights to use, copy, modify, merge, publish,
-// distribute, sublicense, and/or sell copies of the Software, and to permit
-// persons to whom the Software is furnished to do so, subject to the
-// following conditions:
-//
-// The above copyright notice and this permission notice shall be included
-// in all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
-// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
-// USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-// NOTE: These type checking functions intentionally don't use `instanceof`
-// because it is fragile and can be easily faked with `Object.create()`.
-
-function isArray(arg) {
-  if (Array.isArray) {
-    return Array.isArray(arg);
-  }
-  return objectToString(arg) === '[object Array]';
-}
-exports.isArray = isArray;
-
-function isBoolean(arg) {
-  return typeof arg === 'boolean';
-}
-exports.isBoolean = isBoolean;
-
-function isNull(arg) {
-  return arg === null;
-}
-exports.isNull = isNull;
-
-function isNullOrUndefined(arg) {
-  return arg == null;
-}
-exports.isNullOrUndefined = isNullOrUndefined;
-
-function isNumber(arg) {
-  return typeof arg === 'number';
-}
-exports.isNumber = isNumber;
-
-function isString(arg) {
-  return typeof arg === 'string';
-}
-exports.isString = isString;
-
-function isSymbol(arg) {
-  return typeof arg === 'symbol';
-}
-exports.isSymbol = isSymbol;
-
-function isUndefined(arg) {
-  return arg === void 0;
-}
-exports.isUndefined = isUndefined;
-
-function isRegExp(re) {
-  return objectToString(re) === '[object RegExp]';
-}
-exports.isRegExp = isRegExp;
-
-function isObject(arg) {
-  return typeof arg === 'object' && arg !== null;
-}
-exports.isObject = isObject;
-
-function isDate(d) {
-  return objectToString(d) === '[object Date]';
-}
-exports.isDate = isDate;
-
-function isError(e) {
-  return (objectToString(e) === '[object Error]' || e instanceof Error);
-}
-exports.isError = isError;
-
-function isFunction(arg) {
-  return typeof arg === 'function';
-}
-exports.isFunction = isFunction;
-
-function isPrimitive(arg) {
-  return arg === null ||
-         typeof arg === 'boolean' ||
-         typeof arg === 'number' ||
-         typeof arg === 'string' ||
-         typeof arg === 'symbol' ||  // ES6 symbol
-         typeof arg === 'undefined';
-}
-exports.isPrimitive = isPrimitive;
-
-exports.isBuffer = Buffer.isBuffer;
-
-function objectToString(o) {
-  return Object.prototype.toString.call(o);
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-/* WEBPACK VAR INJECTION */(function(Buffer) {// Generated by CoffeeScript 1.12.6
+/* WEBPACK VAR INJECTION */(function(Buffer) {// Generated by CoffeeScript 1.12.7
 
 /*
 PDFObject - converts JavaScript types into their corrisponding PDF types.
@@ -3155,6 +2752,409 @@ By Devon Govett
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// to indexed object, toObject with fallback for non-array-like ES3 strings
+var IObject = __webpack_require__(53);
+var defined = __webpack_require__(55);
+module.exports = function (it) {
+  return IObject(defined(it));
+};
+
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+var hasOwnProperty = {}.hasOwnProperty;
+module.exports = function (it, key) {
+  return hasOwnProperty.call(it, key);
+};
+
+
+/***/ }),
+/* 20 */
+/***/ (function(module, exports) {
+
+module.exports = function (exec) {
+  try {
+    return !!exec();
+  } catch (e) {
+    return true;
+  }
+};
+
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// optional / simple context binding
+var aFunction = __webpack_require__(93);
+module.exports = function (fn, that, length) {
+  aFunction(fn);
+  if (that === undefined) return fn;
+  switch (length) {
+    case 1: return function (a) {
+      return fn.call(that, a);
+    };
+    case 2: return function (a, b) {
+      return fn.call(that, a, b);
+    };
+    case 3: return function (a, b, c) {
+      return fn.call(that, a, b, c);
+    };
+  }
+  return function (/* ...args */) {
+    return fn.apply(that, arguments);
+  };
+};
+
+
+/***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {/* eslint-disable node/no-deprecated-api */
+
+
+
+var buffer = __webpack_require__(1)
+var Buffer = buffer.Buffer
+
+var safer = {}
+
+var key
+
+for (key in buffer) {
+  if (!buffer.hasOwnProperty(key)) continue
+  if (key === 'SlowBuffer' || key === 'Buffer') continue
+  safer[key] = buffer[key]
+}
+
+var Safer = safer.Buffer = {}
+for (key in Buffer) {
+  if (!Buffer.hasOwnProperty(key)) continue
+  if (key === 'allocUnsafe' || key === 'allocUnsafeSlow') continue
+  Safer[key] = Buffer[key]
+}
+
+safer.Buffer.prototype = Buffer.prototype
+
+if (!Safer.from || Safer.from === Uint8Array.from) {
+  Safer.from = function (value, encodingOrOffset, length) {
+    if (typeof value === 'number') {
+      throw new TypeError('The "value" argument must not be of type number. Received type ' + typeof value)
+    }
+    if (value && typeof value.length === 'undefined') {
+      throw new TypeError('The first argument must be one of type string, Buffer, ArrayBuffer, Array, or Array-like Object. Received type ' + typeof value)
+    }
+    return Buffer(value, encodingOrOffset, length)
+  }
+}
+
+if (!Safer.alloc) {
+  Safer.alloc = function (size, fill, encoding) {
+    if (typeof size !== 'number') {
+      throw new TypeError('The "size" argument must be of type number. Received type ' + typeof size)
+    }
+    if (size < 0 || size >= 2 * (1 << 30)) {
+      throw new RangeError('The value "' + size + '" is invalid for option "size"')
+    }
+    var buf = Buffer(size)
+    if (!fill || fill.length === 0) {
+      buf.fill(0)
+    } else if (typeof encoding === 'string') {
+      buf.fill(fill, encoding)
+    } else {
+      buf.fill(fill)
+    }
+    return buf
+  }
+}
+
+if (!safer.kStringMaxLength) {
+  try {
+    safer.kStringMaxLength = process.binding('buffer').kStringMaxLength
+  } catch (e) {
+    // we can't determine kStringMaxLength in environments where process.binding
+    // is unsupported, so let's not set it
+  }
+}
+
+if (!safer.constants) {
+  safer.constants = {
+    MAX_LENGTH: safer.kMaxLength
+  }
+  if (safer.kStringMaxLength) {
+    safer.constants.MAX_STRING_LENGTH = safer.kStringMaxLength
+  }
+}
+
+module.exports = safer
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+
+/***/ }),
+/* 23 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Generated by CoffeeScript 1.7.1
+(function() {
+  var DecodeStream, Fixed, NumberT,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  DecodeStream = __webpack_require__(50);
+
+  NumberT = (function() {
+    function NumberT(type, endian) {
+      this.type = type;
+      this.endian = endian != null ? endian : 'BE';
+      this.fn = this.type;
+      if (this.type[this.type.length - 1] !== '8') {
+        this.fn += this.endian;
+      }
+    }
+
+    NumberT.prototype.size = function() {
+      return DecodeStream.TYPES[this.type];
+    };
+
+    NumberT.prototype.decode = function(stream) {
+      return stream['read' + this.fn]();
+    };
+
+    NumberT.prototype.encode = function(stream, val) {
+      return stream['write' + this.fn](val);
+    };
+
+    return NumberT;
+
+  })();
+
+  exports.Number = NumberT;
+
+  exports.uint8 = new NumberT('UInt8');
+
+  exports.uint16be = exports.uint16 = new NumberT('UInt16', 'BE');
+
+  exports.uint16le = new NumberT('UInt16', 'LE');
+
+  exports.uint24be = exports.uint24 = new NumberT('UInt24', 'BE');
+
+  exports.uint24le = new NumberT('UInt24', 'LE');
+
+  exports.uint32be = exports.uint32 = new NumberT('UInt32', 'BE');
+
+  exports.uint32le = new NumberT('UInt32', 'LE');
+
+  exports.int8 = new NumberT('Int8');
+
+  exports.int16be = exports.int16 = new NumberT('Int16', 'BE');
+
+  exports.int16le = new NumberT('Int16', 'LE');
+
+  exports.int24be = exports.int24 = new NumberT('Int24', 'BE');
+
+  exports.int24le = new NumberT('Int24', 'LE');
+
+  exports.int32be = exports.int32 = new NumberT('Int32', 'BE');
+
+  exports.int32le = new NumberT('Int32', 'LE');
+
+  exports.floatbe = exports.float = new NumberT('Float', 'BE');
+
+  exports.floatle = new NumberT('Float', 'LE');
+
+  exports.doublebe = exports.double = new NumberT('Double', 'BE');
+
+  exports.doublele = new NumberT('Double', 'LE');
+
+  Fixed = (function(_super) {
+    __extends(Fixed, _super);
+
+    function Fixed(size, endian, fracBits) {
+      if (fracBits == null) {
+        fracBits = size >> 1;
+      }
+      Fixed.__super__.constructor.call(this, "Int" + size, endian);
+      this._point = 1 << fracBits;
+    }
+
+    Fixed.prototype.decode = function(stream) {
+      return Fixed.__super__.decode.call(this, stream) / this._point;
+    };
+
+    Fixed.prototype.encode = function(stream, val) {
+      return Fixed.__super__.encode.call(this, stream, val * this._point | 0);
+    };
+
+    return Fixed;
+
+  })(NumberT);
+
+  exports.Fixed = Fixed;
+
+  exports.fixed16be = exports.fixed16 = new Fixed(16, 'BE');
+
+  exports.fixed16le = new Fixed(16, 'LE');
+
+  exports.fixed32be = exports.fixed32 = new Fixed(32, 'BE');
+
+  exports.fixed32le = new Fixed(32, 'LE');
+
+}).call(this);
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports) {
+
+module.exports = {};
+
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var $at = __webpack_require__(196)(true);
+
+// 21.1.3.27 String.prototype[@@iterator]()
+__webpack_require__(60)(String, 'String', function (iterated) {
+  this._t = String(iterated); // target
+  this._i = 0;                // next index
+// 21.1.5.2.1 %StringIteratorPrototype%.next()
+}, function () {
+  var O = this._t;
+  var index = this._i;
+  var point;
+  if (index >= O.length) return { value: undefined, done: true };
+  point = $at(O, index);
+  this._i += point.length;
+  return { value: point, done: false };
+});
+
+
+/***/ }),
+/* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(Buffer) {// Copyright Joyent, Inc. and other Node contributors.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a
+// copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to permit
+// persons to whom the Software is furnished to do so, subject to the
+// following conditions:
+//
+// The above copyright notice and this permission notice shall be included
+// in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+// OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+// NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+// DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+// OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
+// USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+// NOTE: These type checking functions intentionally don't use `instanceof`
+// because it is fragile and can be easily faked with `Object.create()`.
+
+function isArray(arg) {
+  if (Array.isArray) {
+    return Array.isArray(arg);
+  }
+  return objectToString(arg) === '[object Array]';
+}
+exports.isArray = isArray;
+
+function isBoolean(arg) {
+  return typeof arg === 'boolean';
+}
+exports.isBoolean = isBoolean;
+
+function isNull(arg) {
+  return arg === null;
+}
+exports.isNull = isNull;
+
+function isNullOrUndefined(arg) {
+  return arg == null;
+}
+exports.isNullOrUndefined = isNullOrUndefined;
+
+function isNumber(arg) {
+  return typeof arg === 'number';
+}
+exports.isNumber = isNumber;
+
+function isString(arg) {
+  return typeof arg === 'string';
+}
+exports.isString = isString;
+
+function isSymbol(arg) {
+  return typeof arg === 'symbol';
+}
+exports.isSymbol = isSymbol;
+
+function isUndefined(arg) {
+  return arg === void 0;
+}
+exports.isUndefined = isUndefined;
+
+function isRegExp(re) {
+  return objectToString(re) === '[object RegExp]';
+}
+exports.isRegExp = isRegExp;
+
+function isObject(arg) {
+  return typeof arg === 'object' && arg !== null;
+}
+exports.isObject = isObject;
+
+function isDate(d) {
+  return objectToString(d) === '[object Date]';
+}
+exports.isDate = isDate;
+
+function isError(e) {
+  return (objectToString(e) === '[object Error]' || e instanceof Error);
+}
+exports.isError = isError;
+
+function isFunction(arg) {
+  return typeof arg === 'function';
+}
+exports.isFunction = isFunction;
+
+function isPrimitive(arg) {
+  return arg === null ||
+         typeof arg === 'boolean' ||
+         typeof arg === 'number' ||
+         typeof arg === 'string' ||
+         typeof arg === 'symbol' ||  // ES6 symbol
+         typeof arg === 'undefined';
+}
+exports.isPrimitive = isPrimitive;
+
+exports.isBuffer = Buffer.isBuffer;
+
+function objectToString(o) {
+  return Object.prototype.toString.call(o);
+}
+
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
+
+/***/ }),
 /* 27 */
 /***/ (function(module, exports) {
 
@@ -3175,7 +3175,7 @@ module.exports = function (bitmap, value) {
 __webpack_require__(190);
 var global = __webpack_require__(11);
 var hide = __webpack_require__(13);
-var Iterators = __webpack_require__(23);
+var Iterators = __webpack_require__(24);
 var TO_STRING_TAG = __webpack_require__(4)('toStringTag');
 
 var DOMIterables = ('CSSRuleList,CSSStyleDeclaration,CSSValueList,ClientRectList,DOMRectList,DOMStringList,' +
@@ -3198,7 +3198,7 @@ for (var i = 0; i < DOMIterables.length; i++) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.14 / 15.2.3.14 Object.keys(O)
-var $keys = __webpack_require__(96);
+var $keys = __webpack_require__(97);
 var enumBugKeys = __webpack_require__(64);
 
 module.exports = Object.keys || function keys(O) {
@@ -3249,10 +3249,10 @@ var inherits = __webpack_require__(15);
 
 inherits(Stream, EE);
 Stream.Readable = __webpack_require__(44);
-Stream.Writable = __webpack_require__(136);
-Stream.Duplex = __webpack_require__(137);
-Stream.Transform = __webpack_require__(138);
-Stream.PassThrough = __webpack_require__(139);
+Stream.Writable = __webpack_require__(137);
+Stream.Duplex = __webpack_require__(138);
+Stream.Transform = __webpack_require__(139);
+Stream.PassThrough = __webpack_require__(140);
 
 // Backwards-compat with node 0.4.x
 Stream.Stream = Stream;
@@ -3910,7 +3910,7 @@ module.exports = true;
 
 // 19.1.2.2 / 15.2.3.5 Object.create(O [, Properties])
 var anObject = __webpack_require__(14);
-var dPs = __webpack_require__(95);
+var dPs = __webpack_require__(96);
 var enumBugKeys = __webpack_require__(64);
 var IE_PROTO = __webpack_require__(62)('IE_PROTO');
 var Empty = function () { /* empty */ };
@@ -3919,7 +3919,7 @@ var PROTOTYPE = 'prototype';
 // Create object with fake `null` prototype: use iframe Object with cleared prototype
 var createDict = function () {
   // Thrash, waste and sodomy: IE GC bug
-  var iframe = __webpack_require__(91)('iframe');
+  var iframe = __webpack_require__(92)('iframe');
   var i = enumBugKeys.length;
   var lt = '<';
   var gt = '>';
@@ -3979,7 +3979,7 @@ module.exports = function (key) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var def = __webpack_require__(6).f;
-var has = __webpack_require__(18);
+var has = __webpack_require__(19);
 var TAG = __webpack_require__(4)('toStringTag');
 
 module.exports = function (it, tag, stat) {
@@ -3993,13 +3993,13 @@ module.exports = function (it, tag, stat) {
 
 var META = __webpack_require__(40)('meta');
 var isObject = __webpack_require__(10);
-var has = __webpack_require__(18);
+var has = __webpack_require__(19);
 var setDesc = __webpack_require__(6).f;
 var id = 0;
 var isExtensible = Object.isExtensible || function () {
   return true;
 };
-var FREEZE = !__webpack_require__(19)(function () {
+var FREEZE = !__webpack_require__(20)(function () {
   return isExtensible(Object.preventExtensions({}));
 });
 var setMeta = function (it) {
@@ -4050,9 +4050,9 @@ var meta = module.exports = {
 /* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var ctx = __webpack_require__(20);
-var call = __webpack_require__(106);
-var isArrayIter = __webpack_require__(107);
+var ctx = __webpack_require__(21);
+var call = __webpack_require__(107);
+var isArrayIter = __webpack_require__(108);
 var anObject = __webpack_require__(14);
 var toLength = __webpack_require__(39);
 var getIterFn = __webpack_require__(65);
@@ -4087,7 +4087,7 @@ exports.Readable = exports;
 exports.Writable = __webpack_require__(45);
 exports.Duplex = __webpack_require__(16);
 exports.Transform = __webpack_require__(81);
-exports.PassThrough = __webpack_require__(135);
+exports.PassThrough = __webpack_require__(136);
 
 
 /***/ }),
@@ -4161,13 +4161,13 @@ var Duplex;
 Writable.WritableState = WritableState;
 
 /*<replacement>*/
-var util = __webpack_require__(25);
+var util = __webpack_require__(26);
 util.inherits = __webpack_require__(15);
 /*</replacement>*/
 
 /*<replacement>*/
 var internalUtil = {
-  deprecate: __webpack_require__(134)
+  deprecate: __webpack_require__(135)
 };
 /*</replacement>*/
 
@@ -4782,7 +4782,7 @@ Writable.prototype._destroy = function (err, cb) {
   this.end();
   cb(err);
 };
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(132).setImmediate, __webpack_require__(7)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8), __webpack_require__(133).setImmediate, __webpack_require__(7)))
 
 /***/ }),
 /* 46 */
@@ -5095,7 +5095,7 @@ function simpleEnd(buf) {
 
 var Buffer = __webpack_require__(1).Buffer;
 var Transform = __webpack_require__(31).Transform;
-var binding = __webpack_require__(140);
+var binding = __webpack_require__(141);
 var util = __webpack_require__(48);
 var assert = __webpack_require__(83).ok;
 var kMaxLength = __webpack_require__(1).kMaxLength;
@@ -6231,7 +6231,7 @@ function isPrimitive(arg) {
 }
 exports.isPrimitive = isPrimitive;
 
-exports.isBuffer = __webpack_require__(141);
+exports.isBuffer = __webpack_require__(142);
 
 function objectToString(o) {
   return Object.prototype.toString.call(o);
@@ -6299,7 +6299,7 @@ function hasOwnProperty(obj, prop) {
 /* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {// Generated by CoffeeScript 1.12.6
+/* WEBPACK VAR INJECTION */(function(Buffer) {// Generated by CoffeeScript 1.12.7
 (function() {
   var EmbeddedFont, PDFFont, StandardFont, fontkit;
 
@@ -6495,7 +6495,7 @@ function hasOwnProperty(obj, prop) {
 
 // Some environments don't have global Buffer (e.g. React Native).
 // Solution would be installing npm modules "buffer" and "stream" explicitly.
-var Buffer = __webpack_require__(21).Buffer;
+var Buffer = __webpack_require__(22).Buffer;
 
 var bomHandling = __webpack_require__(159),
     iconv = module.exports;
@@ -6693,10 +6693,10 @@ module.exports = function (it) {
 
 var pIE = __webpack_require__(36);
 var createDesc = __webpack_require__(27);
-var toIObject = __webpack_require__(17);
+var toIObject = __webpack_require__(18);
 var toPrimitive = __webpack_require__(57);
-var has = __webpack_require__(18);
-var IE8_DOM_DEFINE = __webpack_require__(90);
+var has = __webpack_require__(19);
+var IE8_DOM_DEFINE = __webpack_require__(91);
 var gOPD = Object.getOwnPropertyDescriptor;
 
 exports.f = __webpack_require__(5) ? gOPD : function getOwnPropertyDescriptor(O, P) {
@@ -6734,7 +6734,7 @@ module.exports = function (it, S) {
 // most Object methods by ES6 should accept primitives
 var $export = __webpack_require__(3);
 var core = __webpack_require__(2);
-var fails = __webpack_require__(19);
+var fails = __webpack_require__(20);
 module.exports = function (KEY, exec) {
   var fn = (core.Object || {})[KEY] || Object[KEY];
   var exp = {};
@@ -6757,9 +6757,9 @@ module.exports = { "default": __webpack_require__(189), __esModule: true };
 
 var LIBRARY = __webpack_require__(37);
 var $export = __webpack_require__(3);
-var redefine = __webpack_require__(94);
+var redefine = __webpack_require__(95);
 var hide = __webpack_require__(13);
-var Iterators = __webpack_require__(23);
+var Iterators = __webpack_require__(24);
 var $iterCreate = __webpack_require__(192);
 var setToStringTag = __webpack_require__(41);
 var getPrototypeOf = __webpack_require__(195);
@@ -6882,7 +6882,7 @@ module.exports = (
 
 var classof = __webpack_require__(66);
 var ITERATOR = __webpack_require__(4)('iterator');
-var Iterators = __webpack_require__(23);
+var Iterators = __webpack_require__(24);
 module.exports = __webpack_require__(2).getIteratorMethod = function (it) {
   if (it != undefined) return it[ITERATOR]
     || it['@@iterator']
@@ -6928,7 +6928,7 @@ module.exports = function (it) {
 
 exports.__esModule = true;
 
-var _iterator = __webpack_require__(98);
+var _iterator = __webpack_require__(99);
 
 var _iterator2 = _interopRequireDefault(_iterator);
 
@@ -7005,7 +7005,7 @@ module.exports = function (it, TYPE) {
 // Generated by CoffeeScript 1.7.1
 var UnicodeTrie, inflate;
 
-inflate = __webpack_require__(112);
+inflate = __webpack_require__(113);
 
 UnicodeTrie = (function() {
   var DATA_BLOCK_LENGTH, DATA_GRANULARITY, DATA_MASK, INDEX_1_OFFSET, INDEX_2_BLOCK_LENGTH, INDEX_2_BMP_LENGTH, INDEX_2_MASK, INDEX_SHIFT, LSCP_INDEX_2_LENGTH, LSCP_INDEX_2_OFFSET, OMITTED_BMP_INDEX_1_LENGTH, SHIFT_1, SHIFT_1_2, SHIFT_2, UTF8_2B_INDEX_2_LENGTH, UTF8_2B_INDEX_2_OFFSET;
@@ -7107,7 +7107,7 @@ var isNumber = __webpack_require__(0).isNumber;
 var isObject = __webpack_require__(0).isObject;
 var isArray = __webpack_require__(0).isArray;
 var isUndefined = __webpack_require__(0).isUndefined;
-var LineBreaker = __webpack_require__(117);
+var LineBreaker = __webpack_require__(118);
 
 var LEADING = /^(\s)+/g;
 var TRAILING = /(\s)+$/g;
@@ -7397,24 +7397,24 @@ function measure(fontProvider, textArray, styleContextStack) {
 		var linkToPage = getStyleProperty(item, styleContextStack, 'linkToPage', null);
 		var noWrap = getStyleProperty(item, styleContextStack, 'noWrap', null);
 		var preserveLeadingSpaces = getStyleProperty(item, styleContextStack, 'preserveLeadingSpaces', false);
+		var preserveTrailingSpaces = getStyleProperty(item, styleContextStack, 'preserveTrailingSpaces', false);
 
 		var font = fontProvider.provideFont(fontName, bold, italics);
 
 		item.width = widthOfString(item.text, font, fontSize, characterSpacing, fontFeatures);
 		item.height = font.lineHeight(fontSize) * lineHeight;
 
-		var leadingSpaces = item.text.match(LEADING);
-
 		if (!item.leadingCut) {
 			item.leadingCut = 0;
 		}
 
-		if (leadingSpaces && !preserveLeadingSpaces) {
+		var leadingSpaces;
+		if (!preserveLeadingSpaces && (leadingSpaces = item.text.match(LEADING))) {
 			item.leadingCut += widthOfString(leadingSpaces[0], font, fontSize, characterSpacing, fontFeatures);
 		}
 
-		var trailingSpaces = item.text.match(TRAILING);
-		if (trailingSpaces) {
+		var trailingSpaces;
+		if (!preserveTrailingSpaces && (trailingSpaces = item.text.match(TRAILING))) {
 			item.trailingCut = widthOfString(trailingSpaces[0], font, fontSize, characterSpacing, fontFeatures);
 		} else {
 			item.trailingCut = 0;
@@ -7670,12 +7670,12 @@ function _isUint8Array(obj) {
 /*</replacement>*/
 
 /*<replacement>*/
-var util = __webpack_require__(25);
+var util = __webpack_require__(26);
 util.inherits = __webpack_require__(15);
 /*</replacement>*/
 
 /*<replacement>*/
-var debugUtil = __webpack_require__(129);
+var debugUtil = __webpack_require__(130);
 var debug = void 0;
 if (debugUtil && debugUtil.debuglog) {
   debug = debugUtil.debuglog('stream');
@@ -7684,7 +7684,7 @@ if (debugUtil && debugUtil.debuglog) {
 }
 /*</replacement>*/
 
-var BufferList = __webpack_require__(130);
+var BufferList = __webpack_require__(131);
 var destroyImpl = __webpack_require__(80);
 var StringDecoder;
 
@@ -8787,7 +8787,7 @@ module.exports = Transform;
 var Duplex = __webpack_require__(16);
 
 /*<replacement>*/
-var util = __webpack_require__(25);
+var util = __webpack_require__(26);
 util.inherits = __webpack_require__(15);
 /*</replacement>*/
 
@@ -8936,7 +8936,7 @@ function done(stream, er, data) {
 /* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {// Generated by CoffeeScript 1.12.6
+/* WEBPACK VAR INJECTION */(function(Buffer) {// Generated by CoffeeScript 1.12.7
 
 /*
 PDFReference - represents a reference to another object in the PDF object heirarchy
@@ -9042,7 +9042,7 @@ By Devon Govett
 
   module.exports = PDFReference;
 
-  PDFObject = __webpack_require__(26);
+  PDFObject = __webpack_require__(17);
 
 }).call(this);
 
@@ -9674,23 +9674,199 @@ module.exports = crc32;
 /* 86 */
 /***/ (function(module, exports) {
 
-module.exports = [["a140","",62],["a180","",32],["a240","",62],["a280","",32],["a2ab","",5],["a2e3","€"],["a2ef",""],["a2fd",""],["a340","",62],["a380","",31,"　"],["a440","",62],["a480","",32],["a4f4","",10],["a540","",62],["a580","",32],["a5f7","",7],["a640","",62],["a680","",32],["a6b9","",7],["a6d9","",6],["a6ec",""],["a6f3",""],["a6f6","",8],["a740","",62],["a780","",32],["a7c2","",14],["a7f2","",12],["a896","",10],["a8bc",""],["a8bf","ǹ"],["a8c1",""],["a8ea","",20],["a958",""],["a95b",""],["a95d",""],["a989","〾⿰",11],["a997","",12],["a9f0","",14],["aaa1","",93],["aba1","",93],["aca1","",93],["ada1","",93],["aea1","",93],["afa1","",93],["d7fa","",4],["f8a1","",93],["f9a1","",93],["faa1","",93],["fba1","",93],["fca1","",93],["fda1","",93],["fe50","⺁⺄㑳㑇⺈⺋㖞㘚㘎⺌⺗㥮㤘㧏㧟㩳㧐㭎㱮㳠⺧⺪䁖䅟⺮䌷⺳⺶⺷䎱䎬⺻䏝䓖䙡䙌"],["fe80","䜣䜩䝼䞍⻊䥇䥺䥽䦂䦃䦅䦆䦟䦛䦷䦶䲣䲟䲠䲡䱷䲢䴓",6,"䶮",93]]
+// Generated by CoffeeScript 1.12.7
+
+/*
+PDFPage - represents a single page in the PDF document
+By Devon Govett
+ */
+
+(function() {
+  var PDFPage;
+
+  PDFPage = (function() {
+    var DEFAULT_MARGINS, SIZES;
+
+    function PDFPage(document, options) {
+      var dimensions;
+      this.document = document;
+      if (options == null) {
+        options = {};
+      }
+      this.size = options.size || 'letter';
+      this.layout = options.layout || 'portrait';
+      if (typeof options.margin === 'number') {
+        this.margins = {
+          top: options.margin,
+          left: options.margin,
+          bottom: options.margin,
+          right: options.margin
+        };
+      } else {
+        this.margins = options.margins || DEFAULT_MARGINS;
+      }
+      dimensions = Array.isArray(this.size) ? this.size : SIZES[this.size.toUpperCase()];
+      this.width = dimensions[this.layout === 'portrait' ? 0 : 1];
+      this.height = dimensions[this.layout === 'portrait' ? 1 : 0];
+      this.content = this.document.ref();
+      this.resources = this.document.ref({
+        ProcSet: ['PDF', 'Text', 'ImageB', 'ImageC', 'ImageI']
+      });
+      Object.defineProperties(this, {
+        fonts: {
+          get: (function(_this) {
+            return function() {
+              var base;
+              return (base = _this.resources.data).Font != null ? base.Font : base.Font = {};
+            };
+          })(this)
+        },
+        xobjects: {
+          get: (function(_this) {
+            return function() {
+              var base;
+              return (base = _this.resources.data).XObject != null ? base.XObject : base.XObject = {};
+            };
+          })(this)
+        },
+        ext_gstates: {
+          get: (function(_this) {
+            return function() {
+              var base;
+              return (base = _this.resources.data).ExtGState != null ? base.ExtGState : base.ExtGState = {};
+            };
+          })(this)
+        },
+        patterns: {
+          get: (function(_this) {
+            return function() {
+              var base;
+              return (base = _this.resources.data).Pattern != null ? base.Pattern : base.Pattern = {};
+            };
+          })(this)
+        },
+        annotations: {
+          get: (function(_this) {
+            return function() {
+              var base;
+              return (base = _this.dictionary.data).Annots != null ? base.Annots : base.Annots = [];
+            };
+          })(this)
+        }
+      });
+      this.dictionary = this.document.ref({
+        Type: 'Page',
+        Parent: this.document._root.data.Pages,
+        MediaBox: [0, 0, this.width, this.height],
+        Contents: this.content,
+        Resources: this.resources
+      });
+    }
+
+    PDFPage.prototype.maxY = function() {
+      return this.height - this.margins.bottom;
+    };
+
+    PDFPage.prototype.write = function(chunk) {
+      return this.content.write(chunk);
+    };
+
+    PDFPage.prototype.end = function() {
+      this.dictionary.end();
+      this.resources.end();
+      return this.content.end();
+    };
+
+    DEFAULT_MARGINS = {
+      top: 72,
+      left: 72,
+      bottom: 72,
+      right: 72
+    };
+
+    SIZES = {
+      '4A0': [4767.87, 6740.79],
+      '2A0': [3370.39, 4767.87],
+      A0: [2383.94, 3370.39],
+      A1: [1683.78, 2383.94],
+      A2: [1190.55, 1683.78],
+      A3: [841.89, 1190.55],
+      A4: [595.28, 841.89],
+      A5: [419.53, 595.28],
+      A6: [297.64, 419.53],
+      A7: [209.76, 297.64],
+      A8: [147.40, 209.76],
+      A9: [104.88, 147.40],
+      A10: [73.70, 104.88],
+      B0: [2834.65, 4008.19],
+      B1: [2004.09, 2834.65],
+      B2: [1417.32, 2004.09],
+      B3: [1000.63, 1417.32],
+      B4: [708.66, 1000.63],
+      B5: [498.90, 708.66],
+      B6: [354.33, 498.90],
+      B7: [249.45, 354.33],
+      B8: [175.75, 249.45],
+      B9: [124.72, 175.75],
+      B10: [87.87, 124.72],
+      C0: [2599.37, 3676.54],
+      C1: [1836.85, 2599.37],
+      C2: [1298.27, 1836.85],
+      C3: [918.43, 1298.27],
+      C4: [649.13, 918.43],
+      C5: [459.21, 649.13],
+      C6: [323.15, 459.21],
+      C7: [229.61, 323.15],
+      C8: [161.57, 229.61],
+      C9: [113.39, 161.57],
+      C10: [79.37, 113.39],
+      RA0: [2437.80, 3458.27],
+      RA1: [1729.13, 2437.80],
+      RA2: [1218.90, 1729.13],
+      RA3: [864.57, 1218.90],
+      RA4: [609.45, 864.57],
+      SRA0: [2551.18, 3628.35],
+      SRA1: [1814.17, 2551.18],
+      SRA2: [1275.59, 1814.17],
+      SRA3: [907.09, 1275.59],
+      SRA4: [637.80, 907.09],
+      EXECUTIVE: [521.86, 756.00],
+      FOLIO: [612.00, 936.00],
+      LEGAL: [612.00, 1008.00],
+      LETTER: [612.00, 792.00],
+      TABLOID: [792.00, 1224.00]
+    };
+
+    return PDFPage;
+
+  })();
+
+  module.exports = PDFPage;
+
+}).call(this);
+
 
 /***/ }),
 /* 87 */
 /***/ (function(module, exports) {
 
-module.exports = [["0","\u0000",127],["a140","　，、。．‧；：？！︰…‥﹐﹑﹒·﹔﹕﹖﹗｜–︱—︳╴︴﹏（）︵︶｛｝︷︸〔〕︹︺【】︻︼《》︽︾〈〉︿﹀「」﹁﹂『』﹃﹄﹙﹚"],["a1a1","﹛﹜﹝﹞‘’“”〝〞‵′＃＆＊※§〃○●△▲◎☆★◇◆□■▽▼㊣℅¯￣＿ˍ﹉﹊﹍﹎﹋﹌﹟﹠﹡＋－×÷±√＜＞＝≦≧≠∞≒≡﹢",4,"～∩∪⊥∠∟⊿㏒㏑∫∮∵∴♀♂⊕⊙↑↓←→↖↗↙↘∥∣／"],["a240","＼∕﹨＄￥〒￠￡％＠℃℉﹩﹪﹫㏕㎜㎝㎞㏎㎡㎎㎏㏄°兙兛兞兝兡兣嗧瓩糎▁",7,"▏▎▍▌▋▊▉┼┴┬┤├▔─│▕┌┐└┘╭"],["a2a1","╮╰╯═╞╪╡◢◣◥◤╱╲╳０",9,"Ⅰ",9,"〡",8,"十卄卅Ａ",25,"ａ",21],["a340","ｗｘｙｚΑ",16,"Σ",6,"α",16,"σ",6,"ㄅ",10],["a3a1","ㄐ",25,"˙ˉˊˇˋ"],["a3e1","€"],["a440","一乙丁七乃九了二人儿入八几刀刁力匕十卜又三下丈上丫丸凡久么也乞于亡兀刃勺千叉口土士夕大女子孑孓寸小尢尸山川工己已巳巾干廾弋弓才"],["a4a1","丑丐不中丰丹之尹予云井互五亢仁什仃仆仇仍今介仄元允內六兮公冗凶分切刈勻勾勿化匹午升卅卞厄友及反壬天夫太夭孔少尤尺屯巴幻廿弔引心戈戶手扎支文斗斤方日曰月木欠止歹毋比毛氏水火爪父爻片牙牛犬王丙"],["a540","世丕且丘主乍乏乎以付仔仕他仗代令仙仞充兄冉冊冬凹出凸刊加功包匆北匝仟半卉卡占卯卮去可古右召叮叩叨叼司叵叫另只史叱台句叭叻四囚外"],["a5a1","央失奴奶孕它尼巨巧左市布平幼弁弘弗必戊打扔扒扑斥旦朮本未末札正母民氐永汁汀氾犯玄玉瓜瓦甘生用甩田由甲申疋白皮皿目矛矢石示禾穴立丞丟乒乓乩亙交亦亥仿伉伙伊伕伍伐休伏仲件任仰仳份企伋光兇兆先全"],["a640","共再冰列刑划刎刖劣匈匡匠印危吉吏同吊吐吁吋各向名合吃后吆吒因回囝圳地在圭圬圯圩夙多夷夸妄奸妃好她如妁字存宇守宅安寺尖屹州帆并年"],["a6a1","式弛忙忖戎戌戍成扣扛托收早旨旬旭曲曳有朽朴朱朵次此死氖汝汗汙江池汐汕污汛汍汎灰牟牝百竹米糸缶羊羽老考而耒耳聿肉肋肌臣自至臼舌舛舟艮色艾虫血行衣西阡串亨位住佇佗佞伴佛何估佐佑伽伺伸佃佔似但佣"],["a740","作你伯低伶余佝佈佚兌克免兵冶冷別判利刪刨劫助努劬匣即卵吝吭吞吾否呎吧呆呃吳呈呂君吩告吹吻吸吮吵吶吠吼呀吱含吟听囪困囤囫坊坑址坍"],["a7a1","均坎圾坐坏圻壯夾妝妒妨妞妣妙妖妍妤妓妊妥孝孜孚孛完宋宏尬局屁尿尾岐岑岔岌巫希序庇床廷弄弟彤形彷役忘忌志忍忱快忸忪戒我抄抗抖技扶抉扭把扼找批扳抒扯折扮投抓抑抆改攻攸旱更束李杏材村杜杖杞杉杆杠"],["a840","杓杗步每求汞沙沁沈沉沅沛汪決沐汰沌汨沖沒汽沃汲汾汴沆汶沍沔沘沂灶灼災灸牢牡牠狄狂玖甬甫男甸皂盯矣私秀禿究系罕肖肓肝肘肛肚育良芒"],["a8a1","芋芍見角言谷豆豕貝赤走足身車辛辰迂迆迅迄巡邑邢邪邦那酉釆里防阮阱阪阬並乖乳事些亞享京佯依侍佳使佬供例來侃佰併侈佩佻侖佾侏侑佺兔兒兕兩具其典冽函刻券刷刺到刮制剁劾劻卒協卓卑卦卷卸卹取叔受味呵"],["a940","咖呸咕咀呻呷咄咒咆呼咐呱呶和咚呢周咋命咎固垃坷坪坩坡坦坤坼夜奉奇奈奄奔妾妻委妹妮姑姆姐姍始姓姊妯妳姒姅孟孤季宗定官宜宙宛尚屈居"],["a9a1","屆岷岡岸岩岫岱岳帘帚帖帕帛帑幸庚店府底庖延弦弧弩往征彿彼忝忠忽念忿怏怔怯怵怖怪怕怡性怩怫怛或戕房戾所承拉拌拄抿拂抹拒招披拓拔拋拈抨抽押拐拙拇拍抵拚抱拘拖拗拆抬拎放斧於旺昔易昌昆昂明昀昏昕昊"],["aa40","昇服朋杭枋枕東果杳杷枇枝林杯杰板枉松析杵枚枓杼杪杲欣武歧歿氓氛泣注泳沱泌泥河沽沾沼波沫法泓沸泄油況沮泗泅泱沿治泡泛泊沬泯泜泖泠"],["aaa1","炕炎炒炊炙爬爭爸版牧物狀狎狙狗狐玩玨玟玫玥甽疝疙疚的盂盲直知矽社祀祁秉秈空穹竺糾罔羌羋者肺肥肢肱股肫肩肴肪肯臥臾舍芳芝芙芭芽芟芹花芬芥芯芸芣芰芾芷虎虱初表軋迎返近邵邸邱邶采金長門阜陀阿阻附"],["ab40","陂隹雨青非亟亭亮信侵侯便俠俑俏保促侶俘俟俊俗侮俐俄係俚俎俞侷兗冒冑冠剎剃削前剌剋則勇勉勃勁匍南卻厚叛咬哀咨哎哉咸咦咳哇哂咽咪品"],["aba1","哄哈咯咫咱咻咩咧咿囿垂型垠垣垢城垮垓奕契奏奎奐姜姘姿姣姨娃姥姪姚姦威姻孩宣宦室客宥封屎屏屍屋峙峒巷帝帥帟幽庠度建弈弭彥很待徊律徇後徉怒思怠急怎怨恍恰恨恢恆恃恬恫恪恤扁拜挖按拼拭持拮拽指拱拷"],["ac40","拯括拾拴挑挂政故斫施既春昭映昧是星昨昱昤曷柿染柱柔某柬架枯柵柩柯柄柑枴柚查枸柏柞柳枰柙柢柝柒歪殃殆段毒毗氟泉洋洲洪流津洌洱洞洗"],["aca1","活洽派洶洛泵洹洧洸洩洮洵洎洫炫為炳炬炯炭炸炮炤爰牲牯牴狩狠狡玷珊玻玲珍珀玳甚甭畏界畎畋疫疤疥疢疣癸皆皇皈盈盆盃盅省盹相眉看盾盼眇矜砂研砌砍祆祉祈祇禹禺科秒秋穿突竿竽籽紂紅紀紉紇約紆缸美羿耄"],["ad40","耐耍耑耶胖胥胚胃胄背胡胛胎胞胤胝致舢苧范茅苣苛苦茄若茂茉苒苗英茁苜苔苑苞苓苟苯茆虐虹虻虺衍衫要觔計訂訃貞負赴赳趴軍軌述迦迢迪迥"],["ada1","迭迫迤迨郊郎郁郃酋酊重閂限陋陌降面革韋韭音頁風飛食首香乘亳倌倍倣俯倦倥俸倩倖倆值借倚倒們俺倀倔倨俱倡個候倘俳修倭倪俾倫倉兼冤冥冢凍凌准凋剖剜剔剛剝匪卿原厝叟哨唐唁唷哼哥哲唆哺唔哩哭員唉哮哪"],["ae40","哦唧唇哽唏圃圄埂埔埋埃堉夏套奘奚娑娘娜娟娛娓姬娠娣娩娥娌娉孫屘宰害家宴宮宵容宸射屑展屐峭峽峻峪峨峰島崁峴差席師庫庭座弱徒徑徐恙"],["aea1","恣恥恐恕恭恩息悄悟悚悍悔悌悅悖扇拳挈拿捎挾振捕捂捆捏捉挺捐挽挪挫挨捍捌效敉料旁旅時晉晏晃晒晌晅晁書朔朕朗校核案框桓根桂桔栩梳栗桌桑栽柴桐桀格桃株桅栓栘桁殊殉殷氣氧氨氦氤泰浪涕消涇浦浸海浙涓"],["af40","浬涉浮浚浴浩涌涊浹涅浥涔烊烘烤烙烈烏爹特狼狹狽狸狷玆班琉珮珠珪珞畔畝畜畚留疾病症疲疳疽疼疹痂疸皋皰益盍盎眩真眠眨矩砰砧砸砝破砷"],["afa1","砥砭砠砟砲祕祐祠祟祖神祝祗祚秤秣秧租秦秩秘窄窈站笆笑粉紡紗紋紊素索純紐紕級紜納紙紛缺罟羔翅翁耆耘耕耙耗耽耿胱脂胰脅胭胴脆胸胳脈能脊胼胯臭臬舀舐航舫舨般芻茫荒荔荊茸荐草茵茴荏茲茹茶茗荀茱茨荃"],["b040","虔蚊蚪蚓蚤蚩蚌蚣蚜衰衷袁袂衽衹記訐討訌訕訊託訓訖訏訑豈豺豹財貢起躬軒軔軏辱送逆迷退迺迴逃追逅迸邕郡郝郢酒配酌釘針釗釜釙閃院陣陡"],["b0a1","陛陝除陘陞隻飢馬骨高鬥鬲鬼乾偺偽停假偃偌做偉健偶偎偕偵側偷偏倏偯偭兜冕凰剪副勒務勘動匐匏匙匿區匾參曼商啪啦啄啞啡啃啊唱啖問啕唯啤唸售啜唬啣唳啁啗圈國圉域堅堊堆埠埤基堂堵執培夠奢娶婁婉婦婪婀"],["b140","娼婢婚婆婊孰寇寅寄寂宿密尉專將屠屜屝崇崆崎崛崖崢崑崩崔崙崤崧崗巢常帶帳帷康庸庶庵庾張強彗彬彩彫得徙從徘御徠徜恿患悉悠您惋悴惦悽"],["b1a1","情悻悵惜悼惘惕惆惟悸惚惇戚戛扈掠控捲掖探接捷捧掘措捱掩掉掃掛捫推掄授掙採掬排掏掀捻捩捨捺敝敖救教敗啟敏敘敕敔斜斛斬族旋旌旎晝晚晤晨晦晞曹勗望梁梯梢梓梵桿桶梱梧梗械梃棄梭梆梅梔條梨梟梡梂欲殺"],["b240","毫毬氫涎涼淳淙液淡淌淤添淺清淇淋涯淑涮淞淹涸混淵淅淒渚涵淚淫淘淪深淮淨淆淄涪淬涿淦烹焉焊烽烯爽牽犁猜猛猖猓猙率琅琊球理現琍瓠瓶"],["b2a1","瓷甜產略畦畢異疏痔痕疵痊痍皎盔盒盛眷眾眼眶眸眺硫硃硎祥票祭移窒窕笠笨笛第符笙笞笮粒粗粕絆絃統紮紹紼絀細紳組累終紲紱缽羞羚翌翎習耜聊聆脯脖脣脫脩脰脤舂舵舷舶船莎莞莘荸莢莖莽莫莒莊莓莉莠荷荻荼"],["b340","莆莧處彪蛇蛀蚶蛄蚵蛆蛋蚱蚯蛉術袞袈被袒袖袍袋覓規訪訝訣訥許設訟訛訢豉豚販責貫貨貪貧赧赦趾趺軛軟這逍通逗連速逝逐逕逞造透逢逖逛途"],["b3a1","部郭都酗野釵釦釣釧釭釩閉陪陵陳陸陰陴陶陷陬雀雪雩章竟頂頃魚鳥鹵鹿麥麻傢傍傅備傑傀傖傘傚最凱割剴創剩勞勝勛博厥啻喀喧啼喊喝喘喂喜喪喔喇喋喃喳單喟唾喲喚喻喬喱啾喉喫喙圍堯堪場堤堰報堡堝堠壹壺奠"],["b440","婷媚婿媒媛媧孳孱寒富寓寐尊尋就嵌嵐崴嵇巽幅帽幀幃幾廊廁廂廄弼彭復循徨惑惡悲悶惠愜愣惺愕惰惻惴慨惱愎惶愉愀愒戟扉掣掌描揀揩揉揆揍"],["b4a1","插揣提握揖揭揮捶援揪換摒揚揹敞敦敢散斑斐斯普晰晴晶景暑智晾晷曾替期朝棺棕棠棘棗椅棟棵森棧棹棒棲棣棋棍植椒椎棉棚楮棻款欺欽殘殖殼毯氮氯氬港游湔渡渲湧湊渠渥渣減湛湘渤湖湮渭渦湯渴湍渺測湃渝渾滋"],["b540","溉渙湎湣湄湲湩湟焙焚焦焰無然煮焜牌犄犀猶猥猴猩琺琪琳琢琥琵琶琴琯琛琦琨甥甦畫番痢痛痣痙痘痞痠登發皖皓皴盜睏短硝硬硯稍稈程稅稀窘"],["b5a1","窗窖童竣等策筆筐筒答筍筋筏筑粟粥絞結絨絕紫絮絲絡給絢絰絳善翔翕耋聒肅腕腔腋腑腎脹腆脾腌腓腴舒舜菩萃菸萍菠菅萋菁華菱菴著萊菰萌菌菽菲菊萸萎萄菜萇菔菟虛蛟蛙蛭蛔蛛蛤蛐蛞街裁裂袱覃視註詠評詞証詁"],["b640","詔詛詐詆訴診訶詖象貂貯貼貳貽賁費賀貴買貶貿貸越超趁跎距跋跚跑跌跛跆軻軸軼辜逮逵週逸進逶鄂郵鄉郾酣酥量鈔鈕鈣鈉鈞鈍鈐鈇鈑閔閏開閑"],["b6a1","間閒閎隊階隋陽隅隆隍陲隄雁雅雄集雇雯雲韌項順須飧飪飯飩飲飭馮馭黃黍黑亂傭債傲傳僅傾催傷傻傯僇剿剷剽募勦勤勢勣匯嗟嗨嗓嗦嗎嗜嗇嗑嗣嗤嗯嗚嗡嗅嗆嗥嗉園圓塞塑塘塗塚塔填塌塭塊塢塒塋奧嫁嫉嫌媾媽媼"],["b740","媳嫂媲嵩嵯幌幹廉廈弒彙徬微愚意慈感想愛惹愁愈慎慌慄慍愾愴愧愍愆愷戡戢搓搾搞搪搭搽搬搏搜搔損搶搖搗搆敬斟新暗暉暇暈暖暄暘暍會榔業"],["b7a1","楚楷楠楔極椰概楊楨楫楞楓楹榆楝楣楛歇歲毀殿毓毽溢溯滓溶滂源溝滇滅溥溘溼溺溫滑準溜滄滔溪溧溴煎煙煩煤煉照煜煬煦煌煥煞煆煨煖爺牒猷獅猿猾瑯瑚瑕瑟瑞瑁琿瑙瑛瑜當畸瘀痰瘁痲痱痺痿痴痳盞盟睛睫睦睞督"],["b840","睹睪睬睜睥睨睢矮碎碰碗碘碌碉硼碑碓硿祺祿禁萬禽稜稚稠稔稟稞窟窠筷節筠筮筧粱粳粵經絹綑綁綏絛置罩罪署義羨群聖聘肆肄腱腰腸腥腮腳腫"],["b8a1","腹腺腦舅艇蒂葷落萱葵葦葫葉葬葛萼萵葡董葩葭葆虞虜號蛹蜓蜈蜇蜀蛾蛻蜂蜃蜆蜊衙裟裔裙補裘裝裡裊裕裒覜解詫該詳試詩詰誇詼詣誠話誅詭詢詮詬詹詻訾詨豢貊貉賊資賈賄貲賃賂賅跡跟跨路跳跺跪跤跦躲較載軾輊"],["b940","辟農運遊道遂達逼違遐遇遏過遍遑逾遁鄒鄗酬酪酩釉鈷鉗鈸鈽鉀鈾鉛鉋鉤鉑鈴鉉鉍鉅鈹鈿鉚閘隘隔隕雍雋雉雊雷電雹零靖靴靶預頑頓頊頒頌飼飴"],["b9a1","飽飾馳馱馴髡鳩麂鼎鼓鼠僧僮僥僖僭僚僕像僑僱僎僩兢凳劃劂匱厭嗾嘀嘛嘗嗽嘔嘆嘉嘍嘎嗷嘖嘟嘈嘐嗶團圖塵塾境墓墊塹墅塽壽夥夢夤奪奩嫡嫦嫩嫗嫖嫘嫣孵寞寧寡寥實寨寢寤察對屢嶄嶇幛幣幕幗幔廓廖弊彆彰徹慇"],["ba40","愿態慷慢慣慟慚慘慵截撇摘摔撤摸摟摺摑摧搴摭摻敲斡旗旖暢暨暝榜榨榕槁榮槓構榛榷榻榫榴槐槍榭槌榦槃榣歉歌氳漳演滾漓滴漩漾漠漬漏漂漢"],["baa1","滿滯漆漱漸漲漣漕漫漯澈漪滬漁滲滌滷熔熙煽熊熄熒爾犒犖獄獐瑤瑣瑪瑰瑭甄疑瘧瘍瘋瘉瘓盡監瞄睽睿睡磁碟碧碳碩碣禎福禍種稱窪窩竭端管箕箋筵算箝箔箏箸箇箄粹粽精綻綰綜綽綾綠緊綴網綱綺綢綿綵綸維緒緇綬"],["bb40","罰翠翡翟聞聚肇腐膀膏膈膊腿膂臧臺與舔舞艋蓉蒿蓆蓄蒙蒞蒲蒜蓋蒸蓀蓓蒐蒼蓑蓊蜿蜜蜻蜢蜥蜴蜘蝕蜷蜩裳褂裴裹裸製裨褚裯誦誌語誣認誡誓誤"],["bba1","說誥誨誘誑誚誧豪貍貌賓賑賒赫趙趕跼輔輒輕輓辣遠遘遜遣遙遞遢遝遛鄙鄘鄞酵酸酷酴鉸銀銅銘銖鉻銓銜銨鉼銑閡閨閩閣閥閤隙障際雌雒需靼鞅韶頗領颯颱餃餅餌餉駁骯骰髦魁魂鳴鳶鳳麼鼻齊億儀僻僵價儂儈儉儅凜"],["bc40","劇劈劉劍劊勰厲嘮嘻嘹嘲嘿嘴嘩噓噎噗噴嘶嘯嘰墀墟增墳墜墮墩墦奭嬉嫻嬋嫵嬌嬈寮寬審寫層履嶝嶔幢幟幡廢廚廟廝廣廠彈影德徵慶慧慮慝慕憂"],["bca1","慼慰慫慾憧憐憫憎憬憚憤憔憮戮摩摯摹撞撲撈撐撰撥撓撕撩撒撮播撫撚撬撙撢撳敵敷數暮暫暴暱樣樟槨樁樞標槽模樓樊槳樂樅槭樑歐歎殤毅毆漿潼澄潑潦潔澆潭潛潸潮澎潺潰潤澗潘滕潯潠潟熟熬熱熨牖犛獎獗瑩璋璃"],["bd40","瑾璀畿瘠瘩瘟瘤瘦瘡瘢皚皺盤瞎瞇瞌瞑瞋磋磅確磊碾磕碼磐稿稼穀稽稷稻窯窮箭箱範箴篆篇篁箠篌糊締練緯緻緘緬緝編緣線緞緩綞緙緲緹罵罷羯"],["bda1","翩耦膛膜膝膠膚膘蔗蔽蔚蓮蔬蔭蔓蔑蔣蔡蔔蓬蔥蓿蔆螂蝴蝶蝠蝦蝸蝨蝙蝗蝌蝓衛衝褐複褒褓褕褊誼諒談諄誕請諸課諉諂調誰論諍誶誹諛豌豎豬賠賞賦賤賬賭賢賣賜質賡赭趟趣踫踐踝踢踏踩踟踡踞躺輝輛輟輩輦輪輜輞"],["be40","輥適遮遨遭遷鄰鄭鄧鄱醇醉醋醃鋅銻銷鋪銬鋤鋁銳銼鋒鋇鋰銲閭閱霄霆震霉靠鞍鞋鞏頡頫頜颳養餓餒餘駝駐駟駛駑駕駒駙骷髮髯鬧魅魄魷魯鴆鴉"],["bea1","鴃麩麾黎墨齒儒儘儔儐儕冀冪凝劑劓勳噙噫噹噩噤噸噪器噥噱噯噬噢噶壁墾壇壅奮嬝嬴學寰導彊憲憑憩憊懍憶憾懊懈戰擅擁擋撻撼據擄擇擂操撿擒擔撾整曆曉暹曄曇暸樽樸樺橙橫橘樹橄橢橡橋橇樵機橈歙歷氅濂澱澡"],["bf40","濃澤濁澧澳激澹澶澦澠澴熾燉燐燒燈燕熹燎燙燜燃燄獨璜璣璘璟璞瓢甌甍瘴瘸瘺盧盥瞠瞞瞟瞥磨磚磬磧禦積穎穆穌穋窺篙簑築篤篛篡篩篦糕糖縊"],["bfa1","縑縈縛縣縞縝縉縐罹羲翰翱翮耨膳膩膨臻興艘艙蕊蕙蕈蕨蕩蕃蕉蕭蕪蕞螃螟螞螢融衡褪褲褥褫褡親覦諦諺諫諱謀諜諧諮諾謁謂諷諭諳諶諼豫豭貓賴蹄踱踴蹂踹踵輻輯輸輳辨辦遵遴選遲遼遺鄴醒錠錶鋸錳錯錢鋼錫錄錚"],["c040","錐錦錡錕錮錙閻隧隨險雕霎霑霖霍霓霏靛靜靦鞘頰頸頻頷頭頹頤餐館餞餛餡餚駭駢駱骸骼髻髭鬨鮑鴕鴣鴦鴨鴒鴛默黔龍龜優償儡儲勵嚎嚀嚐嚅嚇"],["c0a1","嚏壕壓壑壎嬰嬪嬤孺尷屨嶼嶺嶽嶸幫彌徽應懂懇懦懋戲戴擎擊擘擠擰擦擬擱擢擭斂斃曙曖檀檔檄檢檜櫛檣橾檗檐檠歜殮毚氈濘濱濟濠濛濤濫濯澀濬濡濩濕濮濰燧營燮燦燥燭燬燴燠爵牆獰獲璩環璦璨癆療癌盪瞳瞪瞰瞬"],["c140","瞧瞭矯磷磺磴磯礁禧禪穗窿簇簍篾篷簌篠糠糜糞糢糟糙糝縮績繆縷縲繃縫總縱繅繁縴縹繈縵縿縯罄翳翼聱聲聰聯聳臆臃膺臂臀膿膽臉膾臨舉艱薪"],["c1a1","薄蕾薜薑薔薯薛薇薨薊虧蟀蟑螳蟒蟆螫螻螺蟈蟋褻褶襄褸褽覬謎謗謙講謊謠謝謄謐豁谿豳賺賽購賸賻趨蹉蹋蹈蹊轄輾轂轅輿避遽還邁邂邀鄹醣醞醜鍍鎂錨鍵鍊鍥鍋錘鍾鍬鍛鍰鍚鍔闊闋闌闈闆隱隸雖霜霞鞠韓顆颶餵騁"],["c240","駿鮮鮫鮪鮭鴻鴿麋黏點黜黝黛鼾齋叢嚕嚮壙壘嬸彝懣戳擴擲擾攆擺擻擷斷曜朦檳檬櫃檻檸櫂檮檯歟歸殯瀉瀋濾瀆濺瀑瀏燻燼燾燸獷獵璧璿甕癖癘"],["c2a1","癒瞽瞿瞻瞼礎禮穡穢穠竄竅簫簧簪簞簣簡糧織繕繞繚繡繒繙罈翹翻職聶臍臏舊藏薩藍藐藉薰薺薹薦蟯蟬蟲蟠覆覲觴謨謹謬謫豐贅蹙蹣蹦蹤蹟蹕軀轉轍邇邃邈醫醬釐鎔鎊鎖鎢鎳鎮鎬鎰鎘鎚鎗闔闖闐闕離雜雙雛雞霤鞣鞦"],["c340","鞭韹額顏題顎顓颺餾餿餽餮馥騎髁鬃鬆魏魎魍鯊鯉鯽鯈鯀鵑鵝鵠黠鼕鼬儳嚥壞壟壢寵龐廬懲懷懶懵攀攏曠曝櫥櫝櫚櫓瀛瀟瀨瀚瀝瀕瀘爆爍牘犢獸"],["c3a1","獺璽瓊瓣疇疆癟癡矇礙禱穫穩簾簿簸簽簷籀繫繭繹繩繪羅繳羶羹羸臘藩藝藪藕藤藥藷蟻蠅蠍蟹蟾襠襟襖襞譁譜識證譚譎譏譆譙贈贊蹼蹲躇蹶蹬蹺蹴轔轎辭邊邋醱醮鏡鏑鏟鏃鏈鏜鏝鏖鏢鏍鏘鏤鏗鏨關隴難霪霧靡韜韻類"],["c440","願顛颼饅饉騖騙鬍鯨鯧鯖鯛鶉鵡鵲鵪鵬麒麗麓麴勸嚨嚷嚶嚴嚼壤孀孃孽寶巉懸懺攘攔攙曦朧櫬瀾瀰瀲爐獻瓏癢癥礦礪礬礫竇競籌籃籍糯糰辮繽繼"],["c4a1","纂罌耀臚艦藻藹蘑藺蘆蘋蘇蘊蠔蠕襤覺觸議譬警譯譟譫贏贍躉躁躅躂醴釋鐘鐃鏽闡霰飄饒饑馨騫騰騷騵鰓鰍鹹麵黨鼯齟齣齡儷儸囁囀囂夔屬巍懼懾攝攜斕曩櫻欄櫺殲灌爛犧瓖瓔癩矓籐纏續羼蘗蘭蘚蠣蠢蠡蠟襪襬覽譴"],["c540","護譽贓躊躍躋轟辯醺鐮鐳鐵鐺鐸鐲鐫闢霸霹露響顧顥饗驅驃驀騾髏魔魑鰭鰥鶯鶴鷂鶸麝黯鼙齜齦齧儼儻囈囊囉孿巔巒彎懿攤權歡灑灘玀瓤疊癮癬"],["c5a1","禳籠籟聾聽臟襲襯觼讀贖贗躑躓轡酈鑄鑑鑒霽霾韃韁顫饕驕驍髒鬚鱉鰱鰾鰻鷓鷗鼴齬齪龔囌巖戀攣攫攪曬欐瓚竊籤籣籥纓纖纔臢蘸蘿蠱變邐邏鑣鑠鑤靨顯饜驚驛驗髓體髑鱔鱗鱖鷥麟黴囑壩攬灞癱癲矗罐羈蠶蠹衢讓讒"],["c640","讖艷贛釀鑪靂靈靄韆顰驟鬢魘鱟鷹鷺鹼鹽鼇齷齲廳欖灣籬籮蠻觀躡釁鑲鑰顱饞髖鬣黌灤矚讚鑷韉驢驥纜讜躪釅鑽鑾鑼鱷鱸黷豔鑿鸚爨驪鬱鸛鸞籲"],["c940","乂乜凵匚厂万丌乇亍囗兀屮彳丏冇与丮亓仂仉仈冘勼卬厹圠夃夬尐巿旡殳毌气爿丱丼仨仜仩仡仝仚刌匜卌圢圣夗夯宁宄尒尻屴屳帄庀庂忉戉扐氕"],["c9a1","氶汃氿氻犮犰玊禸肊阞伎优伬仵伔仱伀价伈伝伂伅伢伓伄仴伒冱刓刉刐劦匢匟卍厊吇囡囟圮圪圴夼妀奼妅奻奾奷奿孖尕尥屼屺屻屾巟幵庄异弚彴忕忔忏扜扞扤扡扦扢扙扠扚扥旯旮朾朹朸朻机朿朼朳氘汆汒汜汏汊汔汋"],["ca40","汌灱牞犴犵玎甪癿穵网艸艼芀艽艿虍襾邙邗邘邛邔阢阤阠阣佖伻佢佉体佤伾佧佒佟佁佘伭伳伿佡冏冹刜刞刡劭劮匉卣卲厎厏吰吷吪呔呅吙吜吥吘"],["caa1","吽呏呁吨吤呇囮囧囥坁坅坌坉坋坒夆奀妦妘妠妗妎妢妐妏妧妡宎宒尨尪岍岏岈岋岉岒岊岆岓岕巠帊帎庋庉庌庈庍弅弝彸彶忒忑忐忭忨忮忳忡忤忣忺忯忷忻怀忴戺抃抌抎抏抔抇扱扻扺扰抁抈扷扽扲扴攷旰旴旳旲旵杅杇"],["cb40","杙杕杌杈杝杍杚杋毐氙氚汸汧汫沄沋沏汱汯汩沚汭沇沕沜汦汳汥汻沎灴灺牣犿犽狃狆狁犺狅玕玗玓玔玒町甹疔疕皁礽耴肕肙肐肒肜芐芏芅芎芑芓"],["cba1","芊芃芄豸迉辿邟邡邥邞邧邠阰阨阯阭丳侘佼侅佽侀侇佶佴侉侄佷佌侗佪侚佹侁佸侐侜侔侞侒侂侕佫佮冞冼冾刵刲刳剆刱劼匊匋匼厒厔咇呿咁咑咂咈呫呺呾呥呬呴呦咍呯呡呠咘呣呧呤囷囹坯坲坭坫坱坰坶垀坵坻坳坴坢"],["cc40","坨坽夌奅妵妺姏姎妲姌姁妶妼姃姖妱妽姀姈妴姇孢孥宓宕屄屇岮岤岠岵岯岨岬岟岣岭岢岪岧岝岥岶岰岦帗帔帙弨弢弣弤彔徂彾彽忞忥怭怦怙怲怋"],["cca1","怴怊怗怳怚怞怬怢怍怐怮怓怑怌怉怜戔戽抭抴拑抾抪抶拊抮抳抯抻抩抰抸攽斨斻昉旼昄昒昈旻昃昋昍昅旽昑昐曶朊枅杬枎枒杶杻枘枆构杴枍枌杺枟枑枙枃杽极杸杹枔欥殀歾毞氝沓泬泫泮泙沶泔沭泧沷泐泂沺泃泆泭泲"],["cd40","泒泝沴沊沝沀泞泀洰泍泇沰泹泏泩泑炔炘炅炓炆炄炑炖炂炚炃牪狖狋狘狉狜狒狔狚狌狑玤玡玭玦玢玠玬玝瓝瓨甿畀甾疌疘皯盳盱盰盵矸矼矹矻矺"],["cda1","矷祂礿秅穸穻竻籵糽耵肏肮肣肸肵肭舠芠苀芫芚芘芛芵芧芮芼芞芺芴芨芡芩苂芤苃芶芢虰虯虭虮豖迒迋迓迍迖迕迗邲邴邯邳邰阹阽阼阺陃俍俅俓侲俉俋俁俔俜俙侻侳俛俇俖侺俀侹俬剄剉勀勂匽卼厗厖厙厘咺咡咭咥哏"],["ce40","哃茍咷咮哖咶哅哆咠呰咼咢咾呲哞咰垵垞垟垤垌垗垝垛垔垘垏垙垥垚垕壴复奓姡姞姮娀姱姝姺姽姼姶姤姲姷姛姩姳姵姠姾姴姭宨屌峐峘峌峗峋峛"],["cea1","峞峚峉峇峊峖峓峔峏峈峆峎峟峸巹帡帢帣帠帤庰庤庢庛庣庥弇弮彖徆怷怹恔恲恞恅恓恇恉恛恌恀恂恟怤恄恘恦恮扂扃拏挍挋拵挎挃拫拹挏挌拸拶挀挓挔拺挕拻拰敁敃斪斿昶昡昲昵昜昦昢昳昫昺昝昴昹昮朏朐柁柲柈枺"],["cf40","柜枻柸柘柀枷柅柫柤柟枵柍枳柷柶柮柣柂枹柎柧柰枲柼柆柭柌枮柦柛柺柉柊柃柪柋欨殂殄殶毖毘毠氠氡洨洴洭洟洼洿洒洊泚洳洄洙洺洚洑洀洝浂"],["cfa1","洁洘洷洃洏浀洇洠洬洈洢洉洐炷炟炾炱炰炡炴炵炩牁牉牊牬牰牳牮狊狤狨狫狟狪狦狣玅珌珂珈珅玹玶玵玴珫玿珇玾珃珆玸珋瓬瓮甮畇畈疧疪癹盄眈眃眄眅眊盷盻盺矧矨砆砑砒砅砐砏砎砉砃砓祊祌祋祅祄秕种秏秖秎窀"],["d040","穾竑笀笁籺籸籹籿粀粁紃紈紁罘羑羍羾耇耎耏耔耷胘胇胠胑胈胂胐胅胣胙胜胊胕胉胏胗胦胍臿舡芔苙苾苹茇苨茀苕茺苫苖苴苬苡苲苵茌苻苶苰苪"],["d0a1","苤苠苺苳苭虷虴虼虳衁衎衧衪衩觓訄訇赲迣迡迮迠郱邽邿郕郅邾郇郋郈釔釓陔陏陑陓陊陎倞倅倇倓倢倰倛俵俴倳倷倬俶俷倗倜倠倧倵倯倱倎党冔冓凊凄凅凈凎剡剚剒剞剟剕剢勍匎厞唦哢唗唒哧哳哤唚哿唄唈哫唑唅哱"],["d140","唊哻哷哸哠唎唃唋圁圂埌堲埕埒垺埆垽垼垸垶垿埇埐垹埁夎奊娙娖娭娮娕娏娗娊娞娳孬宧宭宬尃屖屔峬峿峮峱峷崀峹帩帨庨庮庪庬弳弰彧恝恚恧"],["d1a1","恁悢悈悀悒悁悝悃悕悛悗悇悜悎戙扆拲挐捖挬捄捅挶捃揤挹捋捊挼挩捁挴捘捔捙挭捇挳捚捑挸捗捀捈敊敆旆旃旄旂晊晟晇晑朒朓栟栚桉栲栳栻桋桏栖栱栜栵栫栭栯桎桄栴栝栒栔栦栨栮桍栺栥栠欬欯欭欱欴歭肂殈毦毤"],["d240","毨毣毢毧氥浺浣浤浶洍浡涒浘浢浭浯涑涍淯浿涆浞浧浠涗浰浼浟涂涘洯浨涋浾涀涄洖涃浻浽浵涐烜烓烑烝烋缹烢烗烒烞烠烔烍烅烆烇烚烎烡牂牸"],["d2a1","牷牶猀狺狴狾狶狳狻猁珓珙珥珖玼珧珣珩珜珒珛珔珝珚珗珘珨瓞瓟瓴瓵甡畛畟疰痁疻痄痀疿疶疺皊盉眝眛眐眓眒眣眑眕眙眚眢眧砣砬砢砵砯砨砮砫砡砩砳砪砱祔祛祏祜祓祒祑秫秬秠秮秭秪秜秞秝窆窉窅窋窌窊窇竘笐"],["d340","笄笓笅笏笈笊笎笉笒粄粑粊粌粈粍粅紞紝紑紎紘紖紓紟紒紏紌罜罡罞罠罝罛羖羒翃翂翀耖耾耹胺胲胹胵脁胻脀舁舯舥茳茭荄茙荑茥荖茿荁茦茜茢"],["d3a1","荂荎茛茪茈茼荍茖茤茠茷茯茩荇荅荌荓茞茬荋茧荈虓虒蚢蚨蚖蚍蚑蚞蚇蚗蚆蚋蚚蚅蚥蚙蚡蚧蚕蚘蚎蚝蚐蚔衃衄衭衵衶衲袀衱衿衯袃衾衴衼訒豇豗豻貤貣赶赸趵趷趶軑軓迾迵适迿迻逄迼迶郖郠郙郚郣郟郥郘郛郗郜郤酐"],["d440","酎酏釕釢釚陜陟隼飣髟鬯乿偰偪偡偞偠偓偋偝偲偈偍偁偛偊偢倕偅偟偩偫偣偤偆偀偮偳偗偑凐剫剭剬剮勖勓匭厜啵啶唼啍啐唴唪啑啢唶唵唰啒啅"],["d4a1","唌唲啥啎唹啈唭唻啀啋圊圇埻堔埢埶埜埴堀埭埽堈埸堋埳埏堇埮埣埲埥埬埡堎埼堐埧堁堌埱埩埰堍堄奜婠婘婕婧婞娸娵婭婐婟婥婬婓婤婗婃婝婒婄婛婈媎娾婍娹婌婰婩婇婑婖婂婜孲孮寁寀屙崞崋崝崚崠崌崨崍崦崥崏"],["d540","崰崒崣崟崮帾帴庱庴庹庲庳弶弸徛徖徟悊悐悆悾悰悺惓惔惏惤惙惝惈悱惛悷惊悿惃惍惀挲捥掊掂捽掽掞掭掝掗掫掎捯掇掐据掯捵掜捭掮捼掤挻掟"],["d5a1","捸掅掁掑掍捰敓旍晥晡晛晙晜晢朘桹梇梐梜桭桮梮梫楖桯梣梬梩桵桴梲梏桷梒桼桫桲梪梀桱桾梛梖梋梠梉梤桸桻梑梌梊桽欶欳欷欸殑殏殍殎殌氪淀涫涴涳湴涬淩淢涷淶淔渀淈淠淟淖涾淥淜淝淛淴淊涽淭淰涺淕淂淏淉"],["d640","淐淲淓淽淗淍淣涻烺焍烷焗烴焌烰焄烳焐烼烿焆焓焀烸烶焋焂焎牾牻牼牿猝猗猇猑猘猊猈狿猏猞玈珶珸珵琄琁珽琇琀珺珼珿琌琋珴琈畤畣痎痒痏"],["d6a1","痋痌痑痐皏皉盓眹眯眭眱眲眴眳眽眥眻眵硈硒硉硍硊硌砦硅硐祤祧祩祪祣祫祡离秺秸秶秷窏窔窐笵筇笴笥笰笢笤笳笘笪笝笱笫笭笯笲笸笚笣粔粘粖粣紵紽紸紶紺絅紬紩絁絇紾紿絊紻紨罣羕羜羝羛翊翋翍翐翑翇翏翉耟"],["d740","耞耛聇聃聈脘脥脙脛脭脟脬脞脡脕脧脝脢舑舸舳舺舴舲艴莐莣莨莍荺荳莤荴莏莁莕莙荵莔莩荽莃莌莝莛莪莋荾莥莯莈莗莰荿莦莇莮荶莚虙虖蚿蚷"],["d7a1","蛂蛁蛅蚺蚰蛈蚹蚳蚸蛌蚴蚻蚼蛃蚽蚾衒袉袕袨袢袪袚袑袡袟袘袧袙袛袗袤袬袌袓袎覂觖觙觕訰訧訬訞谹谻豜豝豽貥赽赻赹趼跂趹趿跁軘軞軝軜軗軠軡逤逋逑逜逌逡郯郪郰郴郲郳郔郫郬郩酖酘酚酓酕釬釴釱釳釸釤釹釪"],["d840","釫釷釨釮镺閆閈陼陭陫陱陯隿靪頄飥馗傛傕傔傞傋傣傃傌傎傝偨傜傒傂傇兟凔匒匑厤厧喑喨喥喭啷噅喢喓喈喏喵喁喣喒喤啽喌喦啿喕喡喎圌堩堷"],["d8a1","堙堞堧堣堨埵塈堥堜堛堳堿堶堮堹堸堭堬堻奡媯媔媟婺媢媞婸媦婼媥媬媕媮娷媄媊媗媃媋媩婻婽媌媜媏媓媝寪寍寋寔寑寊寎尌尰崷嵃嵫嵁嵋崿崵嵑嵎嵕崳崺嵒崽崱嵙嵂崹嵉崸崼崲崶嵀嵅幄幁彘徦徥徫惉悹惌惢惎惄愔"],["d940","惲愊愖愅惵愓惸惼惾惁愃愘愝愐惿愄愋扊掔掱掰揎揥揨揯揃撝揳揊揠揶揕揲揵摡揟掾揝揜揄揘揓揂揇揌揋揈揰揗揙攲敧敪敤敜敨敥斌斝斞斮旐旒"],["d9a1","晼晬晻暀晱晹晪晲朁椌棓椄棜椪棬棪棱椏棖棷棫棤棶椓椐棳棡椇棌椈楰梴椑棯棆椔棸棐棽棼棨椋椊椗棎棈棝棞棦棴棑椆棔棩椕椥棇欹欻欿欼殔殗殙殕殽毰毲毳氰淼湆湇渟湉溈渼渽湅湢渫渿湁湝湳渜渳湋湀湑渻渃渮湞"],["da40","湨湜湡渱渨湠湱湫渹渢渰湓湥渧湸湤湷湕湹湒湦渵渶湚焠焞焯烻焮焱焣焥焢焲焟焨焺焛牋牚犈犉犆犅犋猒猋猰猢猱猳猧猲猭猦猣猵猌琮琬琰琫琖"],["daa1","琚琡琭琱琤琣琝琩琠琲瓻甯畯畬痧痚痡痦痝痟痤痗皕皒盚睆睇睄睍睅睊睎睋睌矞矬硠硤硥硜硭硱硪确硰硩硨硞硢祴祳祲祰稂稊稃稌稄窙竦竤筊笻筄筈筌筎筀筘筅粢粞粨粡絘絯絣絓絖絧絪絏絭絜絫絒絔絩絑絟絎缾缿罥"],["db40","罦羢羠羡翗聑聏聐胾胔腃腊腒腏腇脽腍脺臦臮臷臸臹舄舼舽舿艵茻菏菹萣菀菨萒菧菤菼菶萐菆菈菫菣莿萁菝菥菘菿菡菋菎菖菵菉萉萏菞萑萆菂菳"],["dba1","菕菺菇菑菪萓菃菬菮菄菻菗菢萛菛菾蛘蛢蛦蛓蛣蛚蛪蛝蛫蛜蛬蛩蛗蛨蛑衈衖衕袺裗袹袸裀袾袶袼袷袽袲褁裉覕覘覗觝觚觛詎詍訹詙詀詗詘詄詅詒詈詑詊詌詏豟貁貀貺貾貰貹貵趄趀趉跘跓跍跇跖跜跏跕跙跈跗跅軯軷軺"],["dc40","軹軦軮軥軵軧軨軶軫軱軬軴軩逭逴逯鄆鄬鄄郿郼鄈郹郻鄁鄀鄇鄅鄃酡酤酟酢酠鈁鈊鈥鈃鈚鈦鈏鈌鈀鈒釿釽鈆鈄鈧鈂鈜鈤鈙鈗鈅鈖镻閍閌閐隇陾隈"],["dca1","隉隃隀雂雈雃雱雰靬靰靮頇颩飫鳦黹亃亄亶傽傿僆傮僄僊傴僈僂傰僁傺傱僋僉傶傸凗剺剸剻剼嗃嗛嗌嗐嗋嗊嗝嗀嗔嗄嗩喿嗒喍嗏嗕嗢嗖嗈嗲嗍嗙嗂圔塓塨塤塏塍塉塯塕塎塝塙塥塛堽塣塱壼嫇嫄嫋媺媸媱媵媰媿嫈媻嫆"],["dd40","媷嫀嫊媴媶嫍媹媐寖寘寙尟尳嵱嵣嵊嵥嵲嵬嵞嵨嵧嵢巰幏幎幊幍幋廅廌廆廋廇彀徯徭惷慉慊愫慅愶愲愮慆愯慏愩慀戠酨戣戥戤揅揱揫搐搒搉搠搤"],["dda1","搳摃搟搕搘搹搷搢搣搌搦搰搨摁搵搯搊搚摀搥搧搋揧搛搮搡搎敯斒旓暆暌暕暐暋暊暙暔晸朠楦楟椸楎楢楱椿楅楪椹楂楗楙楺楈楉椵楬椳椽楥棰楸椴楩楀楯楄楶楘楁楴楌椻楋椷楜楏楑椲楒椯楻椼歆歅歃歂歈歁殛嗀毻毼"],["de40","毹毷毸溛滖滈溏滀溟溓溔溠溱溹滆滒溽滁溞滉溷溰滍溦滏溲溾滃滜滘溙溒溎溍溤溡溿溳滐滊溗溮溣煇煔煒煣煠煁煝煢煲煸煪煡煂煘煃煋煰煟煐煓"],["dea1","煄煍煚牏犍犌犑犐犎猼獂猻猺獀獊獉瑄瑊瑋瑒瑑瑗瑀瑏瑐瑎瑂瑆瑍瑔瓡瓿瓾瓽甝畹畷榃痯瘏瘃痷痾痼痹痸瘐痻痶痭痵痽皙皵盝睕睟睠睒睖睚睩睧睔睙睭矠碇碚碔碏碄碕碅碆碡碃硹碙碀碖硻祼禂祽祹稑稘稙稒稗稕稢稓"],["df40","稛稐窣窢窞竫筦筤筭筴筩筲筥筳筱筰筡筸筶筣粲粴粯綈綆綀綍絿綅絺綎絻綃絼綌綔綄絽綒罭罫罧罨罬羦羥羧翛翜耡腤腠腷腜腩腛腢腲朡腞腶腧腯"],["dfa1","腄腡舝艉艄艀艂艅蓱萿葖葶葹蒏蒍葥葑葀蒆葧萰葍葽葚葙葴葳葝蔇葞萷萺萴葺葃葸萲葅萩菙葋萯葂萭葟葰萹葎葌葒葯蓅蒎萻葇萶萳葨葾葄萫葠葔葮葐蜋蜄蛷蜌蛺蛖蛵蝍蛸蜎蜉蜁蛶蜍蜅裖裋裍裎裞裛裚裌裐覅覛觟觥觤"],["e040","觡觠觢觜触詶誆詿詡訿詷誂誄詵誃誁詴詺谼豋豊豥豤豦貆貄貅賌赨赩趑趌趎趏趍趓趔趐趒跰跠跬跱跮跐跩跣跢跧跲跫跴輆軿輁輀輅輇輈輂輋遒逿"],["e0a1","遄遉逽鄐鄍鄏鄑鄖鄔鄋鄎酮酯鉈鉒鈰鈺鉦鈳鉥鉞銃鈮鉊鉆鉭鉬鉏鉠鉧鉯鈶鉡鉰鈱鉔鉣鉐鉲鉎鉓鉌鉖鈲閟閜閞閛隒隓隑隗雎雺雽雸雵靳靷靸靲頏頍頎颬飶飹馯馲馰馵骭骫魛鳪鳭鳧麀黽僦僔僗僨僳僛僪僝僤僓僬僰僯僣僠"],["e140","凘劀劁勩勫匰厬嘧嘕嘌嘒嗼嘏嘜嘁嘓嘂嗺嘝嘄嗿嗹墉塼墐墘墆墁塿塴墋塺墇墑墎塶墂墈塻墔墏壾奫嫜嫮嫥嫕嫪嫚嫭嫫嫳嫢嫠嫛嫬嫞嫝嫙嫨嫟孷寠"],["e1a1","寣屣嶂嶀嵽嶆嵺嶁嵷嶊嶉嶈嵾嵼嶍嵹嵿幘幙幓廘廑廗廎廜廕廙廒廔彄彃彯徶愬愨慁慞慱慳慒慓慲慬憀慴慔慺慛慥愻慪慡慖戩戧戫搫摍摛摝摴摶摲摳摽摵摦撦摎撂摞摜摋摓摠摐摿搿摬摫摙摥摷敳斠暡暠暟朅朄朢榱榶槉"],["e240","榠槎榖榰榬榼榑榙榎榧榍榩榾榯榿槄榽榤槔榹槊榚槏榳榓榪榡榞槙榗榐槂榵榥槆歊歍歋殞殟殠毃毄毾滎滵滱漃漥滸漷滻漮漉潎漙漚漧漘漻漒滭漊"],["e2a1","漶潳滹滮漭潀漰漼漵滫漇漎潃漅滽滶漹漜滼漺漟漍漞漈漡熇熐熉熀熅熂熏煻熆熁熗牄牓犗犕犓獃獍獑獌瑢瑳瑱瑵瑲瑧瑮甀甂甃畽疐瘖瘈瘌瘕瘑瘊瘔皸瞁睼瞅瞂睮瞀睯睾瞃碲碪碴碭碨硾碫碞碥碠碬碢碤禘禊禋禖禕禔禓"],["e340","禗禈禒禐稫穊稰稯稨稦窨窫窬竮箈箜箊箑箐箖箍箌箛箎箅箘劄箙箤箂粻粿粼粺綧綷緂綣綪緁緀緅綝緎緄緆緋緌綯綹綖綼綟綦綮綩綡緉罳翢翣翥翞"],["e3a1","耤聝聜膉膆膃膇膍膌膋舕蒗蒤蒡蒟蒺蓎蓂蒬蒮蒫蒹蒴蓁蓍蒪蒚蒱蓐蒝蒧蒻蒢蒔蓇蓌蒛蒩蒯蒨蓖蒘蒶蓏蒠蓗蓔蓒蓛蒰蒑虡蜳蜣蜨蝫蝀蜮蜞蜡蜙蜛蝃蜬蝁蜾蝆蜠蜲蜪蜭蜼蜒蜺蜱蜵蝂蜦蜧蜸蜤蜚蜰蜑裷裧裱裲裺裾裮裼裶裻"],["e440","裰裬裫覝覡覟覞觩觫觨誫誙誋誒誏誖谽豨豩賕賏賗趖踉踂跿踍跽踊踃踇踆踅跾踀踄輐輑輎輍鄣鄜鄠鄢鄟鄝鄚鄤鄡鄛酺酲酹酳銥銤鉶銛鉺銠銔銪銍"],["e4a1","銦銚銫鉹銗鉿銣鋮銎銂銕銢鉽銈銡銊銆銌銙銧鉾銇銩銝銋鈭隞隡雿靘靽靺靾鞃鞀鞂靻鞄鞁靿韎韍頖颭颮餂餀餇馝馜駃馹馻馺駂馽駇骱髣髧鬾鬿魠魡魟鳱鳲鳵麧僿儃儰僸儆儇僶僾儋儌僽儊劋劌勱勯噈噂噌嘵噁噊噉噆噘"],["e540","噚噀嘳嘽嘬嘾嘸嘪嘺圚墫墝墱墠墣墯墬墥墡壿嫿嫴嫽嫷嫶嬃嫸嬂嫹嬁嬇嬅嬏屧嶙嶗嶟嶒嶢嶓嶕嶠嶜嶡嶚嶞幩幝幠幜緳廛廞廡彉徲憋憃慹憱憰憢憉"],["e5a1","憛憓憯憭憟憒憪憡憍慦憳戭摮摰撖撠撅撗撜撏撋撊撌撣撟摨撱撘敶敺敹敻斲斳暵暰暩暲暷暪暯樀樆樗槥槸樕槱槤樠槿槬槢樛樝槾樧槲槮樔槷槧橀樈槦槻樍槼槫樉樄樘樥樏槶樦樇槴樖歑殥殣殢殦氁氀毿氂潁漦潾澇濆澒"],["e640","澍澉澌潢潏澅潚澖潶潬澂潕潲潒潐潗澔澓潝漀潡潫潽潧澐潓澋潩潿澕潣潷潪潻熲熯熛熰熠熚熩熵熝熥熞熤熡熪熜熧熳犘犚獘獒獞獟獠獝獛獡獚獙"],["e6a1","獢璇璉璊璆璁瑽璅璈瑼瑹甈甇畾瘥瘞瘙瘝瘜瘣瘚瘨瘛皜皝皞皛瞍瞏瞉瞈磍碻磏磌磑磎磔磈磃磄磉禚禡禠禜禢禛歶稹窲窴窳箷篋箾箬篎箯箹篊箵糅糈糌糋緷緛緪緧緗緡縃緺緦緶緱緰緮緟罶羬羰羭翭翫翪翬翦翨聤聧膣膟"],["e740","膞膕膢膙膗舖艏艓艒艐艎艑蔤蔻蔏蔀蔩蔎蔉蔍蔟蔊蔧蔜蓻蔫蓺蔈蔌蓴蔪蓲蔕蓷蓫蓳蓼蔒蓪蓩蔖蓾蔨蔝蔮蔂蓽蔞蓶蔱蔦蓧蓨蓰蓯蓹蔘蔠蔰蔋蔙蔯虢"],["e7a1","蝖蝣蝤蝷蟡蝳蝘蝔蝛蝒蝡蝚蝑蝞蝭蝪蝐蝎蝟蝝蝯蝬蝺蝮蝜蝥蝏蝻蝵蝢蝧蝩衚褅褌褔褋褗褘褙褆褖褑褎褉覢覤覣觭觰觬諏諆誸諓諑諔諕誻諗誾諀諅諘諃誺誽諙谾豍貏賥賟賙賨賚賝賧趠趜趡趛踠踣踥踤踮踕踛踖踑踙踦踧"],["e840","踔踒踘踓踜踗踚輬輤輘輚輠輣輖輗遳遰遯遧遫鄯鄫鄩鄪鄲鄦鄮醅醆醊醁醂醄醀鋐鋃鋄鋀鋙銶鋏鋱鋟鋘鋩鋗鋝鋌鋯鋂鋨鋊鋈鋎鋦鋍鋕鋉鋠鋞鋧鋑鋓"],["e8a1","銵鋡鋆銴镼閬閫閮閰隤隢雓霅霈霂靚鞊鞎鞈韐韏頞頝頦頩頨頠頛頧颲餈飺餑餔餖餗餕駜駍駏駓駔駎駉駖駘駋駗駌骳髬髫髳髲髱魆魃魧魴魱魦魶魵魰魨魤魬鳼鳺鳽鳿鳷鴇鴀鳹鳻鴈鴅鴄麃黓鼏鼐儜儓儗儚儑凞匴叡噰噠噮"],["e940","噳噦噣噭噲噞噷圜圛壈墽壉墿墺壂墼壆嬗嬙嬛嬡嬔嬓嬐嬖嬨嬚嬠嬞寯嶬嶱嶩嶧嶵嶰嶮嶪嶨嶲嶭嶯嶴幧幨幦幯廩廧廦廨廥彋徼憝憨憖懅憴懆懁懌憺"],["e9a1","憿憸憌擗擖擐擏擉撽撉擃擛擳擙攳敿敼斢曈暾曀曊曋曏暽暻暺曌朣樴橦橉橧樲橨樾橝橭橶橛橑樨橚樻樿橁橪橤橐橏橔橯橩橠樼橞橖橕橍橎橆歕歔歖殧殪殫毈毇氄氃氆澭濋澣濇澼濎濈潞濄澽澞濊澨瀄澥澮澺澬澪濏澿澸"],["ea40","澢濉澫濍澯澲澰燅燂熿熸燖燀燁燋燔燊燇燏熽燘熼燆燚燛犝犞獩獦獧獬獥獫獪瑿璚璠璔璒璕璡甋疀瘯瘭瘱瘽瘳瘼瘵瘲瘰皻盦瞚瞝瞡瞜瞛瞢瞣瞕瞙"],["eaa1","瞗磝磩磥磪磞磣磛磡磢磭磟磠禤穄穈穇窶窸窵窱窷篞篣篧篝篕篥篚篨篹篔篪篢篜篫篘篟糒糔糗糐糑縒縡縗縌縟縠縓縎縜縕縚縢縋縏縖縍縔縥縤罃罻罼罺羱翯耪耩聬膱膦膮膹膵膫膰膬膴膲膷膧臲艕艖艗蕖蕅蕫蕍蕓蕡蕘"],["eb40","蕀蕆蕤蕁蕢蕄蕑蕇蕣蔾蕛蕱蕎蕮蕵蕕蕧蕠薌蕦蕝蕔蕥蕬虣虥虤螛螏螗螓螒螈螁螖螘蝹螇螣螅螐螑螝螄螔螜螚螉褞褦褰褭褮褧褱褢褩褣褯褬褟觱諠"],["eba1","諢諲諴諵諝謔諤諟諰諈諞諡諨諿諯諻貑貒貐賵賮賱賰賳赬赮趥趧踳踾踸蹀蹅踶踼踽蹁踰踿躽輶輮輵輲輹輷輴遶遹遻邆郺鄳鄵鄶醓醐醑醍醏錧錞錈錟錆錏鍺錸錼錛錣錒錁鍆錭錎錍鋋錝鋺錥錓鋹鋷錴錂錤鋿錩錹錵錪錔錌"],["ec40","錋鋾錉錀鋻錖閼闍閾閹閺閶閿閵閽隩雔霋霒霐鞙鞗鞔韰韸頵頯頲餤餟餧餩馞駮駬駥駤駰駣駪駩駧骹骿骴骻髶髺髹髷鬳鮀鮅鮇魼魾魻鮂鮓鮒鮐魺鮕"],["eca1","魽鮈鴥鴗鴠鴞鴔鴩鴝鴘鴢鴐鴙鴟麈麆麇麮麭黕黖黺鼒鼽儦儥儢儤儠儩勴嚓嚌嚍嚆嚄嚃噾嚂噿嚁壖壔壏壒嬭嬥嬲嬣嬬嬧嬦嬯嬮孻寱寲嶷幬幪徾徻懃憵憼懧懠懥懤懨懞擯擩擣擫擤擨斁斀斶旚曒檍檖檁檥檉檟檛檡檞檇檓檎"],["ed40","檕檃檨檤檑橿檦檚檅檌檒歛殭氉濌澩濴濔濣濜濭濧濦濞濲濝濢濨燡燱燨燲燤燰燢獳獮獯璗璲璫璐璪璭璱璥璯甐甑甒甏疄癃癈癉癇皤盩瞵瞫瞲瞷瞶"],["eda1","瞴瞱瞨矰磳磽礂磻磼磲礅磹磾礄禫禨穜穛穖穘穔穚窾竀竁簅簏篲簀篿篻簎篴簋篳簂簉簃簁篸篽簆篰篱簐簊糨縭縼繂縳顈縸縪繉繀繇縩繌縰縻縶繄縺罅罿罾罽翴翲耬膻臄臌臊臅臇膼臩艛艚艜薃薀薏薧薕薠薋薣蕻薤薚薞"],["ee40","蕷蕼薉薡蕺蕸蕗薎薖薆薍薙薝薁薢薂薈薅蕹蕶薘薐薟虨螾螪螭蟅螰螬螹螵螼螮蟉蟃蟂蟌螷螯蟄蟊螴螶螿螸螽蟞螲褵褳褼褾襁襒褷襂覭覯覮觲觳謞"],["eea1","謘謖謑謅謋謢謏謒謕謇謍謈謆謜謓謚豏豰豲豱豯貕貔賹赯蹎蹍蹓蹐蹌蹇轃轀邅遾鄸醚醢醛醙醟醡醝醠鎡鎃鎯鍤鍖鍇鍼鍘鍜鍶鍉鍐鍑鍠鍭鎏鍌鍪鍹鍗鍕鍒鍏鍱鍷鍻鍡鍞鍣鍧鎀鍎鍙闇闀闉闃闅閷隮隰隬霠霟霘霝霙鞚鞡鞜"],["ef40","鞞鞝韕韔韱顁顄顊顉顅顃餥餫餬餪餳餲餯餭餱餰馘馣馡騂駺駴駷駹駸駶駻駽駾駼騃骾髾髽鬁髼魈鮚鮨鮞鮛鮦鮡鮥鮤鮆鮢鮠鮯鴳鵁鵧鴶鴮鴯鴱鴸鴰"],["efa1","鵅鵂鵃鴾鴷鵀鴽翵鴭麊麉麍麰黈黚黻黿鼤鼣鼢齔龠儱儭儮嚘嚜嚗嚚嚝嚙奰嬼屩屪巀幭幮懘懟懭懮懱懪懰懫懖懩擿攄擽擸攁攃擼斔旛曚曛曘櫅檹檽櫡櫆檺檶檷櫇檴檭歞毉氋瀇瀌瀍瀁瀅瀔瀎濿瀀濻瀦濼濷瀊爁燿燹爃燽獶"],["f040","璸瓀璵瓁璾璶璻瓂甔甓癜癤癙癐癓癗癚皦皽盬矂瞺磿礌礓礔礉礐礒礑禭禬穟簜簩簙簠簟簭簝簦簨簢簥簰繜繐繖繣繘繢繟繑繠繗繓羵羳翷翸聵臑臒"],["f0a1","臐艟艞薴藆藀藃藂薳薵薽藇藄薿藋藎藈藅薱薶藒蘤薸薷薾虩蟧蟦蟢蟛蟫蟪蟥蟟蟳蟤蟔蟜蟓蟭蟘蟣螤蟗蟙蠁蟴蟨蟝襓襋襏襌襆襐襑襉謪謧謣謳謰謵譇謯謼謾謱謥謷謦謶謮謤謻謽謺豂豵貙貘貗賾贄贂贀蹜蹢蹠蹗蹖蹞蹥蹧"],["f140","蹛蹚蹡蹝蹩蹔轆轇轈轋鄨鄺鄻鄾醨醥醧醯醪鎵鎌鎒鎷鎛鎝鎉鎧鎎鎪鎞鎦鎕鎈鎙鎟鎍鎱鎑鎲鎤鎨鎴鎣鎥闒闓闑隳雗雚巂雟雘雝霣霢霥鞬鞮鞨鞫鞤鞪"],["f1a1","鞢鞥韗韙韖韘韺顐顑顒颸饁餼餺騏騋騉騍騄騑騊騅騇騆髀髜鬈鬄鬅鬩鬵魊魌魋鯇鯆鯃鮿鯁鮵鮸鯓鮶鯄鮹鮽鵜鵓鵏鵊鵛鵋鵙鵖鵌鵗鵒鵔鵟鵘鵚麎麌黟鼁鼀鼖鼥鼫鼪鼩鼨齌齕儴儵劖勷厴嚫嚭嚦嚧嚪嚬壚壝壛夒嬽嬾嬿巃幰"],["f240","徿懻攇攐攍攉攌攎斄旞旝曞櫧櫠櫌櫑櫙櫋櫟櫜櫐櫫櫏櫍櫞歠殰氌瀙瀧瀠瀖瀫瀡瀢瀣瀩瀗瀤瀜瀪爌爊爇爂爅犥犦犤犣犡瓋瓅璷瓃甖癠矉矊矄矱礝礛"],["f2a1","礡礜礗礞禰穧穨簳簼簹簬簻糬糪繶繵繸繰繷繯繺繲繴繨罋罊羃羆羷翽翾聸臗臕艤艡艣藫藱藭藙藡藨藚藗藬藲藸藘藟藣藜藑藰藦藯藞藢蠀蟺蠃蟶蟷蠉蠌蠋蠆蟼蠈蟿蠊蠂襢襚襛襗襡襜襘襝襙覈覷覶觶譐譈譊譀譓譖譔譋譕"],["f340","譑譂譒譗豃豷豶貚贆贇贉趬趪趭趫蹭蹸蹳蹪蹯蹻軂轒轑轏轐轓辴酀鄿醰醭鏞鏇鏏鏂鏚鏐鏹鏬鏌鏙鎩鏦鏊鏔鏮鏣鏕鏄鏎鏀鏒鏧镽闚闛雡霩霫霬霨霦"],["f3a1","鞳鞷鞶韝韞韟顜顙顝顗颿颽颻颾饈饇饃馦馧騚騕騥騝騤騛騢騠騧騣騞騜騔髂鬋鬊鬎鬌鬷鯪鯫鯠鯞鯤鯦鯢鯰鯔鯗鯬鯜鯙鯥鯕鯡鯚鵷鶁鶊鶄鶈鵱鶀鵸鶆鶋鶌鵽鵫鵴鵵鵰鵩鶅鵳鵻鶂鵯鵹鵿鶇鵨麔麑黀黼鼭齀齁齍齖齗齘匷嚲"],["f440","嚵嚳壣孅巆巇廮廯忀忁懹攗攖攕攓旟曨曣曤櫳櫰櫪櫨櫹櫱櫮櫯瀼瀵瀯瀷瀴瀱灂瀸瀿瀺瀹灀瀻瀳灁爓爔犨獽獼璺皫皪皾盭矌矎矏矍矲礥礣礧礨礤礩"],["f4a1","禲穮穬穭竷籉籈籊籇籅糮繻繾纁纀羺翿聹臛臙舋艨艩蘢藿蘁藾蘛蘀藶蘄蘉蘅蘌藽蠙蠐蠑蠗蠓蠖襣襦覹觷譠譪譝譨譣譥譧譭趮躆躈躄轙轖轗轕轘轚邍酃酁醷醵醲醳鐋鐓鏻鐠鐏鐔鏾鐕鐐鐨鐙鐍鏵鐀鏷鐇鐎鐖鐒鏺鐉鏸鐊鏿"],["f540","鏼鐌鏶鐑鐆闞闠闟霮霯鞹鞻韽韾顠顢顣顟飁飂饐饎饙饌饋饓騲騴騱騬騪騶騩騮騸騭髇髊髆鬐鬒鬑鰋鰈鯷鰅鰒鯸鱀鰇鰎鰆鰗鰔鰉鶟鶙鶤鶝鶒鶘鶐鶛"],["f5a1","鶠鶔鶜鶪鶗鶡鶚鶢鶨鶞鶣鶿鶩鶖鶦鶧麙麛麚黥黤黧黦鼰鼮齛齠齞齝齙龑儺儹劘劗囃嚽嚾孈孇巋巏廱懽攛欂櫼欃櫸欀灃灄灊灈灉灅灆爝爚爙獾甗癪矐礭礱礯籔籓糲纊纇纈纋纆纍罍羻耰臝蘘蘪蘦蘟蘣蘜蘙蘧蘮蘡蘠蘩蘞蘥"],["f640","蠩蠝蠛蠠蠤蠜蠫衊襭襩襮襫觺譹譸譅譺譻贐贔趯躎躌轞轛轝酆酄酅醹鐿鐻鐶鐩鐽鐼鐰鐹鐪鐷鐬鑀鐱闥闤闣霵霺鞿韡顤飉飆飀饘饖騹騽驆驄驂驁騺"],["f6a1","騿髍鬕鬗鬘鬖鬺魒鰫鰝鰜鰬鰣鰨鰩鰤鰡鶷鶶鶼鷁鷇鷊鷏鶾鷅鷃鶻鶵鷎鶹鶺鶬鷈鶱鶭鷌鶳鷍鶲鹺麜黫黮黭鼛鼘鼚鼱齎齥齤龒亹囆囅囋奱孋孌巕巑廲攡攠攦攢欋欈欉氍灕灖灗灒爞爟犩獿瓘瓕瓙瓗癭皭礵禴穰穱籗籜籙籛籚"],["f740","糴糱纑罏羇臞艫蘴蘵蘳蘬蘲蘶蠬蠨蠦蠪蠥襱覿覾觻譾讄讂讆讅譿贕躕躔躚躒躐躖躗轠轢酇鑌鑐鑊鑋鑏鑇鑅鑈鑉鑆霿韣顪顩飋饔饛驎驓驔驌驏驈驊"],["f7a1","驉驒驐髐鬙鬫鬻魖魕鱆鱈鰿鱄鰹鰳鱁鰼鰷鰴鰲鰽鰶鷛鷒鷞鷚鷋鷐鷜鷑鷟鷩鷙鷘鷖鷵鷕鷝麶黰鼵鼳鼲齂齫龕龢儽劙壨壧奲孍巘蠯彏戁戃戄攩攥斖曫欑欒欏毊灛灚爢玂玁玃癰矔籧籦纕艬蘺虀蘹蘼蘱蘻蘾蠰蠲蠮蠳襶襴襳觾"],["f840","讌讎讋讈豅贙躘轤轣醼鑢鑕鑝鑗鑞韄韅頀驖驙鬞鬟鬠鱒鱘鱐鱊鱍鱋鱕鱙鱌鱎鷻鷷鷯鷣鷫鷸鷤鷶鷡鷮鷦鷲鷰鷢鷬鷴鷳鷨鷭黂黐黲黳鼆鼜鼸鼷鼶齃齏"],["f8a1","齱齰齮齯囓囍孎屭攭曭曮欓灟灡灝灠爣瓛瓥矕礸禷禶籪纗羉艭虃蠸蠷蠵衋讔讕躞躟躠躝醾醽釂鑫鑨鑩雥靆靃靇韇韥驞髕魙鱣鱧鱦鱢鱞鱠鸂鷾鸇鸃鸆鸅鸀鸁鸉鷿鷽鸄麠鼞齆齴齵齶囔攮斸欘欙欗欚灢爦犪矘矙礹籩籫糶纚"],["f940","纘纛纙臠臡虆虇虈襹襺襼襻觿讘讙躥躤躣鑮鑭鑯鑱鑳靉顲饟鱨鱮鱭鸋鸍鸐鸏鸒鸑麡黵鼉齇齸齻齺齹圞灦籯蠼趲躦釃鑴鑸鑶鑵驠鱴鱳鱱鱵鸔鸓黶鼊"],["f9a1","龤灨灥糷虪蠾蠽蠿讞貜躩軉靋顳顴飌饡馫驤驦驧鬤鸕鸗齈戇欞爧虌躨钂钀钁驩驨鬮鸙爩虋讟钃鱹麷癵驫鱺鸝灩灪麤齾齉龘碁銹裏墻恒粧嫺╔╦╗╠╬╣╚╩╝╒╤╕╞╪╡╘╧╛╓╥╖╟╫╢╙╨╜║═╭╮╰╯▓"]]
+module.exports = [["a140","",62],["a180","",32],["a240","",62],["a280","",32],["a2ab","",5],["a2e3","€"],["a2ef",""],["a2fd",""],["a340","",62],["a380","",31,"　"],["a440","",62],["a480","",32],["a4f4","",10],["a540","",62],["a580","",32],["a5f7","",7],["a640","",62],["a680","",32],["a6b9","",7],["a6d9","",6],["a6ec",""],["a6f3",""],["a6f6","",8],["a740","",62],["a780","",32],["a7c2","",14],["a7f2","",12],["a896","",10],["a8bc",""],["a8bf","ǹ"],["a8c1",""],["a8ea","",20],["a958",""],["a95b",""],["a95d",""],["a989","〾⿰",11],["a997","",12],["a9f0","",14],["aaa1","",93],["aba1","",93],["aca1","",93],["ada1","",93],["aea1","",93],["afa1","",93],["d7fa","",4],["f8a1","",93],["f9a1","",93],["faa1","",93],["fba1","",93],["fca1","",93],["fda1","",93],["fe50","⺁⺄㑳㑇⺈⺋㖞㘚㘎⺌⺗㥮㤘㧏㧟㩳㧐㭎㱮㳠⺧⺪䁖䅟⺮䌷⺳⺶⺷䎱䎬⺻䏝䓖䙡䙌"],["fe80","䜣䜩䝼䞍⻊䥇䥺䥽䦂䦃䦅䦆䦟䦛䦷䦶䲣䲟䲠䲡䱷䲢䴓",6,"䶮",93]]
 
 /***/ }),
 /* 88 */
+/***/ (function(module, exports) {
+
+module.exports = [["0","\u0000",127],["a140","　，、。．‧；：？！︰…‥﹐﹑﹒·﹔﹕﹖﹗｜–︱—︳╴︴﹏（）︵︶｛｝︷︸〔〕︹︺【】︻︼《》︽︾〈〉︿﹀「」﹁﹂『』﹃﹄﹙﹚"],["a1a1","﹛﹜﹝﹞‘’“”〝〞‵′＃＆＊※§〃○●△▲◎☆★◇◆□■▽▼㊣℅¯￣＿ˍ﹉﹊﹍﹎﹋﹌﹟﹠﹡＋－×÷±√＜＞＝≦≧≠∞≒≡﹢",4,"～∩∪⊥∠∟⊿㏒㏑∫∮∵∴♀♂⊕⊙↑↓←→↖↗↙↘∥∣／"],["a240","＼∕﹨＄￥〒￠￡％＠℃℉﹩﹪﹫㏕㎜㎝㎞㏎㎡㎎㎏㏄°兙兛兞兝兡兣嗧瓩糎▁",7,"▏▎▍▌▋▊▉┼┴┬┤├▔─│▕┌┐└┘╭"],["a2a1","╮╰╯═╞╪╡◢◣◥◤╱╲╳０",9,"Ⅰ",9,"〡",8,"十卄卅Ａ",25,"ａ",21],["a340","ｗｘｙｚΑ",16,"Σ",6,"α",16,"σ",6,"ㄅ",10],["a3a1","ㄐ",25,"˙ˉˊˇˋ"],["a3e1","€"],["a440","一乙丁七乃九了二人儿入八几刀刁力匕十卜又三下丈上丫丸凡久么也乞于亡兀刃勺千叉口土士夕大女子孑孓寸小尢尸山川工己已巳巾干廾弋弓才"],["a4a1","丑丐不中丰丹之尹予云井互五亢仁什仃仆仇仍今介仄元允內六兮公冗凶分切刈勻勾勿化匹午升卅卞厄友及反壬天夫太夭孔少尤尺屯巴幻廿弔引心戈戶手扎支文斗斤方日曰月木欠止歹毋比毛氏水火爪父爻片牙牛犬王丙"],["a540","世丕且丘主乍乏乎以付仔仕他仗代令仙仞充兄冉冊冬凹出凸刊加功包匆北匝仟半卉卡占卯卮去可古右召叮叩叨叼司叵叫另只史叱台句叭叻四囚外"],["a5a1","央失奴奶孕它尼巨巧左市布平幼弁弘弗必戊打扔扒扑斥旦朮本未末札正母民氐永汁汀氾犯玄玉瓜瓦甘生用甩田由甲申疋白皮皿目矛矢石示禾穴立丞丟乒乓乩亙交亦亥仿伉伙伊伕伍伐休伏仲件任仰仳份企伋光兇兆先全"],["a640","共再冰列刑划刎刖劣匈匡匠印危吉吏同吊吐吁吋各向名合吃后吆吒因回囝圳地在圭圬圯圩夙多夷夸妄奸妃好她如妁字存宇守宅安寺尖屹州帆并年"],["a6a1","式弛忙忖戎戌戍成扣扛托收早旨旬旭曲曳有朽朴朱朵次此死氖汝汗汙江池汐汕污汛汍汎灰牟牝百竹米糸缶羊羽老考而耒耳聿肉肋肌臣自至臼舌舛舟艮色艾虫血行衣西阡串亨位住佇佗佞伴佛何估佐佑伽伺伸佃佔似但佣"],["a740","作你伯低伶余佝佈佚兌克免兵冶冷別判利刪刨劫助努劬匣即卵吝吭吞吾否呎吧呆呃吳呈呂君吩告吹吻吸吮吵吶吠吼呀吱含吟听囪困囤囫坊坑址坍"],["a7a1","均坎圾坐坏圻壯夾妝妒妨妞妣妙妖妍妤妓妊妥孝孜孚孛完宋宏尬局屁尿尾岐岑岔岌巫希序庇床廷弄弟彤形彷役忘忌志忍忱快忸忪戒我抄抗抖技扶抉扭把扼找批扳抒扯折扮投抓抑抆改攻攸旱更束李杏材村杜杖杞杉杆杠"],["a840","杓杗步每求汞沙沁沈沉沅沛汪決沐汰沌汨沖沒汽沃汲汾汴沆汶沍沔沘沂灶灼災灸牢牡牠狄狂玖甬甫男甸皂盯矣私秀禿究系罕肖肓肝肘肛肚育良芒"],["a8a1","芋芍見角言谷豆豕貝赤走足身車辛辰迂迆迅迄巡邑邢邪邦那酉釆里防阮阱阪阬並乖乳事些亞享京佯依侍佳使佬供例來侃佰併侈佩佻侖佾侏侑佺兔兒兕兩具其典冽函刻券刷刺到刮制剁劾劻卒協卓卑卦卷卸卹取叔受味呵"],["a940","咖呸咕咀呻呷咄咒咆呼咐呱呶和咚呢周咋命咎固垃坷坪坩坡坦坤坼夜奉奇奈奄奔妾妻委妹妮姑姆姐姍始姓姊妯妳姒姅孟孤季宗定官宜宙宛尚屈居"],["a9a1","屆岷岡岸岩岫岱岳帘帚帖帕帛帑幸庚店府底庖延弦弧弩往征彿彼忝忠忽念忿怏怔怯怵怖怪怕怡性怩怫怛或戕房戾所承拉拌拄抿拂抹拒招披拓拔拋拈抨抽押拐拙拇拍抵拚抱拘拖拗拆抬拎放斧於旺昔易昌昆昂明昀昏昕昊"],["aa40","昇服朋杭枋枕東果杳杷枇枝林杯杰板枉松析杵枚枓杼杪杲欣武歧歿氓氛泣注泳沱泌泥河沽沾沼波沫法泓沸泄油況沮泗泅泱沿治泡泛泊沬泯泜泖泠"],["aaa1","炕炎炒炊炙爬爭爸版牧物狀狎狙狗狐玩玨玟玫玥甽疝疙疚的盂盲直知矽社祀祁秉秈空穹竺糾罔羌羋者肺肥肢肱股肫肩肴肪肯臥臾舍芳芝芙芭芽芟芹花芬芥芯芸芣芰芾芷虎虱初表軋迎返近邵邸邱邶采金長門阜陀阿阻附"],["ab40","陂隹雨青非亟亭亮信侵侯便俠俑俏保促侶俘俟俊俗侮俐俄係俚俎俞侷兗冒冑冠剎剃削前剌剋則勇勉勃勁匍南卻厚叛咬哀咨哎哉咸咦咳哇哂咽咪品"],["aba1","哄哈咯咫咱咻咩咧咿囿垂型垠垣垢城垮垓奕契奏奎奐姜姘姿姣姨娃姥姪姚姦威姻孩宣宦室客宥封屎屏屍屋峙峒巷帝帥帟幽庠度建弈弭彥很待徊律徇後徉怒思怠急怎怨恍恰恨恢恆恃恬恫恪恤扁拜挖按拼拭持拮拽指拱拷"],["ac40","拯括拾拴挑挂政故斫施既春昭映昧是星昨昱昤曷柿染柱柔某柬架枯柵柩柯柄柑枴柚查枸柏柞柳枰柙柢柝柒歪殃殆段毒毗氟泉洋洲洪流津洌洱洞洗"],["aca1","活洽派洶洛泵洹洧洸洩洮洵洎洫炫為炳炬炯炭炸炮炤爰牲牯牴狩狠狡玷珊玻玲珍珀玳甚甭畏界畎畋疫疤疥疢疣癸皆皇皈盈盆盃盅省盹相眉看盾盼眇矜砂研砌砍祆祉祈祇禹禺科秒秋穿突竿竽籽紂紅紀紉紇約紆缸美羿耄"],["ad40","耐耍耑耶胖胥胚胃胄背胡胛胎胞胤胝致舢苧范茅苣苛苦茄若茂茉苒苗英茁苜苔苑苞苓苟苯茆虐虹虻虺衍衫要觔計訂訃貞負赴赳趴軍軌述迦迢迪迥"],["ada1","迭迫迤迨郊郎郁郃酋酊重閂限陋陌降面革韋韭音頁風飛食首香乘亳倌倍倣俯倦倥俸倩倖倆值借倚倒們俺倀倔倨俱倡個候倘俳修倭倪俾倫倉兼冤冥冢凍凌准凋剖剜剔剛剝匪卿原厝叟哨唐唁唷哼哥哲唆哺唔哩哭員唉哮哪"],["ae40","哦唧唇哽唏圃圄埂埔埋埃堉夏套奘奚娑娘娜娟娛娓姬娠娣娩娥娌娉孫屘宰害家宴宮宵容宸射屑展屐峭峽峻峪峨峰島崁峴差席師庫庭座弱徒徑徐恙"],["aea1","恣恥恐恕恭恩息悄悟悚悍悔悌悅悖扇拳挈拿捎挾振捕捂捆捏捉挺捐挽挪挫挨捍捌效敉料旁旅時晉晏晃晒晌晅晁書朔朕朗校核案框桓根桂桔栩梳栗桌桑栽柴桐桀格桃株桅栓栘桁殊殉殷氣氧氨氦氤泰浪涕消涇浦浸海浙涓"],["af40","浬涉浮浚浴浩涌涊浹涅浥涔烊烘烤烙烈烏爹特狼狹狽狸狷玆班琉珮珠珪珞畔畝畜畚留疾病症疲疳疽疼疹痂疸皋皰益盍盎眩真眠眨矩砰砧砸砝破砷"],["afa1","砥砭砠砟砲祕祐祠祟祖神祝祗祚秤秣秧租秦秩秘窄窈站笆笑粉紡紗紋紊素索純紐紕級紜納紙紛缺罟羔翅翁耆耘耕耙耗耽耿胱脂胰脅胭胴脆胸胳脈能脊胼胯臭臬舀舐航舫舨般芻茫荒荔荊茸荐草茵茴荏茲茹茶茗荀茱茨荃"],["b040","虔蚊蚪蚓蚤蚩蚌蚣蚜衰衷袁袂衽衹記訐討訌訕訊託訓訖訏訑豈豺豹財貢起躬軒軔軏辱送逆迷退迺迴逃追逅迸邕郡郝郢酒配酌釘針釗釜釙閃院陣陡"],["b0a1","陛陝除陘陞隻飢馬骨高鬥鬲鬼乾偺偽停假偃偌做偉健偶偎偕偵側偷偏倏偯偭兜冕凰剪副勒務勘動匐匏匙匿區匾參曼商啪啦啄啞啡啃啊唱啖問啕唯啤唸售啜唬啣唳啁啗圈國圉域堅堊堆埠埤基堂堵執培夠奢娶婁婉婦婪婀"],["b140","娼婢婚婆婊孰寇寅寄寂宿密尉專將屠屜屝崇崆崎崛崖崢崑崩崔崙崤崧崗巢常帶帳帷康庸庶庵庾張強彗彬彩彫得徙從徘御徠徜恿患悉悠您惋悴惦悽"],["b1a1","情悻悵惜悼惘惕惆惟悸惚惇戚戛扈掠控捲掖探接捷捧掘措捱掩掉掃掛捫推掄授掙採掬排掏掀捻捩捨捺敝敖救教敗啟敏敘敕敔斜斛斬族旋旌旎晝晚晤晨晦晞曹勗望梁梯梢梓梵桿桶梱梧梗械梃棄梭梆梅梔條梨梟梡梂欲殺"],["b240","毫毬氫涎涼淳淙液淡淌淤添淺清淇淋涯淑涮淞淹涸混淵淅淒渚涵淚淫淘淪深淮淨淆淄涪淬涿淦烹焉焊烽烯爽牽犁猜猛猖猓猙率琅琊球理現琍瓠瓶"],["b2a1","瓷甜產略畦畢異疏痔痕疵痊痍皎盔盒盛眷眾眼眶眸眺硫硃硎祥票祭移窒窕笠笨笛第符笙笞笮粒粗粕絆絃統紮紹紼絀細紳組累終紲紱缽羞羚翌翎習耜聊聆脯脖脣脫脩脰脤舂舵舷舶船莎莞莘荸莢莖莽莫莒莊莓莉莠荷荻荼"],["b340","莆莧處彪蛇蛀蚶蛄蚵蛆蛋蚱蚯蛉術袞袈被袒袖袍袋覓規訪訝訣訥許設訟訛訢豉豚販責貫貨貪貧赧赦趾趺軛軟這逍通逗連速逝逐逕逞造透逢逖逛途"],["b3a1","部郭都酗野釵釦釣釧釭釩閉陪陵陳陸陰陴陶陷陬雀雪雩章竟頂頃魚鳥鹵鹿麥麻傢傍傅備傑傀傖傘傚最凱割剴創剩勞勝勛博厥啻喀喧啼喊喝喘喂喜喪喔喇喋喃喳單喟唾喲喚喻喬喱啾喉喫喙圍堯堪場堤堰報堡堝堠壹壺奠"],["b440","婷媚婿媒媛媧孳孱寒富寓寐尊尋就嵌嵐崴嵇巽幅帽幀幃幾廊廁廂廄弼彭復循徨惑惡悲悶惠愜愣惺愕惰惻惴慨惱愎惶愉愀愒戟扉掣掌描揀揩揉揆揍"],["b4a1","插揣提握揖揭揮捶援揪換摒揚揹敞敦敢散斑斐斯普晰晴晶景暑智晾晷曾替期朝棺棕棠棘棗椅棟棵森棧棹棒棲棣棋棍植椒椎棉棚楮棻款欺欽殘殖殼毯氮氯氬港游湔渡渲湧湊渠渥渣減湛湘渤湖湮渭渦湯渴湍渺測湃渝渾滋"],["b540","溉渙湎湣湄湲湩湟焙焚焦焰無然煮焜牌犄犀猶猥猴猩琺琪琳琢琥琵琶琴琯琛琦琨甥甦畫番痢痛痣痙痘痞痠登發皖皓皴盜睏短硝硬硯稍稈程稅稀窘"],["b5a1","窗窖童竣等策筆筐筒答筍筋筏筑粟粥絞結絨絕紫絮絲絡給絢絰絳善翔翕耋聒肅腕腔腋腑腎脹腆脾腌腓腴舒舜菩萃菸萍菠菅萋菁華菱菴著萊菰萌菌菽菲菊萸萎萄菜萇菔菟虛蛟蛙蛭蛔蛛蛤蛐蛞街裁裂袱覃視註詠評詞証詁"],["b640","詔詛詐詆訴診訶詖象貂貯貼貳貽賁費賀貴買貶貿貸越超趁跎距跋跚跑跌跛跆軻軸軼辜逮逵週逸進逶鄂郵鄉郾酣酥量鈔鈕鈣鈉鈞鈍鈐鈇鈑閔閏開閑"],["b6a1","間閒閎隊階隋陽隅隆隍陲隄雁雅雄集雇雯雲韌項順須飧飪飯飩飲飭馮馭黃黍黑亂傭債傲傳僅傾催傷傻傯僇剿剷剽募勦勤勢勣匯嗟嗨嗓嗦嗎嗜嗇嗑嗣嗤嗯嗚嗡嗅嗆嗥嗉園圓塞塑塘塗塚塔填塌塭塊塢塒塋奧嫁嫉嫌媾媽媼"],["b740","媳嫂媲嵩嵯幌幹廉廈弒彙徬微愚意慈感想愛惹愁愈慎慌慄慍愾愴愧愍愆愷戡戢搓搾搞搪搭搽搬搏搜搔損搶搖搗搆敬斟新暗暉暇暈暖暄暘暍會榔業"],["b7a1","楚楷楠楔極椰概楊楨楫楞楓楹榆楝楣楛歇歲毀殿毓毽溢溯滓溶滂源溝滇滅溥溘溼溺溫滑準溜滄滔溪溧溴煎煙煩煤煉照煜煬煦煌煥煞煆煨煖爺牒猷獅猿猾瑯瑚瑕瑟瑞瑁琿瑙瑛瑜當畸瘀痰瘁痲痱痺痿痴痳盞盟睛睫睦睞督"],["b840","睹睪睬睜睥睨睢矮碎碰碗碘碌碉硼碑碓硿祺祿禁萬禽稜稚稠稔稟稞窟窠筷節筠筮筧粱粳粵經絹綑綁綏絛置罩罪署義羨群聖聘肆肄腱腰腸腥腮腳腫"],["b8a1","腹腺腦舅艇蒂葷落萱葵葦葫葉葬葛萼萵葡董葩葭葆虞虜號蛹蜓蜈蜇蜀蛾蛻蜂蜃蜆蜊衙裟裔裙補裘裝裡裊裕裒覜解詫該詳試詩詰誇詼詣誠話誅詭詢詮詬詹詻訾詨豢貊貉賊資賈賄貲賃賂賅跡跟跨路跳跺跪跤跦躲較載軾輊"],["b940","辟農運遊道遂達逼違遐遇遏過遍遑逾遁鄒鄗酬酪酩釉鈷鉗鈸鈽鉀鈾鉛鉋鉤鉑鈴鉉鉍鉅鈹鈿鉚閘隘隔隕雍雋雉雊雷電雹零靖靴靶預頑頓頊頒頌飼飴"],["b9a1","飽飾馳馱馴髡鳩麂鼎鼓鼠僧僮僥僖僭僚僕像僑僱僎僩兢凳劃劂匱厭嗾嘀嘛嘗嗽嘔嘆嘉嘍嘎嗷嘖嘟嘈嘐嗶團圖塵塾境墓墊塹墅塽壽夥夢夤奪奩嫡嫦嫩嫗嫖嫘嫣孵寞寧寡寥實寨寢寤察對屢嶄嶇幛幣幕幗幔廓廖弊彆彰徹慇"],["ba40","愿態慷慢慣慟慚慘慵截撇摘摔撤摸摟摺摑摧搴摭摻敲斡旗旖暢暨暝榜榨榕槁榮槓構榛榷榻榫榴槐槍榭槌榦槃榣歉歌氳漳演滾漓滴漩漾漠漬漏漂漢"],["baa1","滿滯漆漱漸漲漣漕漫漯澈漪滬漁滲滌滷熔熙煽熊熄熒爾犒犖獄獐瑤瑣瑪瑰瑭甄疑瘧瘍瘋瘉瘓盡監瞄睽睿睡磁碟碧碳碩碣禎福禍種稱窪窩竭端管箕箋筵算箝箔箏箸箇箄粹粽精綻綰綜綽綾綠緊綴網綱綺綢綿綵綸維緒緇綬"],["bb40","罰翠翡翟聞聚肇腐膀膏膈膊腿膂臧臺與舔舞艋蓉蒿蓆蓄蒙蒞蒲蒜蓋蒸蓀蓓蒐蒼蓑蓊蜿蜜蜻蜢蜥蜴蜘蝕蜷蜩裳褂裴裹裸製裨褚裯誦誌語誣認誡誓誤"],["bba1","說誥誨誘誑誚誧豪貍貌賓賑賒赫趙趕跼輔輒輕輓辣遠遘遜遣遙遞遢遝遛鄙鄘鄞酵酸酷酴鉸銀銅銘銖鉻銓銜銨鉼銑閡閨閩閣閥閤隙障際雌雒需靼鞅韶頗領颯颱餃餅餌餉駁骯骰髦魁魂鳴鳶鳳麼鼻齊億儀僻僵價儂儈儉儅凜"],["bc40","劇劈劉劍劊勰厲嘮嘻嘹嘲嘿嘴嘩噓噎噗噴嘶嘯嘰墀墟增墳墜墮墩墦奭嬉嫻嬋嫵嬌嬈寮寬審寫層履嶝嶔幢幟幡廢廚廟廝廣廠彈影德徵慶慧慮慝慕憂"],["bca1","慼慰慫慾憧憐憫憎憬憚憤憔憮戮摩摯摹撞撲撈撐撰撥撓撕撩撒撮播撫撚撬撙撢撳敵敷數暮暫暴暱樣樟槨樁樞標槽模樓樊槳樂樅槭樑歐歎殤毅毆漿潼澄潑潦潔澆潭潛潸潮澎潺潰潤澗潘滕潯潠潟熟熬熱熨牖犛獎獗瑩璋璃"],["bd40","瑾璀畿瘠瘩瘟瘤瘦瘡瘢皚皺盤瞎瞇瞌瞑瞋磋磅確磊碾磕碼磐稿稼穀稽稷稻窯窮箭箱範箴篆篇篁箠篌糊締練緯緻緘緬緝編緣線緞緩綞緙緲緹罵罷羯"],["bda1","翩耦膛膜膝膠膚膘蔗蔽蔚蓮蔬蔭蔓蔑蔣蔡蔔蓬蔥蓿蔆螂蝴蝶蝠蝦蝸蝨蝙蝗蝌蝓衛衝褐複褒褓褕褊誼諒談諄誕請諸課諉諂調誰論諍誶誹諛豌豎豬賠賞賦賤賬賭賢賣賜質賡赭趟趣踫踐踝踢踏踩踟踡踞躺輝輛輟輩輦輪輜輞"],["be40","輥適遮遨遭遷鄰鄭鄧鄱醇醉醋醃鋅銻銷鋪銬鋤鋁銳銼鋒鋇鋰銲閭閱霄霆震霉靠鞍鞋鞏頡頫頜颳養餓餒餘駝駐駟駛駑駕駒駙骷髮髯鬧魅魄魷魯鴆鴉"],["bea1","鴃麩麾黎墨齒儒儘儔儐儕冀冪凝劑劓勳噙噫噹噩噤噸噪器噥噱噯噬噢噶壁墾壇壅奮嬝嬴學寰導彊憲憑憩憊懍憶憾懊懈戰擅擁擋撻撼據擄擇擂操撿擒擔撾整曆曉暹曄曇暸樽樸樺橙橫橘樹橄橢橡橋橇樵機橈歙歷氅濂澱澡"],["bf40","濃澤濁澧澳激澹澶澦澠澴熾燉燐燒燈燕熹燎燙燜燃燄獨璜璣璘璟璞瓢甌甍瘴瘸瘺盧盥瞠瞞瞟瞥磨磚磬磧禦積穎穆穌穋窺篙簑築篤篛篡篩篦糕糖縊"],["bfa1","縑縈縛縣縞縝縉縐罹羲翰翱翮耨膳膩膨臻興艘艙蕊蕙蕈蕨蕩蕃蕉蕭蕪蕞螃螟螞螢融衡褪褲褥褫褡親覦諦諺諫諱謀諜諧諮諾謁謂諷諭諳諶諼豫豭貓賴蹄踱踴蹂踹踵輻輯輸輳辨辦遵遴選遲遼遺鄴醒錠錶鋸錳錯錢鋼錫錄錚"],["c040","錐錦錡錕錮錙閻隧隨險雕霎霑霖霍霓霏靛靜靦鞘頰頸頻頷頭頹頤餐館餞餛餡餚駭駢駱骸骼髻髭鬨鮑鴕鴣鴦鴨鴒鴛默黔龍龜優償儡儲勵嚎嚀嚐嚅嚇"],["c0a1","嚏壕壓壑壎嬰嬪嬤孺尷屨嶼嶺嶽嶸幫彌徽應懂懇懦懋戲戴擎擊擘擠擰擦擬擱擢擭斂斃曙曖檀檔檄檢檜櫛檣橾檗檐檠歜殮毚氈濘濱濟濠濛濤濫濯澀濬濡濩濕濮濰燧營燮燦燥燭燬燴燠爵牆獰獲璩環璦璨癆療癌盪瞳瞪瞰瞬"],["c140","瞧瞭矯磷磺磴磯礁禧禪穗窿簇簍篾篷簌篠糠糜糞糢糟糙糝縮績繆縷縲繃縫總縱繅繁縴縹繈縵縿縯罄翳翼聱聲聰聯聳臆臃膺臂臀膿膽臉膾臨舉艱薪"],["c1a1","薄蕾薜薑薔薯薛薇薨薊虧蟀蟑螳蟒蟆螫螻螺蟈蟋褻褶襄褸褽覬謎謗謙講謊謠謝謄謐豁谿豳賺賽購賸賻趨蹉蹋蹈蹊轄輾轂轅輿避遽還邁邂邀鄹醣醞醜鍍鎂錨鍵鍊鍥鍋錘鍾鍬鍛鍰鍚鍔闊闋闌闈闆隱隸雖霜霞鞠韓顆颶餵騁"],["c240","駿鮮鮫鮪鮭鴻鴿麋黏點黜黝黛鼾齋叢嚕嚮壙壘嬸彝懣戳擴擲擾攆擺擻擷斷曜朦檳檬櫃檻檸櫂檮檯歟歸殯瀉瀋濾瀆濺瀑瀏燻燼燾燸獷獵璧璿甕癖癘"],["c2a1","癒瞽瞿瞻瞼礎禮穡穢穠竄竅簫簧簪簞簣簡糧織繕繞繚繡繒繙罈翹翻職聶臍臏舊藏薩藍藐藉薰薺薹薦蟯蟬蟲蟠覆覲觴謨謹謬謫豐贅蹙蹣蹦蹤蹟蹕軀轉轍邇邃邈醫醬釐鎔鎊鎖鎢鎳鎮鎬鎰鎘鎚鎗闔闖闐闕離雜雙雛雞霤鞣鞦"],["c340","鞭韹額顏題顎顓颺餾餿餽餮馥騎髁鬃鬆魏魎魍鯊鯉鯽鯈鯀鵑鵝鵠黠鼕鼬儳嚥壞壟壢寵龐廬懲懷懶懵攀攏曠曝櫥櫝櫚櫓瀛瀟瀨瀚瀝瀕瀘爆爍牘犢獸"],["c3a1","獺璽瓊瓣疇疆癟癡矇礙禱穫穩簾簿簸簽簷籀繫繭繹繩繪羅繳羶羹羸臘藩藝藪藕藤藥藷蟻蠅蠍蟹蟾襠襟襖襞譁譜識證譚譎譏譆譙贈贊蹼蹲躇蹶蹬蹺蹴轔轎辭邊邋醱醮鏡鏑鏟鏃鏈鏜鏝鏖鏢鏍鏘鏤鏗鏨關隴難霪霧靡韜韻類"],["c440","願顛颼饅饉騖騙鬍鯨鯧鯖鯛鶉鵡鵲鵪鵬麒麗麓麴勸嚨嚷嚶嚴嚼壤孀孃孽寶巉懸懺攘攔攙曦朧櫬瀾瀰瀲爐獻瓏癢癥礦礪礬礫竇競籌籃籍糯糰辮繽繼"],["c4a1","纂罌耀臚艦藻藹蘑藺蘆蘋蘇蘊蠔蠕襤覺觸議譬警譯譟譫贏贍躉躁躅躂醴釋鐘鐃鏽闡霰飄饒饑馨騫騰騷騵鰓鰍鹹麵黨鼯齟齣齡儷儸囁囀囂夔屬巍懼懾攝攜斕曩櫻欄櫺殲灌爛犧瓖瓔癩矓籐纏續羼蘗蘭蘚蠣蠢蠡蠟襪襬覽譴"],["c540","護譽贓躊躍躋轟辯醺鐮鐳鐵鐺鐸鐲鐫闢霸霹露響顧顥饗驅驃驀騾髏魔魑鰭鰥鶯鶴鷂鶸麝黯鼙齜齦齧儼儻囈囊囉孿巔巒彎懿攤權歡灑灘玀瓤疊癮癬"],["c5a1","禳籠籟聾聽臟襲襯觼讀贖贗躑躓轡酈鑄鑑鑒霽霾韃韁顫饕驕驍髒鬚鱉鰱鰾鰻鷓鷗鼴齬齪龔囌巖戀攣攫攪曬欐瓚竊籤籣籥纓纖纔臢蘸蘿蠱變邐邏鑣鑠鑤靨顯饜驚驛驗髓體髑鱔鱗鱖鷥麟黴囑壩攬灞癱癲矗罐羈蠶蠹衢讓讒"],["c640","讖艷贛釀鑪靂靈靄韆顰驟鬢魘鱟鷹鷺鹼鹽鼇齷齲廳欖灣籬籮蠻觀躡釁鑲鑰顱饞髖鬣黌灤矚讚鑷韉驢驥纜讜躪釅鑽鑾鑼鱷鱸黷豔鑿鸚爨驪鬱鸛鸞籲"],["c940","乂乜凵匚厂万丌乇亍囗兀屮彳丏冇与丮亓仂仉仈冘勼卬厹圠夃夬尐巿旡殳毌气爿丱丼仨仜仩仡仝仚刌匜卌圢圣夗夯宁宄尒尻屴屳帄庀庂忉戉扐氕"],["c9a1","氶汃氿氻犮犰玊禸肊阞伎优伬仵伔仱伀价伈伝伂伅伢伓伄仴伒冱刓刉刐劦匢匟卍厊吇囡囟圮圪圴夼妀奼妅奻奾奷奿孖尕尥屼屺屻屾巟幵庄异弚彴忕忔忏扜扞扤扡扦扢扙扠扚扥旯旮朾朹朸朻机朿朼朳氘汆汒汜汏汊汔汋"],["ca40","汌灱牞犴犵玎甪癿穵网艸艼芀艽艿虍襾邙邗邘邛邔阢阤阠阣佖伻佢佉体佤伾佧佒佟佁佘伭伳伿佡冏冹刜刞刡劭劮匉卣卲厎厏吰吷吪呔呅吙吜吥吘"],["caa1","吽呏呁吨吤呇囮囧囥坁坅坌坉坋坒夆奀妦妘妠妗妎妢妐妏妧妡宎宒尨尪岍岏岈岋岉岒岊岆岓岕巠帊帎庋庉庌庈庍弅弝彸彶忒忑忐忭忨忮忳忡忤忣忺忯忷忻怀忴戺抃抌抎抏抔抇扱扻扺扰抁抈扷扽扲扴攷旰旴旳旲旵杅杇"],["cb40","杙杕杌杈杝杍杚杋毐氙氚汸汧汫沄沋沏汱汯汩沚汭沇沕沜汦汳汥汻沎灴灺牣犿犽狃狆狁犺狅玕玗玓玔玒町甹疔疕皁礽耴肕肙肐肒肜芐芏芅芎芑芓"],["cba1","芊芃芄豸迉辿邟邡邥邞邧邠阰阨阯阭丳侘佼侅佽侀侇佶佴侉侄佷佌侗佪侚佹侁佸侐侜侔侞侒侂侕佫佮冞冼冾刵刲刳剆刱劼匊匋匼厒厔咇呿咁咑咂咈呫呺呾呥呬呴呦咍呯呡呠咘呣呧呤囷囹坯坲坭坫坱坰坶垀坵坻坳坴坢"],["cc40","坨坽夌奅妵妺姏姎妲姌姁妶妼姃姖妱妽姀姈妴姇孢孥宓宕屄屇岮岤岠岵岯岨岬岟岣岭岢岪岧岝岥岶岰岦帗帔帙弨弢弣弤彔徂彾彽忞忥怭怦怙怲怋"],["cca1","怴怊怗怳怚怞怬怢怍怐怮怓怑怌怉怜戔戽抭抴拑抾抪抶拊抮抳抯抻抩抰抸攽斨斻昉旼昄昒昈旻昃昋昍昅旽昑昐曶朊枅杬枎枒杶杻枘枆构杴枍枌杺枟枑枙枃杽极杸杹枔欥殀歾毞氝沓泬泫泮泙沶泔沭泧沷泐泂沺泃泆泭泲"],["cd40","泒泝沴沊沝沀泞泀洰泍泇沰泹泏泩泑炔炘炅炓炆炄炑炖炂炚炃牪狖狋狘狉狜狒狔狚狌狑玤玡玭玦玢玠玬玝瓝瓨甿畀甾疌疘皯盳盱盰盵矸矼矹矻矺"],["cda1","矷祂礿秅穸穻竻籵糽耵肏肮肣肸肵肭舠芠苀芫芚芘芛芵芧芮芼芞芺芴芨芡芩苂芤苃芶芢虰虯虭虮豖迒迋迓迍迖迕迗邲邴邯邳邰阹阽阼阺陃俍俅俓侲俉俋俁俔俜俙侻侳俛俇俖侺俀侹俬剄剉勀勂匽卼厗厖厙厘咺咡咭咥哏"],["ce40","哃茍咷咮哖咶哅哆咠呰咼咢咾呲哞咰垵垞垟垤垌垗垝垛垔垘垏垙垥垚垕壴复奓姡姞姮娀姱姝姺姽姼姶姤姲姷姛姩姳姵姠姾姴姭宨屌峐峘峌峗峋峛"],["cea1","峞峚峉峇峊峖峓峔峏峈峆峎峟峸巹帡帢帣帠帤庰庤庢庛庣庥弇弮彖徆怷怹恔恲恞恅恓恇恉恛恌恀恂恟怤恄恘恦恮扂扃拏挍挋拵挎挃拫拹挏挌拸拶挀挓挔拺挕拻拰敁敃斪斿昶昡昲昵昜昦昢昳昫昺昝昴昹昮朏朐柁柲柈枺"],["cf40","柜枻柸柘柀枷柅柫柤柟枵柍枳柷柶柮柣柂枹柎柧柰枲柼柆柭柌枮柦柛柺柉柊柃柪柋欨殂殄殶毖毘毠氠氡洨洴洭洟洼洿洒洊泚洳洄洙洺洚洑洀洝浂"],["cfa1","洁洘洷洃洏浀洇洠洬洈洢洉洐炷炟炾炱炰炡炴炵炩牁牉牊牬牰牳牮狊狤狨狫狟狪狦狣玅珌珂珈珅玹玶玵玴珫玿珇玾珃珆玸珋瓬瓮甮畇畈疧疪癹盄眈眃眄眅眊盷盻盺矧矨砆砑砒砅砐砏砎砉砃砓祊祌祋祅祄秕种秏秖秎窀"],["d040","穾竑笀笁籺籸籹籿粀粁紃紈紁罘羑羍羾耇耎耏耔耷胘胇胠胑胈胂胐胅胣胙胜胊胕胉胏胗胦胍臿舡芔苙苾苹茇苨茀苕茺苫苖苴苬苡苲苵茌苻苶苰苪"],["d0a1","苤苠苺苳苭虷虴虼虳衁衎衧衪衩觓訄訇赲迣迡迮迠郱邽邿郕郅邾郇郋郈釔釓陔陏陑陓陊陎倞倅倇倓倢倰倛俵俴倳倷倬俶俷倗倜倠倧倵倯倱倎党冔冓凊凄凅凈凎剡剚剒剞剟剕剢勍匎厞唦哢唗唒哧哳哤唚哿唄唈哫唑唅哱"],["d140","唊哻哷哸哠唎唃唋圁圂埌堲埕埒垺埆垽垼垸垶垿埇埐垹埁夎奊娙娖娭娮娕娏娗娊娞娳孬宧宭宬尃屖屔峬峿峮峱峷崀峹帩帨庨庮庪庬弳弰彧恝恚恧"],["d1a1","恁悢悈悀悒悁悝悃悕悛悗悇悜悎戙扆拲挐捖挬捄捅挶捃揤挹捋捊挼挩捁挴捘捔捙挭捇挳捚捑挸捗捀捈敊敆旆旃旄旂晊晟晇晑朒朓栟栚桉栲栳栻桋桏栖栱栜栵栫栭栯桎桄栴栝栒栔栦栨栮桍栺栥栠欬欯欭欱欴歭肂殈毦毤"],["d240","毨毣毢毧氥浺浣浤浶洍浡涒浘浢浭浯涑涍淯浿涆浞浧浠涗浰浼浟涂涘洯浨涋浾涀涄洖涃浻浽浵涐烜烓烑烝烋缹烢烗烒烞烠烔烍烅烆烇烚烎烡牂牸"],["d2a1","牷牶猀狺狴狾狶狳狻猁珓珙珥珖玼珧珣珩珜珒珛珔珝珚珗珘珨瓞瓟瓴瓵甡畛畟疰痁疻痄痀疿疶疺皊盉眝眛眐眓眒眣眑眕眙眚眢眧砣砬砢砵砯砨砮砫砡砩砳砪砱祔祛祏祜祓祒祑秫秬秠秮秭秪秜秞秝窆窉窅窋窌窊窇竘笐"],["d340","笄笓笅笏笈笊笎笉笒粄粑粊粌粈粍粅紞紝紑紎紘紖紓紟紒紏紌罜罡罞罠罝罛羖羒翃翂翀耖耾耹胺胲胹胵脁胻脀舁舯舥茳茭荄茙荑茥荖茿荁茦茜茢"],["d3a1","荂荎茛茪茈茼荍茖茤茠茷茯茩荇荅荌荓茞茬荋茧荈虓虒蚢蚨蚖蚍蚑蚞蚇蚗蚆蚋蚚蚅蚥蚙蚡蚧蚕蚘蚎蚝蚐蚔衃衄衭衵衶衲袀衱衿衯袃衾衴衼訒豇豗豻貤貣赶赸趵趷趶軑軓迾迵适迿迻逄迼迶郖郠郙郚郣郟郥郘郛郗郜郤酐"],["d440","酎酏釕釢釚陜陟隼飣髟鬯乿偰偪偡偞偠偓偋偝偲偈偍偁偛偊偢倕偅偟偩偫偣偤偆偀偮偳偗偑凐剫剭剬剮勖勓匭厜啵啶唼啍啐唴唪啑啢唶唵唰啒啅"],["d4a1","唌唲啥啎唹啈唭唻啀啋圊圇埻堔埢埶埜埴堀埭埽堈埸堋埳埏堇埮埣埲埥埬埡堎埼堐埧堁堌埱埩埰堍堄奜婠婘婕婧婞娸娵婭婐婟婥婬婓婤婗婃婝婒婄婛婈媎娾婍娹婌婰婩婇婑婖婂婜孲孮寁寀屙崞崋崝崚崠崌崨崍崦崥崏"],["d540","崰崒崣崟崮帾帴庱庴庹庲庳弶弸徛徖徟悊悐悆悾悰悺惓惔惏惤惙惝惈悱惛悷惊悿惃惍惀挲捥掊掂捽掽掞掭掝掗掫掎捯掇掐据掯捵掜捭掮捼掤挻掟"],["d5a1","捸掅掁掑掍捰敓旍晥晡晛晙晜晢朘桹梇梐梜桭桮梮梫楖桯梣梬梩桵桴梲梏桷梒桼桫桲梪梀桱桾梛梖梋梠梉梤桸桻梑梌梊桽欶欳欷欸殑殏殍殎殌氪淀涫涴涳湴涬淩淢涷淶淔渀淈淠淟淖涾淥淜淝淛淴淊涽淭淰涺淕淂淏淉"],["d640","淐淲淓淽淗淍淣涻烺焍烷焗烴焌烰焄烳焐烼烿焆焓焀烸烶焋焂焎牾牻牼牿猝猗猇猑猘猊猈狿猏猞玈珶珸珵琄琁珽琇琀珺珼珿琌琋珴琈畤畣痎痒痏"],["d6a1","痋痌痑痐皏皉盓眹眯眭眱眲眴眳眽眥眻眵硈硒硉硍硊硌砦硅硐祤祧祩祪祣祫祡离秺秸秶秷窏窔窐笵筇笴笥笰笢笤笳笘笪笝笱笫笭笯笲笸笚笣粔粘粖粣紵紽紸紶紺絅紬紩絁絇紾紿絊紻紨罣羕羜羝羛翊翋翍翐翑翇翏翉耟"],["d740","耞耛聇聃聈脘脥脙脛脭脟脬脞脡脕脧脝脢舑舸舳舺舴舲艴莐莣莨莍荺荳莤荴莏莁莕莙荵莔莩荽莃莌莝莛莪莋荾莥莯莈莗莰荿莦莇莮荶莚虙虖蚿蚷"],["d7a1","蛂蛁蛅蚺蚰蛈蚹蚳蚸蛌蚴蚻蚼蛃蚽蚾衒袉袕袨袢袪袚袑袡袟袘袧袙袛袗袤袬袌袓袎覂觖觙觕訰訧訬訞谹谻豜豝豽貥赽赻赹趼跂趹趿跁軘軞軝軜軗軠軡逤逋逑逜逌逡郯郪郰郴郲郳郔郫郬郩酖酘酚酓酕釬釴釱釳釸釤釹釪"],["d840","釫釷釨釮镺閆閈陼陭陫陱陯隿靪頄飥馗傛傕傔傞傋傣傃傌傎傝偨傜傒傂傇兟凔匒匑厤厧喑喨喥喭啷噅喢喓喈喏喵喁喣喒喤啽喌喦啿喕喡喎圌堩堷"],["d8a1","堙堞堧堣堨埵塈堥堜堛堳堿堶堮堹堸堭堬堻奡媯媔媟婺媢媞婸媦婼媥媬媕媮娷媄媊媗媃媋媩婻婽媌媜媏媓媝寪寍寋寔寑寊寎尌尰崷嵃嵫嵁嵋崿崵嵑嵎嵕崳崺嵒崽崱嵙嵂崹嵉崸崼崲崶嵀嵅幄幁彘徦徥徫惉悹惌惢惎惄愔"],["d940","惲愊愖愅惵愓惸惼惾惁愃愘愝愐惿愄愋扊掔掱掰揎揥揨揯揃撝揳揊揠揶揕揲揵摡揟掾揝揜揄揘揓揂揇揌揋揈揰揗揙攲敧敪敤敜敨敥斌斝斞斮旐旒"],["d9a1","晼晬晻暀晱晹晪晲朁椌棓椄棜椪棬棪棱椏棖棷棫棤棶椓椐棳棡椇棌椈楰梴椑棯棆椔棸棐棽棼棨椋椊椗棎棈棝棞棦棴棑椆棔棩椕椥棇欹欻欿欼殔殗殙殕殽毰毲毳氰淼湆湇渟湉溈渼渽湅湢渫渿湁湝湳渜渳湋湀湑渻渃渮湞"],["da40","湨湜湡渱渨湠湱湫渹渢渰湓湥渧湸湤湷湕湹湒湦渵渶湚焠焞焯烻焮焱焣焥焢焲焟焨焺焛牋牚犈犉犆犅犋猒猋猰猢猱猳猧猲猭猦猣猵猌琮琬琰琫琖"],["daa1","琚琡琭琱琤琣琝琩琠琲瓻甯畯畬痧痚痡痦痝痟痤痗皕皒盚睆睇睄睍睅睊睎睋睌矞矬硠硤硥硜硭硱硪确硰硩硨硞硢祴祳祲祰稂稊稃稌稄窙竦竤筊笻筄筈筌筎筀筘筅粢粞粨粡絘絯絣絓絖絧絪絏絭絜絫絒絔絩絑絟絎缾缿罥"],["db40","罦羢羠羡翗聑聏聐胾胔腃腊腒腏腇脽腍脺臦臮臷臸臹舄舼舽舿艵茻菏菹萣菀菨萒菧菤菼菶萐菆菈菫菣莿萁菝菥菘菿菡菋菎菖菵菉萉萏菞萑萆菂菳"],["dba1","菕菺菇菑菪萓菃菬菮菄菻菗菢萛菛菾蛘蛢蛦蛓蛣蛚蛪蛝蛫蛜蛬蛩蛗蛨蛑衈衖衕袺裗袹袸裀袾袶袼袷袽袲褁裉覕覘覗觝觚觛詎詍訹詙詀詗詘詄詅詒詈詑詊詌詏豟貁貀貺貾貰貹貵趄趀趉跘跓跍跇跖跜跏跕跙跈跗跅軯軷軺"],["dc40","軹軦軮軥軵軧軨軶軫軱軬軴軩逭逴逯鄆鄬鄄郿郼鄈郹郻鄁鄀鄇鄅鄃酡酤酟酢酠鈁鈊鈥鈃鈚鈦鈏鈌鈀鈒釿釽鈆鈄鈧鈂鈜鈤鈙鈗鈅鈖镻閍閌閐隇陾隈"],["dca1","隉隃隀雂雈雃雱雰靬靰靮頇颩飫鳦黹亃亄亶傽傿僆傮僄僊傴僈僂傰僁傺傱僋僉傶傸凗剺剸剻剼嗃嗛嗌嗐嗋嗊嗝嗀嗔嗄嗩喿嗒喍嗏嗕嗢嗖嗈嗲嗍嗙嗂圔塓塨塤塏塍塉塯塕塎塝塙塥塛堽塣塱壼嫇嫄嫋媺媸媱媵媰媿嫈媻嫆"],["dd40","媷嫀嫊媴媶嫍媹媐寖寘寙尟尳嵱嵣嵊嵥嵲嵬嵞嵨嵧嵢巰幏幎幊幍幋廅廌廆廋廇彀徯徭惷慉慊愫慅愶愲愮慆愯慏愩慀戠酨戣戥戤揅揱揫搐搒搉搠搤"],["dda1","搳摃搟搕搘搹搷搢搣搌搦搰搨摁搵搯搊搚摀搥搧搋揧搛搮搡搎敯斒旓暆暌暕暐暋暊暙暔晸朠楦楟椸楎楢楱椿楅楪椹楂楗楙楺楈楉椵楬椳椽楥棰楸椴楩楀楯楄楶楘楁楴楌椻楋椷楜楏楑椲楒椯楻椼歆歅歃歂歈歁殛嗀毻毼"],["de40","毹毷毸溛滖滈溏滀溟溓溔溠溱溹滆滒溽滁溞滉溷溰滍溦滏溲溾滃滜滘溙溒溎溍溤溡溿溳滐滊溗溮溣煇煔煒煣煠煁煝煢煲煸煪煡煂煘煃煋煰煟煐煓"],["dea1","煄煍煚牏犍犌犑犐犎猼獂猻猺獀獊獉瑄瑊瑋瑒瑑瑗瑀瑏瑐瑎瑂瑆瑍瑔瓡瓿瓾瓽甝畹畷榃痯瘏瘃痷痾痼痹痸瘐痻痶痭痵痽皙皵盝睕睟睠睒睖睚睩睧睔睙睭矠碇碚碔碏碄碕碅碆碡碃硹碙碀碖硻祼禂祽祹稑稘稙稒稗稕稢稓"],["df40","稛稐窣窢窞竫筦筤筭筴筩筲筥筳筱筰筡筸筶筣粲粴粯綈綆綀綍絿綅絺綎絻綃絼綌綔綄絽綒罭罫罧罨罬羦羥羧翛翜耡腤腠腷腜腩腛腢腲朡腞腶腧腯"],["dfa1","腄腡舝艉艄艀艂艅蓱萿葖葶葹蒏蒍葥葑葀蒆葧萰葍葽葚葙葴葳葝蔇葞萷萺萴葺葃葸萲葅萩菙葋萯葂萭葟葰萹葎葌葒葯蓅蒎萻葇萶萳葨葾葄萫葠葔葮葐蜋蜄蛷蜌蛺蛖蛵蝍蛸蜎蜉蜁蛶蜍蜅裖裋裍裎裞裛裚裌裐覅覛觟觥觤"],["e040","觡觠觢觜触詶誆詿詡訿詷誂誄詵誃誁詴詺谼豋豊豥豤豦貆貄貅賌赨赩趑趌趎趏趍趓趔趐趒跰跠跬跱跮跐跩跣跢跧跲跫跴輆軿輁輀輅輇輈輂輋遒逿"],["e0a1","遄遉逽鄐鄍鄏鄑鄖鄔鄋鄎酮酯鉈鉒鈰鈺鉦鈳鉥鉞銃鈮鉊鉆鉭鉬鉏鉠鉧鉯鈶鉡鉰鈱鉔鉣鉐鉲鉎鉓鉌鉖鈲閟閜閞閛隒隓隑隗雎雺雽雸雵靳靷靸靲頏頍頎颬飶飹馯馲馰馵骭骫魛鳪鳭鳧麀黽僦僔僗僨僳僛僪僝僤僓僬僰僯僣僠"],["e140","凘劀劁勩勫匰厬嘧嘕嘌嘒嗼嘏嘜嘁嘓嘂嗺嘝嘄嗿嗹墉塼墐墘墆墁塿塴墋塺墇墑墎塶墂墈塻墔墏壾奫嫜嫮嫥嫕嫪嫚嫭嫫嫳嫢嫠嫛嫬嫞嫝嫙嫨嫟孷寠"],["e1a1","寣屣嶂嶀嵽嶆嵺嶁嵷嶊嶉嶈嵾嵼嶍嵹嵿幘幙幓廘廑廗廎廜廕廙廒廔彄彃彯徶愬愨慁慞慱慳慒慓慲慬憀慴慔慺慛慥愻慪慡慖戩戧戫搫摍摛摝摴摶摲摳摽摵摦撦摎撂摞摜摋摓摠摐摿搿摬摫摙摥摷敳斠暡暠暟朅朄朢榱榶槉"],["e240","榠槎榖榰榬榼榑榙榎榧榍榩榾榯榿槄榽榤槔榹槊榚槏榳榓榪榡榞槙榗榐槂榵榥槆歊歍歋殞殟殠毃毄毾滎滵滱漃漥滸漷滻漮漉潎漙漚漧漘漻漒滭漊"],["e2a1","漶潳滹滮漭潀漰漼漵滫漇漎潃漅滽滶漹漜滼漺漟漍漞漈漡熇熐熉熀熅熂熏煻熆熁熗牄牓犗犕犓獃獍獑獌瑢瑳瑱瑵瑲瑧瑮甀甂甃畽疐瘖瘈瘌瘕瘑瘊瘔皸瞁睼瞅瞂睮瞀睯睾瞃碲碪碴碭碨硾碫碞碥碠碬碢碤禘禊禋禖禕禔禓"],["e340","禗禈禒禐稫穊稰稯稨稦窨窫窬竮箈箜箊箑箐箖箍箌箛箎箅箘劄箙箤箂粻粿粼粺綧綷緂綣綪緁緀緅綝緎緄緆緋緌綯綹綖綼綟綦綮綩綡緉罳翢翣翥翞"],["e3a1","耤聝聜膉膆膃膇膍膌膋舕蒗蒤蒡蒟蒺蓎蓂蒬蒮蒫蒹蒴蓁蓍蒪蒚蒱蓐蒝蒧蒻蒢蒔蓇蓌蒛蒩蒯蒨蓖蒘蒶蓏蒠蓗蓔蓒蓛蒰蒑虡蜳蜣蜨蝫蝀蜮蜞蜡蜙蜛蝃蜬蝁蜾蝆蜠蜲蜪蜭蜼蜒蜺蜱蜵蝂蜦蜧蜸蜤蜚蜰蜑裷裧裱裲裺裾裮裼裶裻"],["e440","裰裬裫覝覡覟覞觩觫觨誫誙誋誒誏誖谽豨豩賕賏賗趖踉踂跿踍跽踊踃踇踆踅跾踀踄輐輑輎輍鄣鄜鄠鄢鄟鄝鄚鄤鄡鄛酺酲酹酳銥銤鉶銛鉺銠銔銪銍"],["e4a1","銦銚銫鉹銗鉿銣鋮銎銂銕銢鉽銈銡銊銆銌銙銧鉾銇銩銝銋鈭隞隡雿靘靽靺靾鞃鞀鞂靻鞄鞁靿韎韍頖颭颮餂餀餇馝馜駃馹馻馺駂馽駇骱髣髧鬾鬿魠魡魟鳱鳲鳵麧僿儃儰僸儆儇僶僾儋儌僽儊劋劌勱勯噈噂噌嘵噁噊噉噆噘"],["e540","噚噀嘳嘽嘬嘾嘸嘪嘺圚墫墝墱墠墣墯墬墥墡壿嫿嫴嫽嫷嫶嬃嫸嬂嫹嬁嬇嬅嬏屧嶙嶗嶟嶒嶢嶓嶕嶠嶜嶡嶚嶞幩幝幠幜緳廛廞廡彉徲憋憃慹憱憰憢憉"],["e5a1","憛憓憯憭憟憒憪憡憍慦憳戭摮摰撖撠撅撗撜撏撋撊撌撣撟摨撱撘敶敺敹敻斲斳暵暰暩暲暷暪暯樀樆樗槥槸樕槱槤樠槿槬槢樛樝槾樧槲槮樔槷槧橀樈槦槻樍槼槫樉樄樘樥樏槶樦樇槴樖歑殥殣殢殦氁氀毿氂潁漦潾澇濆澒"],["e640","澍澉澌潢潏澅潚澖潶潬澂潕潲潒潐潗澔澓潝漀潡潫潽潧澐潓澋潩潿澕潣潷潪潻熲熯熛熰熠熚熩熵熝熥熞熤熡熪熜熧熳犘犚獘獒獞獟獠獝獛獡獚獙"],["e6a1","獢璇璉璊璆璁瑽璅璈瑼瑹甈甇畾瘥瘞瘙瘝瘜瘣瘚瘨瘛皜皝皞皛瞍瞏瞉瞈磍碻磏磌磑磎磔磈磃磄磉禚禡禠禜禢禛歶稹窲窴窳箷篋箾箬篎箯箹篊箵糅糈糌糋緷緛緪緧緗緡縃緺緦緶緱緰緮緟罶羬羰羭翭翫翪翬翦翨聤聧膣膟"],["e740","膞膕膢膙膗舖艏艓艒艐艎艑蔤蔻蔏蔀蔩蔎蔉蔍蔟蔊蔧蔜蓻蔫蓺蔈蔌蓴蔪蓲蔕蓷蓫蓳蓼蔒蓪蓩蔖蓾蔨蔝蔮蔂蓽蔞蓶蔱蔦蓧蓨蓰蓯蓹蔘蔠蔰蔋蔙蔯虢"],["e7a1","蝖蝣蝤蝷蟡蝳蝘蝔蝛蝒蝡蝚蝑蝞蝭蝪蝐蝎蝟蝝蝯蝬蝺蝮蝜蝥蝏蝻蝵蝢蝧蝩衚褅褌褔褋褗褘褙褆褖褑褎褉覢覤覣觭觰觬諏諆誸諓諑諔諕誻諗誾諀諅諘諃誺誽諙谾豍貏賥賟賙賨賚賝賧趠趜趡趛踠踣踥踤踮踕踛踖踑踙踦踧"],["e840","踔踒踘踓踜踗踚輬輤輘輚輠輣輖輗遳遰遯遧遫鄯鄫鄩鄪鄲鄦鄮醅醆醊醁醂醄醀鋐鋃鋄鋀鋙銶鋏鋱鋟鋘鋩鋗鋝鋌鋯鋂鋨鋊鋈鋎鋦鋍鋕鋉鋠鋞鋧鋑鋓"],["e8a1","銵鋡鋆銴镼閬閫閮閰隤隢雓霅霈霂靚鞊鞎鞈韐韏頞頝頦頩頨頠頛頧颲餈飺餑餔餖餗餕駜駍駏駓駔駎駉駖駘駋駗駌骳髬髫髳髲髱魆魃魧魴魱魦魶魵魰魨魤魬鳼鳺鳽鳿鳷鴇鴀鳹鳻鴈鴅鴄麃黓鼏鼐儜儓儗儚儑凞匴叡噰噠噮"],["e940","噳噦噣噭噲噞噷圜圛壈墽壉墿墺壂墼壆嬗嬙嬛嬡嬔嬓嬐嬖嬨嬚嬠嬞寯嶬嶱嶩嶧嶵嶰嶮嶪嶨嶲嶭嶯嶴幧幨幦幯廩廧廦廨廥彋徼憝憨憖懅憴懆懁懌憺"],["e9a1","憿憸憌擗擖擐擏擉撽撉擃擛擳擙攳敿敼斢曈暾曀曊曋曏暽暻暺曌朣樴橦橉橧樲橨樾橝橭橶橛橑樨橚樻樿橁橪橤橐橏橔橯橩橠樼橞橖橕橍橎橆歕歔歖殧殪殫毈毇氄氃氆澭濋澣濇澼濎濈潞濄澽澞濊澨瀄澥澮澺澬澪濏澿澸"],["ea40","澢濉澫濍澯澲澰燅燂熿熸燖燀燁燋燔燊燇燏熽燘熼燆燚燛犝犞獩獦獧獬獥獫獪瑿璚璠璔璒璕璡甋疀瘯瘭瘱瘽瘳瘼瘵瘲瘰皻盦瞚瞝瞡瞜瞛瞢瞣瞕瞙"],["eaa1","瞗磝磩磥磪磞磣磛磡磢磭磟磠禤穄穈穇窶窸窵窱窷篞篣篧篝篕篥篚篨篹篔篪篢篜篫篘篟糒糔糗糐糑縒縡縗縌縟縠縓縎縜縕縚縢縋縏縖縍縔縥縤罃罻罼罺羱翯耪耩聬膱膦膮膹膵膫膰膬膴膲膷膧臲艕艖艗蕖蕅蕫蕍蕓蕡蕘"],["eb40","蕀蕆蕤蕁蕢蕄蕑蕇蕣蔾蕛蕱蕎蕮蕵蕕蕧蕠薌蕦蕝蕔蕥蕬虣虥虤螛螏螗螓螒螈螁螖螘蝹螇螣螅螐螑螝螄螔螜螚螉褞褦褰褭褮褧褱褢褩褣褯褬褟觱諠"],["eba1","諢諲諴諵諝謔諤諟諰諈諞諡諨諿諯諻貑貒貐賵賮賱賰賳赬赮趥趧踳踾踸蹀蹅踶踼踽蹁踰踿躽輶輮輵輲輹輷輴遶遹遻邆郺鄳鄵鄶醓醐醑醍醏錧錞錈錟錆錏鍺錸錼錛錣錒錁鍆錭錎錍鋋錝鋺錥錓鋹鋷錴錂錤鋿錩錹錵錪錔錌"],["ec40","錋鋾錉錀鋻錖閼闍閾閹閺閶閿閵閽隩雔霋霒霐鞙鞗鞔韰韸頵頯頲餤餟餧餩馞駮駬駥駤駰駣駪駩駧骹骿骴骻髶髺髹髷鬳鮀鮅鮇魼魾魻鮂鮓鮒鮐魺鮕"],["eca1","魽鮈鴥鴗鴠鴞鴔鴩鴝鴘鴢鴐鴙鴟麈麆麇麮麭黕黖黺鼒鼽儦儥儢儤儠儩勴嚓嚌嚍嚆嚄嚃噾嚂噿嚁壖壔壏壒嬭嬥嬲嬣嬬嬧嬦嬯嬮孻寱寲嶷幬幪徾徻懃憵憼懧懠懥懤懨懞擯擩擣擫擤擨斁斀斶旚曒檍檖檁檥檉檟檛檡檞檇檓檎"],["ed40","檕檃檨檤檑橿檦檚檅檌檒歛殭氉濌澩濴濔濣濜濭濧濦濞濲濝濢濨燡燱燨燲燤燰燢獳獮獯璗璲璫璐璪璭璱璥璯甐甑甒甏疄癃癈癉癇皤盩瞵瞫瞲瞷瞶"],["eda1","瞴瞱瞨矰磳磽礂磻磼磲礅磹磾礄禫禨穜穛穖穘穔穚窾竀竁簅簏篲簀篿篻簎篴簋篳簂簉簃簁篸篽簆篰篱簐簊糨縭縼繂縳顈縸縪繉繀繇縩繌縰縻縶繄縺罅罿罾罽翴翲耬膻臄臌臊臅臇膼臩艛艚艜薃薀薏薧薕薠薋薣蕻薤薚薞"],["ee40","蕷蕼薉薡蕺蕸蕗薎薖薆薍薙薝薁薢薂薈薅蕹蕶薘薐薟虨螾螪螭蟅螰螬螹螵螼螮蟉蟃蟂蟌螷螯蟄蟊螴螶螿螸螽蟞螲褵褳褼褾襁襒褷襂覭覯覮觲觳謞"],["eea1","謘謖謑謅謋謢謏謒謕謇謍謈謆謜謓謚豏豰豲豱豯貕貔賹赯蹎蹍蹓蹐蹌蹇轃轀邅遾鄸醚醢醛醙醟醡醝醠鎡鎃鎯鍤鍖鍇鍼鍘鍜鍶鍉鍐鍑鍠鍭鎏鍌鍪鍹鍗鍕鍒鍏鍱鍷鍻鍡鍞鍣鍧鎀鍎鍙闇闀闉闃闅閷隮隰隬霠霟霘霝霙鞚鞡鞜"],["ef40","鞞鞝韕韔韱顁顄顊顉顅顃餥餫餬餪餳餲餯餭餱餰馘馣馡騂駺駴駷駹駸駶駻駽駾駼騃骾髾髽鬁髼魈鮚鮨鮞鮛鮦鮡鮥鮤鮆鮢鮠鮯鴳鵁鵧鴶鴮鴯鴱鴸鴰"],["efa1","鵅鵂鵃鴾鴷鵀鴽翵鴭麊麉麍麰黈黚黻黿鼤鼣鼢齔龠儱儭儮嚘嚜嚗嚚嚝嚙奰嬼屩屪巀幭幮懘懟懭懮懱懪懰懫懖懩擿攄擽擸攁攃擼斔旛曚曛曘櫅檹檽櫡櫆檺檶檷櫇檴檭歞毉氋瀇瀌瀍瀁瀅瀔瀎濿瀀濻瀦濼濷瀊爁燿燹爃燽獶"],["f040","璸瓀璵瓁璾璶璻瓂甔甓癜癤癙癐癓癗癚皦皽盬矂瞺磿礌礓礔礉礐礒礑禭禬穟簜簩簙簠簟簭簝簦簨簢簥簰繜繐繖繣繘繢繟繑繠繗繓羵羳翷翸聵臑臒"],["f0a1","臐艟艞薴藆藀藃藂薳薵薽藇藄薿藋藎藈藅薱薶藒蘤薸薷薾虩蟧蟦蟢蟛蟫蟪蟥蟟蟳蟤蟔蟜蟓蟭蟘蟣螤蟗蟙蠁蟴蟨蟝襓襋襏襌襆襐襑襉謪謧謣謳謰謵譇謯謼謾謱謥謷謦謶謮謤謻謽謺豂豵貙貘貗賾贄贂贀蹜蹢蹠蹗蹖蹞蹥蹧"],["f140","蹛蹚蹡蹝蹩蹔轆轇轈轋鄨鄺鄻鄾醨醥醧醯醪鎵鎌鎒鎷鎛鎝鎉鎧鎎鎪鎞鎦鎕鎈鎙鎟鎍鎱鎑鎲鎤鎨鎴鎣鎥闒闓闑隳雗雚巂雟雘雝霣霢霥鞬鞮鞨鞫鞤鞪"],["f1a1","鞢鞥韗韙韖韘韺顐顑顒颸饁餼餺騏騋騉騍騄騑騊騅騇騆髀髜鬈鬄鬅鬩鬵魊魌魋鯇鯆鯃鮿鯁鮵鮸鯓鮶鯄鮹鮽鵜鵓鵏鵊鵛鵋鵙鵖鵌鵗鵒鵔鵟鵘鵚麎麌黟鼁鼀鼖鼥鼫鼪鼩鼨齌齕儴儵劖勷厴嚫嚭嚦嚧嚪嚬壚壝壛夒嬽嬾嬿巃幰"],["f240","徿懻攇攐攍攉攌攎斄旞旝曞櫧櫠櫌櫑櫙櫋櫟櫜櫐櫫櫏櫍櫞歠殰氌瀙瀧瀠瀖瀫瀡瀢瀣瀩瀗瀤瀜瀪爌爊爇爂爅犥犦犤犣犡瓋瓅璷瓃甖癠矉矊矄矱礝礛"],["f2a1","礡礜礗礞禰穧穨簳簼簹簬簻糬糪繶繵繸繰繷繯繺繲繴繨罋罊羃羆羷翽翾聸臗臕艤艡艣藫藱藭藙藡藨藚藗藬藲藸藘藟藣藜藑藰藦藯藞藢蠀蟺蠃蟶蟷蠉蠌蠋蠆蟼蠈蟿蠊蠂襢襚襛襗襡襜襘襝襙覈覷覶觶譐譈譊譀譓譖譔譋譕"],["f340","譑譂譒譗豃豷豶貚贆贇贉趬趪趭趫蹭蹸蹳蹪蹯蹻軂轒轑轏轐轓辴酀鄿醰醭鏞鏇鏏鏂鏚鏐鏹鏬鏌鏙鎩鏦鏊鏔鏮鏣鏕鏄鏎鏀鏒鏧镽闚闛雡霩霫霬霨霦"],["f3a1","鞳鞷鞶韝韞韟顜顙顝顗颿颽颻颾饈饇饃馦馧騚騕騥騝騤騛騢騠騧騣騞騜騔髂鬋鬊鬎鬌鬷鯪鯫鯠鯞鯤鯦鯢鯰鯔鯗鯬鯜鯙鯥鯕鯡鯚鵷鶁鶊鶄鶈鵱鶀鵸鶆鶋鶌鵽鵫鵴鵵鵰鵩鶅鵳鵻鶂鵯鵹鵿鶇鵨麔麑黀黼鼭齀齁齍齖齗齘匷嚲"],["f440","嚵嚳壣孅巆巇廮廯忀忁懹攗攖攕攓旟曨曣曤櫳櫰櫪櫨櫹櫱櫮櫯瀼瀵瀯瀷瀴瀱灂瀸瀿瀺瀹灀瀻瀳灁爓爔犨獽獼璺皫皪皾盭矌矎矏矍矲礥礣礧礨礤礩"],["f4a1","禲穮穬穭竷籉籈籊籇籅糮繻繾纁纀羺翿聹臛臙舋艨艩蘢藿蘁藾蘛蘀藶蘄蘉蘅蘌藽蠙蠐蠑蠗蠓蠖襣襦覹觷譠譪譝譨譣譥譧譭趮躆躈躄轙轖轗轕轘轚邍酃酁醷醵醲醳鐋鐓鏻鐠鐏鐔鏾鐕鐐鐨鐙鐍鏵鐀鏷鐇鐎鐖鐒鏺鐉鏸鐊鏿"],["f540","鏼鐌鏶鐑鐆闞闠闟霮霯鞹鞻韽韾顠顢顣顟飁飂饐饎饙饌饋饓騲騴騱騬騪騶騩騮騸騭髇髊髆鬐鬒鬑鰋鰈鯷鰅鰒鯸鱀鰇鰎鰆鰗鰔鰉鶟鶙鶤鶝鶒鶘鶐鶛"],["f5a1","鶠鶔鶜鶪鶗鶡鶚鶢鶨鶞鶣鶿鶩鶖鶦鶧麙麛麚黥黤黧黦鼰鼮齛齠齞齝齙龑儺儹劘劗囃嚽嚾孈孇巋巏廱懽攛欂櫼欃櫸欀灃灄灊灈灉灅灆爝爚爙獾甗癪矐礭礱礯籔籓糲纊纇纈纋纆纍罍羻耰臝蘘蘪蘦蘟蘣蘜蘙蘧蘮蘡蘠蘩蘞蘥"],["f640","蠩蠝蠛蠠蠤蠜蠫衊襭襩襮襫觺譹譸譅譺譻贐贔趯躎躌轞轛轝酆酄酅醹鐿鐻鐶鐩鐽鐼鐰鐹鐪鐷鐬鑀鐱闥闤闣霵霺鞿韡顤飉飆飀饘饖騹騽驆驄驂驁騺"],["f6a1","騿髍鬕鬗鬘鬖鬺魒鰫鰝鰜鰬鰣鰨鰩鰤鰡鶷鶶鶼鷁鷇鷊鷏鶾鷅鷃鶻鶵鷎鶹鶺鶬鷈鶱鶭鷌鶳鷍鶲鹺麜黫黮黭鼛鼘鼚鼱齎齥齤龒亹囆囅囋奱孋孌巕巑廲攡攠攦攢欋欈欉氍灕灖灗灒爞爟犩獿瓘瓕瓙瓗癭皭礵禴穰穱籗籜籙籛籚"],["f740","糴糱纑罏羇臞艫蘴蘵蘳蘬蘲蘶蠬蠨蠦蠪蠥襱覿覾觻譾讄讂讆讅譿贕躕躔躚躒躐躖躗轠轢酇鑌鑐鑊鑋鑏鑇鑅鑈鑉鑆霿韣顪顩飋饔饛驎驓驔驌驏驈驊"],["f7a1","驉驒驐髐鬙鬫鬻魖魕鱆鱈鰿鱄鰹鰳鱁鰼鰷鰴鰲鰽鰶鷛鷒鷞鷚鷋鷐鷜鷑鷟鷩鷙鷘鷖鷵鷕鷝麶黰鼵鼳鼲齂齫龕龢儽劙壨壧奲孍巘蠯彏戁戃戄攩攥斖曫欑欒欏毊灛灚爢玂玁玃癰矔籧籦纕艬蘺虀蘹蘼蘱蘻蘾蠰蠲蠮蠳襶襴襳觾"],["f840","讌讎讋讈豅贙躘轤轣醼鑢鑕鑝鑗鑞韄韅頀驖驙鬞鬟鬠鱒鱘鱐鱊鱍鱋鱕鱙鱌鱎鷻鷷鷯鷣鷫鷸鷤鷶鷡鷮鷦鷲鷰鷢鷬鷴鷳鷨鷭黂黐黲黳鼆鼜鼸鼷鼶齃齏"],["f8a1","齱齰齮齯囓囍孎屭攭曭曮欓灟灡灝灠爣瓛瓥矕礸禷禶籪纗羉艭虃蠸蠷蠵衋讔讕躞躟躠躝醾醽釂鑫鑨鑩雥靆靃靇韇韥驞髕魙鱣鱧鱦鱢鱞鱠鸂鷾鸇鸃鸆鸅鸀鸁鸉鷿鷽鸄麠鼞齆齴齵齶囔攮斸欘欙欗欚灢爦犪矘矙礹籩籫糶纚"],["f940","纘纛纙臠臡虆虇虈襹襺襼襻觿讘讙躥躤躣鑮鑭鑯鑱鑳靉顲饟鱨鱮鱭鸋鸍鸐鸏鸒鸑麡黵鼉齇齸齻齺齹圞灦籯蠼趲躦釃鑴鑸鑶鑵驠鱴鱳鱱鱵鸔鸓黶鼊"],["f9a1","龤灨灥糷虪蠾蠽蠿讞貜躩軉靋顳顴飌饡馫驤驦驧鬤鸕鸗齈戇欞爧虌躨钂钀钁驩驨鬮鸙爩虋讟钃鱹麷癵驫鱺鸝灩灪麤齾齉龘碁銹裏墻恒粧嫺╔╦╗╠╬╣╚╩╝╒╤╕╞╪╡╘╧╛╓╥╖╟╫╢╙╨╜║═╭╮╰╯▓"]]
+
+/***/ }),
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Generated by CoffeeScript 1.7.1
 (function() {
   var ArrayT, NumberT, utils;
 
-  NumberT = __webpack_require__(22).Number;
+  NumberT = __webpack_require__(23).Number;
 
   utils = __webpack_require__(12);
 
@@ -9794,7 +9970,7 @@ module.exports = [["0","\u0000",127],["a140","　，、。．‧；：？！︰�
 
 
 /***/ }),
-/* 89 */
+/* 90 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Generated by CoffeeScript 1.7.1
@@ -9926,16 +10102,16 @@ module.exports = [["0","\u0000",127],["a140","　，、。．‧；：？！︰�
 
 
 /***/ }),
-/* 90 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = !__webpack_require__(5) && !__webpack_require__(19)(function () {
-  return Object.defineProperty(__webpack_require__(91)('div'), 'a', { get: function () { return 7; } }).a != 7;
+module.exports = !__webpack_require__(5) && !__webpack_require__(20)(function () {
+  return Object.defineProperty(__webpack_require__(92)('div'), 'a', { get: function () { return 7; } }).a != 7;
 });
 
 
 /***/ }),
-/* 91 */
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(10);
@@ -9948,7 +10124,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 92 */
+/* 93 */
 /***/ (function(module, exports) {
 
 module.exports = function (it) {
@@ -9958,7 +10134,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 93 */
+/* 94 */
 /***/ (function(module, exports) {
 
 module.exports = function (done, value) {
@@ -9967,14 +10143,14 @@ module.exports = function (done, value) {
 
 
 /***/ }),
-/* 94 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(13);
 
 
 /***/ }),
-/* 95 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var dP = __webpack_require__(6);
@@ -9993,11 +10169,11 @@ module.exports = __webpack_require__(5) ? Object.defineProperties : function def
 
 
 /***/ }),
-/* 96 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var has = __webpack_require__(18);
-var toIObject = __webpack_require__(17);
+var has = __webpack_require__(19);
+var toIObject = __webpack_require__(18);
 var arrayIndexOf = __webpack_require__(193)(false);
 var IE_PROTO = __webpack_require__(62)('IE_PROTO');
 
@@ -10016,7 +10192,7 @@ module.exports = function (object, names) {
 
 
 /***/ }),
-/* 97 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var toInteger = __webpack_require__(61);
@@ -10029,13 +10205,13 @@ module.exports = function (index, length) {
 
 
 /***/ }),
-/* 98 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = { "default": __webpack_require__(204), __esModule: true };
 
 /***/ }),
-/* 99 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 7.2.2 IsArray(argument)
@@ -10046,11 +10222,11 @@ module.exports = Array.isArray || function isArray(arg) {
 
 
 /***/ }),
-/* 100 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.7 / 15.2.3.4 Object.getOwnPropertyNames(O)
-var $keys = __webpack_require__(96);
+var $keys = __webpack_require__(97);
 var hiddenKeys = __webpack_require__(64).concat('length', 'prototype');
 
 exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
@@ -10059,7 +10235,7 @@ exports.f = Object.getOwnPropertyNames || function getOwnPropertyNames(O) {
 
 
 /***/ }),
-/* 101 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10074,7 +10250,7 @@ exports.default = function (instance, Constructor) {
 };
 
 /***/ }),
-/* 102 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10107,19 +10283,19 @@ exports.default = function () {
 }();
 
 /***/ }),
-/* 103 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 var dP = __webpack_require__(6).f;
 var create = __webpack_require__(38);
-var redefineAll = __webpack_require__(104);
-var ctx = __webpack_require__(20);
-var anInstance = __webpack_require__(105);
+var redefineAll = __webpack_require__(105);
+var ctx = __webpack_require__(21);
+var anInstance = __webpack_require__(106);
 var forOf = __webpack_require__(43);
 var $iterDefine = __webpack_require__(60);
-var step = __webpack_require__(93);
+var step = __webpack_require__(94);
 var setSpecies = __webpack_require__(217);
 var DESCRIPTORS = __webpack_require__(5);
 var fastKey = __webpack_require__(42).fastKey;
@@ -10258,7 +10434,7 @@ module.exports = {
 
 
 /***/ }),
-/* 104 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var hide = __webpack_require__(13);
@@ -10271,7 +10447,7 @@ module.exports = function (target, src, safe) {
 
 
 /***/ }),
-/* 105 */
+/* 106 */
 /***/ (function(module, exports) {
 
 module.exports = function (it, Constructor, name, forbiddenField) {
@@ -10282,7 +10458,7 @@ module.exports = function (it, Constructor, name, forbiddenField) {
 
 
 /***/ }),
-/* 106 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // call something on iterator step with safe closing on error
@@ -10300,11 +10476,11 @@ module.exports = function (iterator, fn, value, entries) {
 
 
 /***/ }),
-/* 107 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // check on default Array iterator
-var Iterators = __webpack_require__(23);
+var Iterators = __webpack_require__(24);
 var ITERATOR = __webpack_require__(4)('iterator');
 var ArrayProto = Array.prototype;
 
@@ -10314,7 +10490,7 @@ module.exports = function (it) {
 
 
 /***/ }),
-/* 108 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10322,11 +10498,11 @@ module.exports = function (it) {
 var global = __webpack_require__(11);
 var $export = __webpack_require__(3);
 var meta = __webpack_require__(42);
-var fails = __webpack_require__(19);
+var fails = __webpack_require__(20);
 var hide = __webpack_require__(13);
-var redefineAll = __webpack_require__(104);
+var redefineAll = __webpack_require__(105);
 var forOf = __webpack_require__(43);
-var anInstance = __webpack_require__(105);
+var anInstance = __webpack_require__(106);
 var isObject = __webpack_require__(10);
 var setToStringTag = __webpack_require__(41);
 var dP = __webpack_require__(6).f;
@@ -10380,7 +10556,7 @@ module.exports = function (NAME, wrapper, methods, common, IS_MAP, IS_WEAK) {
 
 
 /***/ }),
-/* 109 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://github.com/DavidBruant/Map-Set.prototype.toJSON
@@ -10395,7 +10571,7 @@ module.exports = function (NAME) {
 
 
 /***/ }),
-/* 110 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10414,15 +10590,15 @@ module.exports = function (COLLECTION) {
 
 
 /***/ }),
-/* 111 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 // https://tc39.github.io/proposal-setmap-offrom/
 var $export = __webpack_require__(3);
-var aFunction = __webpack_require__(92);
-var ctx = __webpack_require__(20);
+var aFunction = __webpack_require__(93);
+var ctx = __webpack_require__(21);
 var forOf = __webpack_require__(43);
 
 module.exports = function (COLLECTION) {
@@ -10449,7 +10625,7 @@ module.exports = function (COLLECTION) {
 
 
 /***/ }),
-/* 112 */
+/* 113 */
 /***/ (function(module, exports) {
 
 var TINF_OK = 0;
@@ -10830,7 +11006,7 @@ module.exports = tinf_uncompress;
 
 
 /***/ }),
-/* 113 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright 2013 Google Inc. All Rights Reserved.
@@ -10848,12 +11024,12 @@ module.exports = tinf_uncompress;
    limitations under the License.
 */
 
-var BrotliInput = __webpack_require__(114).BrotliInput;
-var BrotliOutput = __webpack_require__(114).BrotliOutput;
+var BrotliInput = __webpack_require__(115).BrotliInput;
+var BrotliOutput = __webpack_require__(115).BrotliOutput;
 var BrotliBitReader = __webpack_require__(274);
-var BrotliDictionary = __webpack_require__(115);
-var HuffmanCode = __webpack_require__(116).HuffmanCode;
-var BrotliBuildHuffmanTable = __webpack_require__(116).BrotliBuildHuffmanTable;
+var BrotliDictionary = __webpack_require__(116);
+var HuffmanCode = __webpack_require__(117).HuffmanCode;
+var BrotliBuildHuffmanTable = __webpack_require__(117).BrotliBuildHuffmanTable;
 var Context = __webpack_require__(278);
 var Prefix = __webpack_require__(279);
 var Transform = __webpack_require__(280);
@@ -11774,7 +11950,7 @@ BrotliDictionary.init();
 
 
 /***/ }),
-/* 114 */
+/* 115 */
 /***/ (function(module, exports) {
 
 function BrotliInput(buffer) {
@@ -11814,7 +11990,7 @@ exports.BrotliOutput = BrotliOutput;
 
 
 /***/ }),
-/* 115 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* Copyright 2013 Google Inc. All Rights Reserved.
@@ -11856,7 +12032,7 @@ exports.maxDictionaryWordLength = 24;
 
 
 /***/ }),
-/* 116 */
+/* 117 */
 /***/ (function(module, exports) {
 
 function HuffmanCode(bits, value) {
@@ -11985,7 +12161,7 @@ exports.BrotliBuildHuffmanTable = function(root_table, table, root_bits, code_le
 
 
 /***/ }),
-/* 117 */
+/* 118 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // Generated by CoffeeScript 1.7.1
@@ -12152,7 +12328,7 @@ exports.BrotliBuildHuffmanTable = function(root_table, table, root_bits, code_le
 
 
 /***/ }),
-/* 118 */
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12206,7 +12382,7 @@ module.exports = TraversalTracker;
 
 
 /***/ }),
-/* 119 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12389,13 +12565,13 @@ module.exports = StyleContextStack;
 
 
 /***/ }),
-/* 120 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var TraversalTracker = __webpack_require__(118);
+var TraversalTracker = __webpack_require__(119);
 var isString = __webpack_require__(0).isString;
 
 /**
@@ -12701,7 +12877,7 @@ module.exports = DocumentContext;
 
 
 /***/ }),
-/* 121 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -12799,22 +12975,22 @@ module.exports = Line;
 
 
 /***/ }),
-/* 122 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["pdfMake"] = __webpack_require__(123);
+/* WEBPACK VAR INJECTION */(function(global) {module.exports = global["pdfMake"] = __webpack_require__(124);
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
-/* 123 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(Buffer, global) {
 
-var PdfPrinter = __webpack_require__(126);
+var PdfPrinter = __webpack_require__(127);
 var isFunction = __webpack_require__(0).isFunction;
-var FileSaver = __webpack_require__(307);
+var FileSaver = __webpack_require__(309);
 var saveAs = FileSaver.saveAs;
 
 var defaultClientFonts = {
@@ -13005,7 +13181,7 @@ module.exports = {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer, __webpack_require__(7)))
 
 /***/ }),
-/* 124 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13163,7 +13339,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 125 */
+/* 126 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -13253,19 +13429,19 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 126 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 /*eslint no-unused-vars: ["error", {"args": "none"}]*/
 
 
-var PdfKitEngine = __webpack_require__(127);
-var FontProvider = __webpack_require__(296);
-var LayoutBuilder = __webpack_require__(297);
-var sizes = __webpack_require__(304);
-var ImageMeasure = __webpack_require__(305);
-var textDecorator = __webpack_require__(306);
+var PdfKitEngine = __webpack_require__(128);
+var FontProvider = __webpack_require__(298);
+var LayoutBuilder = __webpack_require__(299);
+var sizes = __webpack_require__(306);
+var ImageMeasure = __webpack_require__(307);
+var textDecorator = __webpack_require__(308);
 var TextTools = __webpack_require__(75);
 var isFunction = __webpack_require__(0).isFunction;
 var isString = __webpack_require__(0).isString;
@@ -13800,6 +13976,7 @@ function renderVector(vector, pdfKitDoc) {
 }
 
 function renderImage(image, x, y, pdfKitDoc) {
+	pdfKitDoc.opacity(image.opacity || 1);
 	pdfKitDoc.image(image.image, image.x, image.y, {width: image._width, height: image._height});
 	if (image.link) {
 		pdfKitDoc.link(image.x, image.y, image._width, image._height, image.link);
@@ -13820,7 +13997,7 @@ module.exports = PdfPrinter;
 
 
 /***/ }),
-/* 127 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -13830,7 +14007,7 @@ function _interopDefault(ex) {
 	return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex;
 }
 
-var PdfKit = _interopDefault(__webpack_require__(128));
+var PdfKit = _interopDefault(__webpack_require__(129));
 
 function getEngineInstance() {
 	return PdfKit;
@@ -13847,10 +14024,10 @@ module.exports = {
 };
 
 /***/ }),
-/* 128 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {// Generated by CoffeeScript 1.12.6
+/* WEBPACK VAR INJECTION */(function(Buffer) {// Generated by CoffeeScript 1.12.7
 
 /*
 PDFDocument - represents an entire PDF document
@@ -13866,11 +14043,11 @@ By Devon Govett
 
   fs = __webpack_require__(9);
 
-  PDFObject = __webpack_require__(26);
+  PDFObject = __webpack_require__(17);
 
   PDFReference = __webpack_require__(82);
 
-  PDFPage = __webpack_require__(150);
+  PDFPage = __webpack_require__(86);
 
   PDFDocument = (function(superClass) {
     var mixin;
@@ -13903,6 +14080,7 @@ By Devon Govett
       this.initFonts();
       this.initText();
       this.initImages();
+      this.initOutline();
       this.info = {
         Producer: 'PDFKit',
         Creator: 'PDFKit',
@@ -13943,6 +14121,8 @@ By Devon Govett
     mixin(__webpack_require__(289));
 
     mixin(__webpack_require__(295));
+
+    mixin(__webpack_require__(296));
 
     PDFDocument.prototype.addPage = function(options) {
       var pages;
@@ -14053,6 +14233,7 @@ By Devon Govett
         font = ref2[name];
         font.finalize();
       }
+      this.endOutline();
       this._root.end();
       this._root.data.Pages.end();
       if (this._waiting === 0) {
@@ -14101,13 +14282,13 @@ By Devon Govett
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ }),
-/* 129 */
+/* 130 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14116,7 +14297,7 @@ By Devon Govett
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Buffer = __webpack_require__(34).Buffer;
-var util = __webpack_require__(131);
+var util = __webpack_require__(132);
 
 function copyBuffer(src, target, offset) {
   src.copy(target, offset);
@@ -14192,13 +14373,13 @@ if (util && util.inspect && util.inspect.custom) {
 }
 
 /***/ }),
-/* 131 */
+/* 132 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 132 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {var scope = (typeof global !== "undefined" && global) ||
@@ -14254,7 +14435,7 @@ exports._unrefActive = exports.active = function(item) {
 };
 
 // setimmediate attaches itself to the global object
-__webpack_require__(133);
+__webpack_require__(134);
 // On some exotic environments, it's not clear which object `setimmediate` was
 // able to install onto.  Search each possibility in the same order as the
 // `setimmediate` library.
@@ -14268,7 +14449,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
-/* 133 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, process) {(function (global, undefined) {
@@ -14461,7 +14642,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7), __webpack_require__(8)))
 
 /***/ }),
-/* 134 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global) {
@@ -14535,7 +14716,7 @@ function config (name) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(7)))
 
 /***/ }),
-/* 135 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14571,7 +14752,7 @@ module.exports = PassThrough;
 var Transform = __webpack_require__(81);
 
 /*<replacement>*/
-var util = __webpack_require__(25);
+var util = __webpack_require__(26);
 util.inherits = __webpack_require__(15);
 /*</replacement>*/
 
@@ -14588,35 +14769,35 @@ PassThrough.prototype._transform = function (chunk, encoding, cb) {
 };
 
 /***/ }),
-/* 136 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(45);
 
 
 /***/ }),
-/* 137 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(16);
 
 
 /***/ }),
-/* 138 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(44).Transform
 
 
 /***/ }),
-/* 139 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(44).PassThrough
 
 
 /***/ }),
-/* 140 */
+/* 141 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -14625,10 +14806,10 @@ module.exports = __webpack_require__(44).PassThrough
 
 var assert = __webpack_require__(83);
 
-var Zstream = __webpack_require__(142);
-var zlib_deflate = __webpack_require__(143);
-var zlib_inflate = __webpack_require__(146);
-var constants = __webpack_require__(149);
+var Zstream = __webpack_require__(143);
+var zlib_deflate = __webpack_require__(144);
+var zlib_inflate = __webpack_require__(147);
+var constants = __webpack_require__(150);
 
 for (var key in constants) {
   exports[key] = constants[key];
@@ -15032,7 +15213,7 @@ exports.Zlib = Zlib;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer, __webpack_require__(8)))
 
 /***/ }),
-/* 141 */
+/* 142 */
 /***/ (function(module, exports) {
 
 module.exports = function isBuffer(arg) {
@@ -15043,7 +15224,7 @@ module.exports = function isBuffer(arg) {
 }
 
 /***/ }),
-/* 142 */
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15097,7 +15278,7 @@ module.exports = ZStream;
 
 
 /***/ }),
-/* 143 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15123,10 +15304,10 @@ module.exports = ZStream;
 // 3. This notice may not be removed or altered from any source distribution.
 
 var utils   = __webpack_require__(35);
-var trees   = __webpack_require__(144);
+var trees   = __webpack_require__(145);
 var adler32 = __webpack_require__(84);
 var crc32   = __webpack_require__(85);
-var msg     = __webpack_require__(145);
+var msg     = __webpack_require__(146);
 
 /* Public constants ==========================================================*/
 /* ===========================================================================*/
@@ -16978,7 +17159,7 @@ exports.deflateTune = deflateTune;
 
 
 /***/ }),
-/* 144 */
+/* 145 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18205,7 +18386,7 @@ exports._tr_align = _tr_align;
 
 
 /***/ }),
-/* 145 */
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18244,7 +18425,7 @@ module.exports = {
 
 
 /***/ }),
-/* 146 */
+/* 147 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18272,8 +18453,8 @@ module.exports = {
 var utils         = __webpack_require__(35);
 var adler32       = __webpack_require__(84);
 var crc32         = __webpack_require__(85);
-var inflate_fast  = __webpack_require__(147);
-var inflate_table = __webpack_require__(148);
+var inflate_fast  = __webpack_require__(148);
+var inflate_table = __webpack_require__(149);
 
 var CODES = 0;
 var LENS = 1;
@@ -19807,7 +19988,7 @@ exports.inflateUndermine = inflateUndermine;
 
 
 /***/ }),
-/* 147 */
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20159,7 +20340,7 @@ module.exports = function inflate_fast(strm, start) {
 
 
 /***/ }),
-/* 148 */
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20509,7 +20690,7 @@ module.exports = function inflate_table(type, lens, lens_index, codes, table, ta
 
 
 /***/ }),
-/* 149 */
+/* 150 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20584,186 +20765,10 @@ module.exports = {
 
 
 /***/ }),
-/* 150 */
-/***/ (function(module, exports) {
-
-// Generated by CoffeeScript 1.12.6
-
-/*
-PDFPage - represents a single page in the PDF document
-By Devon Govett
- */
-
-(function() {
-  var PDFPage;
-
-  PDFPage = (function() {
-    var DEFAULT_MARGINS, SIZES;
-
-    function PDFPage(document, options) {
-      var dimensions;
-      this.document = document;
-      if (options == null) {
-        options = {};
-      }
-      this.size = options.size || 'letter';
-      this.layout = options.layout || 'portrait';
-      if (typeof options.margin === 'number') {
-        this.margins = {
-          top: options.margin,
-          left: options.margin,
-          bottom: options.margin,
-          right: options.margin
-        };
-      } else {
-        this.margins = options.margins || DEFAULT_MARGINS;
-      }
-      dimensions = Array.isArray(this.size) ? this.size : SIZES[this.size.toUpperCase()];
-      this.width = dimensions[this.layout === 'portrait' ? 0 : 1];
-      this.height = dimensions[this.layout === 'portrait' ? 1 : 0];
-      this.content = this.document.ref();
-      this.resources = this.document.ref({
-        ProcSet: ['PDF', 'Text', 'ImageB', 'ImageC', 'ImageI']
-      });
-      Object.defineProperties(this, {
-        fonts: {
-          get: (function(_this) {
-            return function() {
-              var base;
-              return (base = _this.resources.data).Font != null ? base.Font : base.Font = {};
-            };
-          })(this)
-        },
-        xobjects: {
-          get: (function(_this) {
-            return function() {
-              var base;
-              return (base = _this.resources.data).XObject != null ? base.XObject : base.XObject = {};
-            };
-          })(this)
-        },
-        ext_gstates: {
-          get: (function(_this) {
-            return function() {
-              var base;
-              return (base = _this.resources.data).ExtGState != null ? base.ExtGState : base.ExtGState = {};
-            };
-          })(this)
-        },
-        patterns: {
-          get: (function(_this) {
-            return function() {
-              var base;
-              return (base = _this.resources.data).Pattern != null ? base.Pattern : base.Pattern = {};
-            };
-          })(this)
-        },
-        annotations: {
-          get: (function(_this) {
-            return function() {
-              var base;
-              return (base = _this.dictionary.data).Annots != null ? base.Annots : base.Annots = [];
-            };
-          })(this)
-        }
-      });
-      this.dictionary = this.document.ref({
-        Type: 'Page',
-        Parent: this.document._root.data.Pages,
-        MediaBox: [0, 0, this.width, this.height],
-        Contents: this.content,
-        Resources: this.resources
-      });
-    }
-
-    PDFPage.prototype.maxY = function() {
-      return this.height - this.margins.bottom;
-    };
-
-    PDFPage.prototype.write = function(chunk) {
-      return this.content.write(chunk);
-    };
-
-    PDFPage.prototype.end = function() {
-      this.dictionary.end();
-      this.resources.end();
-      return this.content.end();
-    };
-
-    DEFAULT_MARGINS = {
-      top: 72,
-      left: 72,
-      bottom: 72,
-      right: 72
-    };
-
-    SIZES = {
-      '4A0': [4767.87, 6740.79],
-      '2A0': [3370.39, 4767.87],
-      A0: [2383.94, 3370.39],
-      A1: [1683.78, 2383.94],
-      A2: [1190.55, 1683.78],
-      A3: [841.89, 1190.55],
-      A4: [595.28, 841.89],
-      A5: [419.53, 595.28],
-      A6: [297.64, 419.53],
-      A7: [209.76, 297.64],
-      A8: [147.40, 209.76],
-      A9: [104.88, 147.40],
-      A10: [73.70, 104.88],
-      B0: [2834.65, 4008.19],
-      B1: [2004.09, 2834.65],
-      B2: [1417.32, 2004.09],
-      B3: [1000.63, 1417.32],
-      B4: [708.66, 1000.63],
-      B5: [498.90, 708.66],
-      B6: [354.33, 498.90],
-      B7: [249.45, 354.33],
-      B8: [175.75, 249.45],
-      B9: [124.72, 175.75],
-      B10: [87.87, 124.72],
-      C0: [2599.37, 3676.54],
-      C1: [1836.85, 2599.37],
-      C2: [1298.27, 1836.85],
-      C3: [918.43, 1298.27],
-      C4: [649.13, 918.43],
-      C5: [459.21, 649.13],
-      C6: [323.15, 459.21],
-      C7: [229.61, 323.15],
-      C8: [161.57, 229.61],
-      C9: [113.39, 161.57],
-      C10: [79.37, 113.39],
-      RA0: [2437.80, 3458.27],
-      RA1: [1729.13, 2437.80],
-      RA2: [1218.90, 1729.13],
-      RA3: [864.57, 1218.90],
-      RA4: [609.45, 864.57],
-      SRA0: [2551.18, 3628.35],
-      SRA1: [1814.17, 2551.18],
-      SRA2: [1275.59, 1814.17],
-      SRA3: [907.09, 1275.59],
-      SRA4: [637.80, 907.09],
-      EXECUTIVE: [521.86, 756.00],
-      FOLIO: [612.00, 936.00],
-      LEGAL: [612.00, 1008.00],
-      LETTER: [612.00, 792.00],
-      TABLOID: [792.00, 1224.00]
-    };
-
-    return PDFPage;
-
-  })();
-
-  module.exports = PDFPage;
-
-}).call(this);
-
-
-/***/ }),
 /* 151 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// Generated by CoffeeScript 1.12.6
+// Generated by CoffeeScript 1.12.7
 (function() {
   var PDFGradient, PDFLinearGradient, PDFRadialGradient, namedColors, ref;
 
@@ -21065,13 +21070,15 @@ By Devon Govett
 
 /***/ }),
 /* 152 */
-/***/ (function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
 
-// Generated by CoffeeScript 1.12.6
+// Generated by CoffeeScript 1.12.7
 (function() {
-  var PDFGradient, PDFLinearGradient, PDFRadialGradient,
+  var PDFGradient, PDFLinearGradient, PDFRadialGradient, number,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     hasProp = {}.hasOwnProperty;
+
+  number = __webpack_require__(17).number;
 
   PDFGradient = (function() {
     function PDFGradient(doc) {
@@ -21079,15 +21086,28 @@ By Devon Govett
       this.stops = [];
       this.embedded = false;
       this.transform = [1, 0, 0, 1, 0, 0];
-      this._colorSpace = 'DeviceRGB';
     }
 
     PDFGradient.prototype.stop = function(pos, color, opacity) {
       if (opacity == null) {
         opacity = 1;
       }
+      color = this.doc._normalizeColor(color);
+      if (this.stops.length === 0) {
+        if (color.length === 3) {
+          this._colorSpace = 'DeviceRGB';
+        } else if (color.length === 4) {
+          this._colorSpace = 'DeviceCMYK';
+        } else if (color.length === 1) {
+          this._colorSpace = 'DeviceGray';
+        } else {
+          throw new Error('Unknown color space');
+        }
+      } else if ((this._colorSpace === 'DeviceRGB' && color.length !== 3) || (this._colorSpace === 'DeviceCMYK' && color.length !== 4) || (this._colorSpace === 'DeviceGray' && color.length !== 1)) {
+        throw new Error('All gradient stops must use the same color space');
+      }
       opacity = Math.max(0, Math.min(1, opacity));
-      this.stops.push([pos, this.doc._normalizeColor(color), opacity]);
+      this.stops.push([pos, color, opacity]);
       return this;
     };
 
@@ -21150,7 +21170,7 @@ By Devon Govett
           results = [];
           for (k = 0, len = ref1.length; k < len; k++) {
             v = ref1[k];
-            results.push(+v.toFixed(5));
+            results.push(number(v));
           }
           return results;
         }).call(this)
@@ -21313,14 +21333,14 @@ By Devon Govett
 /* 153 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// Generated by CoffeeScript 1.12.6
+// Generated by CoffeeScript 1.12.7
 (function() {
   var KAPPA, SVGPath, number,
     slice = [].slice;
 
   SVGPath = __webpack_require__(154);
 
-  number = __webpack_require__(26).number;
+  number = __webpack_require__(17).number;
 
   KAPPA = 4.0 * ((Math.sqrt(2) - 1.0) / 3.0);
 
@@ -21621,7 +21641,7 @@ By Devon Govett
 /* 154 */
 /***/ (function(module, exports) {
 
-// Generated by CoffeeScript 1.12.6
+// Generated by CoffeeScript 1.12.7
 (function() {
   var SVGPath;
 
@@ -21993,7 +22013,7 @@ By Devon Govett
 /* 155 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// Generated by CoffeeScript 1.12.6
+// Generated by CoffeeScript 1.12.7
 (function() {
   var PDFFont;
 
@@ -22082,8 +22102,8 @@ var _Object$freeze = _interopDefault(__webpack_require__(198));
 var _Object$keys = _interopDefault(__webpack_require__(201));
 var _typeof = _interopDefault(__webpack_require__(67));
 var _Object$defineProperty = _interopDefault(__webpack_require__(72));
-var _classCallCheck = _interopDefault(__webpack_require__(101));
-var _createClass = _interopDefault(__webpack_require__(102));
+var _classCallCheck = _interopDefault(__webpack_require__(102));
+var _createClass = _interopDefault(__webpack_require__(103));
 var _Map = _interopDefault(__webpack_require__(214));
 var _possibleConstructorReturn = _interopDefault(__webpack_require__(225));
 var _inherits = _interopDefault(__webpack_require__(226));
@@ -22099,7 +22119,7 @@ var UnicodeTrie = _interopDefault(__webpack_require__(74));
 var StateMachine = _interopDefault(__webpack_require__(260));
 var _Number$EPSILON = _interopDefault(__webpack_require__(269));
 var cloneDeep = _interopDefault(__webpack_require__(272));
-var inflate = _interopDefault(__webpack_require__(112));
+var inflate = _interopDefault(__webpack_require__(113));
 var brotli = _interopDefault(__webpack_require__(273));
 
 
@@ -37005,7 +37025,7 @@ module.exports = fontkit;
 
   exports.DecodeStream = __webpack_require__(50);
 
-  exports.Array = __webpack_require__(88);
+  exports.Array = __webpack_require__(89);
 
   exports.LazyArray = __webpack_require__(176);
 
@@ -37023,11 +37043,11 @@ module.exports = fontkit;
 
   exports.String = __webpack_require__(183);
 
-  exports.Struct = __webpack_require__(89);
+  exports.Struct = __webpack_require__(90);
 
   exports.VersionedStruct = __webpack_require__(184);
 
-  _ref = __webpack_require__(22);
+  _ref = __webpack_require__(23);
   for (key in _ref) {
     val = _ref[key];
     exports[key] = val;
@@ -37294,7 +37314,7 @@ for (var i = 0; i < modules.length; i++) {
 
 "use strict";
 
-var Buffer = __webpack_require__(21).Buffer;
+var Buffer = __webpack_require__(22).Buffer;
 
 // Export Node.js internal encodings.
 
@@ -37489,7 +37509,7 @@ InternalDecoderCesu8.prototype.end = function() {
 
 "use strict";
 
-var Buffer = __webpack_require__(21).Buffer;
+var Buffer = __webpack_require__(22).Buffer;
 
 // Note: UTF16-LE (or UCS2) codec is Node.js native. See encodings/internal.js
 
@@ -37673,7 +37693,7 @@ function detectEncoding(buf, defaultEncoding) {
 
 "use strict";
 
-var Buffer = __webpack_require__(21).Buffer;
+var Buffer = __webpack_require__(22).Buffer;
 
 // UTF-7 codec, according to https://tools.ietf.org/html/rfc2152
 // See also below a UTF-7-IMAP codec, according to http://tools.ietf.org/html/rfc3501#section-5.1.3
@@ -37970,7 +37990,7 @@ Utf7IMAPDecoder.prototype.end = function() {
 
 "use strict";
 
-var Buffer = __webpack_require__(21).Buffer;
+var Buffer = __webpack_require__(22).Buffer;
 
 // Single-byte codec. Needs a 'chars' string parameter that contains 256 or 128 chars that
 // correspond to encoded bytes (if 128 - then lower half is ASCII). 
@@ -38687,7 +38707,7 @@ module.exports = {
 
 "use strict";
 
-var Buffer = __webpack_require__(21).Buffer;
+var Buffer = __webpack_require__(22).Buffer;
 
 // Multibyte codec. In this scheme, a character is represented by 1 or more bytes.
 // Our codec supports UTF-16 surrogates, extensions for GB18030 and unicode sequences.
@@ -39340,7 +39360,7 @@ module.exports = {
     // GBK (~22000 chars) is an extension of CP936 that added user-mapped chars and some other.
     'gbk': {
         type: '_dbcs',
-        table: function() { return __webpack_require__(52).concat(__webpack_require__(86)) },
+        table: function() { return __webpack_require__(52).concat(__webpack_require__(87)) },
     },
     'xgbk': 'gbk',
     'isoir58': 'gbk',
@@ -39352,7 +39372,7 @@ module.exports = {
     // http://www.khngai.com/chinese/charmap/tblgbk.php?page=0
     'gb18030': {
         type: '_dbcs',
-        table: function() { return __webpack_require__(52).concat(__webpack_require__(86)) },
+        table: function() { return __webpack_require__(52).concat(__webpack_require__(87)) },
         gb18030: function() { return __webpack_require__(171) },
         encodeSkipVals: [0x80],
         encodeAdd: {'€': 0xA2E3},
@@ -39409,14 +39429,14 @@ module.exports = {
     '950': 'cp950',
     'cp950': {
         type: '_dbcs',
-        table: function() { return __webpack_require__(87) },
+        table: function() { return __webpack_require__(88) },
     },
 
     // Big5 has many variations and is an extension of cp950. We use Encoding Standard's as a consensus.
     'big5': 'big5hkscs',
     'big5hkscs': {
         type: '_dbcs',
-        table: function() { return __webpack_require__(87).concat(__webpack_require__(173)) },
+        table: function() { return __webpack_require__(88).concat(__webpack_require__(173)) },
         encodeSkipVals: [0xa2cc],
     },
 
@@ -39478,9 +39498,9 @@ module.exports = [["8740","䏰䰲䘃䖦䕸𧉧䵷䖳𧲱䳢𧳅㮕䜶䝄䱇䱀�
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  ArrayT = __webpack_require__(88);
+  ArrayT = __webpack_require__(89);
 
-  NumberT = __webpack_require__(22).Number;
+  NumberT = __webpack_require__(23).Number;
 
   utils = __webpack_require__(12);
 
@@ -39674,7 +39694,7 @@ module.exports = [["8740","䏰䰲䘃䖦䕸𧉧䵷䖳𧲱䳢𧳅㮕䜶䝄䱇䱀�
 
   utils = __webpack_require__(12);
 
-  NumberT = __webpack_require__(22).Number;
+  NumberT = __webpack_require__(23).Number;
 
   BufferT = (function() {
     function BufferT(length) {
@@ -39858,7 +39878,7 @@ module.exports = [["8740","䏰䰲䘃䖦䕸𧉧䵷䖳𧲱䳢𧳅㮕䜶䝄䱇䱀�
 (function() {
   var NumberT, StringT, utils;
 
-  NumberT = __webpack_require__(22).Number;
+  NumberT = __webpack_require__(23).Number;
 
   utils = __webpack_require__(12);
 
@@ -39949,7 +39969,7 @@ module.exports = [["8740","䏰䰲䘃䖦䕸𧉧䵷䖳𧲱䳢𧳅㮕䜶䝄䱇䱀�
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  Struct = __webpack_require__(89);
+  Struct = __webpack_require__(90);
 
   VersionedStruct = (function(_super) {
     __extends(VersionedStruct, _super);
@@ -40285,7 +40305,7 @@ module.exports = function getOwnPropertyDescriptor(it, key) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.6 Object.getOwnPropertyDescriptor(O, P)
-var toIObject = __webpack_require__(17);
+var toIObject = __webpack_require__(18);
 var $getOwnPropertyDescriptor = __webpack_require__(56).f;
 
 __webpack_require__(58)('getOwnPropertyDescriptor', function () {
@@ -40300,7 +40320,7 @@ __webpack_require__(58)('getOwnPropertyDescriptor', function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(28);
-__webpack_require__(24);
+__webpack_require__(25);
 module.exports = __webpack_require__(197);
 
 
@@ -40311,9 +40331,9 @@ module.exports = __webpack_require__(197);
 "use strict";
 
 var addToUnscopables = __webpack_require__(191);
-var step = __webpack_require__(93);
-var Iterators = __webpack_require__(23);
-var toIObject = __webpack_require__(17);
+var step = __webpack_require__(94);
+var Iterators = __webpack_require__(24);
+var toIObject = __webpack_require__(18);
 
 // 22.1.3.4 Array.prototype.entries()
 // 22.1.3.13 Array.prototype.keys()
@@ -40378,9 +40398,9 @@ module.exports = function (Constructor, NAME, next) {
 
 // false -> Array#indexOf
 // true  -> Array#includes
-var toIObject = __webpack_require__(17);
+var toIObject = __webpack_require__(18);
 var toLength = __webpack_require__(39);
-var toAbsoluteIndex = __webpack_require__(97);
+var toAbsoluteIndex = __webpack_require__(98);
 module.exports = function (IS_INCLUDES) {
   return function ($this, el, fromIndex) {
     var O = toIObject($this);
@@ -40414,7 +40434,7 @@ module.exports = document && document.documentElement;
 /***/ (function(module, exports, __webpack_require__) {
 
 // 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-var has = __webpack_require__(18);
+var has = __webpack_require__(19);
 var toObject = __webpack_require__(30);
 var IE_PROTO = __webpack_require__(62)('IE_PROTO');
 var ObjectProto = Object.prototype;
@@ -40526,7 +40546,7 @@ __webpack_require__(58)('keys', function () {
 /* 204 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(24);
+__webpack_require__(25);
 __webpack_require__(28);
 module.exports = __webpack_require__(68).f('iterator');
 
@@ -40556,12 +40576,12 @@ module.exports = __webpack_require__(2).Symbol;
 
 // ECMAScript 6 symbols shim
 var global = __webpack_require__(11);
-var has = __webpack_require__(18);
+var has = __webpack_require__(19);
 var DESCRIPTORS = __webpack_require__(5);
 var $export = __webpack_require__(3);
-var redefine = __webpack_require__(94);
+var redefine = __webpack_require__(95);
 var META = __webpack_require__(42).KEY;
-var $fails = __webpack_require__(19);
+var $fails = __webpack_require__(20);
 var shared = __webpack_require__(63);
 var setToStringTag = __webpack_require__(41);
 var uid = __webpack_require__(40);
@@ -40569,10 +40589,10 @@ var wks = __webpack_require__(4);
 var wksExt = __webpack_require__(68);
 var wksDefine = __webpack_require__(69);
 var enumKeys = __webpack_require__(208);
-var isArray = __webpack_require__(99);
+var isArray = __webpack_require__(100);
 var anObject = __webpack_require__(14);
 var isObject = __webpack_require__(10);
-var toIObject = __webpack_require__(17);
+var toIObject = __webpack_require__(18);
 var toPrimitive = __webpack_require__(57);
 var createDesc = __webpack_require__(27);
 var _create = __webpack_require__(38);
@@ -40702,7 +40722,7 @@ if (!USE_NATIVE) {
 
   $GOPD.f = $getOwnPropertyDescriptor;
   $DP.f = $defineProperty;
-  __webpack_require__(100).f = gOPNExt.f = $getOwnPropertyNames;
+  __webpack_require__(101).f = gOPNExt.f = $getOwnPropertyNames;
   __webpack_require__(36).f = $propertyIsEnumerable;
   __webpack_require__(70).f = $getOwnPropertySymbols;
 
@@ -40815,8 +40835,8 @@ module.exports = function (it) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // fallback for IE11 buggy Object.getOwnPropertyNames with iframe and window
-var toIObject = __webpack_require__(17);
-var gOPN = __webpack_require__(100).f;
+var toIObject = __webpack_require__(18);
+var gOPN = __webpack_require__(101).f;
 var toString = {}.toString;
 
 var windowNames = typeof window == 'object' && window && Object.getOwnPropertyNames
@@ -40880,7 +40900,7 @@ module.exports = { "default": __webpack_require__(215), __esModule: true };
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(71);
-__webpack_require__(24);
+__webpack_require__(25);
 __webpack_require__(28);
 __webpack_require__(216);
 __webpack_require__(221);
@@ -40895,12 +40915,12 @@ module.exports = __webpack_require__(2).Map;
 
 "use strict";
 
-var strong = __webpack_require__(103);
+var strong = __webpack_require__(104);
 var validate = __webpack_require__(73);
 var MAP = 'Map';
 
 // 23.1 Map Objects
-module.exports = __webpack_require__(108)(MAP, function (get) {
+module.exports = __webpack_require__(109)(MAP, function (get) {
   return function Map() { return get(this, arguments.length > 0 ? arguments[0] : undefined); };
 }, {
   // 23.1.3.6 Map.prototype.get(key)
@@ -40947,7 +40967,7 @@ module.exports = function (KEY) {
 // 4 -> Array#every
 // 5 -> Array#find
 // 6 -> Array#findIndex
-var ctx = __webpack_require__(20);
+var ctx = __webpack_require__(21);
 var IObject = __webpack_require__(53);
 var toObject = __webpack_require__(30);
 var toLength = __webpack_require__(39);
@@ -41003,7 +41023,7 @@ module.exports = function (original, length) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var isObject = __webpack_require__(10);
-var isArray = __webpack_require__(99);
+var isArray = __webpack_require__(100);
 var SPECIES = __webpack_require__(4)('species');
 
 module.exports = function (original) {
@@ -41027,7 +41047,7 @@ module.exports = function (original) {
 // https://github.com/DavidBruant/Map-Set.prototype.toJSON
 var $export = __webpack_require__(3);
 
-$export($export.P + $export.R, 'Map', { toJSON: __webpack_require__(109)('Map') });
+$export($export.P + $export.R, 'Map', { toJSON: __webpack_require__(110)('Map') });
 
 
 /***/ }),
@@ -41048,7 +41068,7 @@ module.exports = function (iter, ITERATOR) {
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://tc39.github.io/proposal-setmap-offrom/#sec-map.of
-__webpack_require__(110)('Map');
+__webpack_require__(111)('Map');
 
 
 /***/ }),
@@ -41056,7 +41076,7 @@ __webpack_require__(110)('Map');
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://tc39.github.io/proposal-setmap-offrom/#sec-map.from
-__webpack_require__(111)('Map');
+__webpack_require__(112)('Map');
 
 
 /***/ }),
@@ -41160,7 +41180,7 @@ module.exports = {
   set: Object.setPrototypeOf || ('__proto__' in {} ? // eslint-disable-line
     function (test, buggy, set) {
       try {
-        set = __webpack_require__(20)(Function.call, __webpack_require__(56).f(Object.prototype, '__proto__').set, 2);
+        set = __webpack_require__(21)(Function.call, __webpack_require__(56).f(Object.prototype, '__proto__').set, 2);
         set(test, []);
         buggy = !(test instanceof Array);
       } catch (e) { buggy = true; }
@@ -41224,7 +41244,7 @@ module.exports = function defineProperties(T, D) {
 
 var $export = __webpack_require__(3);
 // 19.1.2.3 / 15.2.3.7 Object.defineProperties(O, Properties)
-$export($export.S + $export.F * !__webpack_require__(5), 'Object', { defineProperties: __webpack_require__(95) });
+$export($export.S + $export.F * !__webpack_require__(5), 'Object', { defineProperties: __webpack_require__(96) });
 
 
 /***/ }),
@@ -41407,7 +41427,7 @@ var IObject = __webpack_require__(53);
 var $assign = Object.assign;
 
 // should work with symbols and should have deterministic property order (V8 bug)
-module.exports = !$assign || __webpack_require__(19)(function () {
+module.exports = !$assign || __webpack_require__(20)(function () {
   var A = {};
   var B = {};
   // eslint-disable-next-line no-undef
@@ -41452,7 +41472,7 @@ module.exports = __webpack_require__(2).String.fromCodePoint;
 /***/ (function(module, exports, __webpack_require__) {
 
 var $export = __webpack_require__(3);
-var toAbsoluteIndex = __webpack_require__(97);
+var toAbsoluteIndex = __webpack_require__(98);
 var fromCharCode = String.fromCharCode;
 var $fromCodePoint = String.fromCodePoint;
 
@@ -41486,7 +41506,7 @@ module.exports = { "default": __webpack_require__(248), __esModule: true };
 /* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(24);
+__webpack_require__(25);
 __webpack_require__(249);
 module.exports = __webpack_require__(2).Array.from;
 
@@ -41497,11 +41517,11 @@ module.exports = __webpack_require__(2).Array.from;
 
 "use strict";
 
-var ctx = __webpack_require__(20);
+var ctx = __webpack_require__(21);
 var $export = __webpack_require__(3);
 var toObject = __webpack_require__(30);
-var call = __webpack_require__(106);
-var isArrayIter = __webpack_require__(107);
+var call = __webpack_require__(107);
+var isArrayIter = __webpack_require__(108);
 var toLength = __webpack_require__(39);
 var createProperty = __webpack_require__(250);
 var getIterFn = __webpack_require__(65);
@@ -41589,7 +41609,7 @@ module.exports = { "default": __webpack_require__(253), __esModule: true };
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(71);
-__webpack_require__(24);
+__webpack_require__(25);
 __webpack_require__(28);
 __webpack_require__(254);
 __webpack_require__(255);
@@ -41604,12 +41624,12 @@ module.exports = __webpack_require__(2).Set;
 
 "use strict";
 
-var strong = __webpack_require__(103);
+var strong = __webpack_require__(104);
 var validate = __webpack_require__(73);
 var SET = 'Set';
 
 // 23.2 Set Objects
-module.exports = __webpack_require__(108)(SET, function (get) {
+module.exports = __webpack_require__(109)(SET, function (get) {
   return function Set() { return get(this, arguments.length > 0 ? arguments[0] : undefined); };
 }, {
   // 23.2.3.1 Set.prototype.add(value)
@@ -41626,7 +41646,7 @@ module.exports = __webpack_require__(108)(SET, function (get) {
 // https://github.com/DavidBruant/Map-Set.prototype.toJSON
 var $export = __webpack_require__(3);
 
-$export($export.P + $export.R, 'Set', { toJSON: __webpack_require__(109)('Set') });
+$export($export.P + $export.R, 'Set', { toJSON: __webpack_require__(110)('Set') });
 
 
 /***/ }),
@@ -41634,7 +41654,7 @@ $export($export.P + $export.R, 'Set', { toJSON: __webpack_require__(109)('Set') 
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://tc39.github.io/proposal-setmap-offrom/#sec-set.of
-__webpack_require__(110)('Set');
+__webpack_require__(111)('Set');
 
 
 /***/ }),
@@ -41642,7 +41662,7 @@ __webpack_require__(110)('Set');
 /***/ (function(module, exports, __webpack_require__) {
 
 // https://tc39.github.io/proposal-setmap-offrom/#sec-set.from
-__webpack_require__(111)('Set');
+__webpack_require__(112)('Set');
 
 
 /***/ }),
@@ -41813,9 +41833,9 @@ var _slicedToArray = _interopDefault(__webpack_require__(261));
 var _getIterator = _interopDefault(__webpack_require__(59));
 var _defineProperty = _interopDefault(__webpack_require__(265));
 var _regeneratorRuntime = _interopDefault(__webpack_require__(266));
-var _Symbol$iterator = _interopDefault(__webpack_require__(98));
-var _classCallCheck = _interopDefault(__webpack_require__(101));
-var _createClass = _interopDefault(__webpack_require__(102));
+var _Symbol$iterator = _interopDefault(__webpack_require__(99));
+var _classCallCheck = _interopDefault(__webpack_require__(102));
+var _createClass = _interopDefault(__webpack_require__(103));
 
 var INITIAL_STATE = 1;
 var FAIL_STATE = 0;
@@ -42066,7 +42086,7 @@ module.exports = { "default": __webpack_require__(263), __esModule: true };
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(28);
-__webpack_require__(24);
+__webpack_require__(25);
 module.exports = __webpack_require__(264);
 
 
@@ -42076,7 +42096,7 @@ module.exports = __webpack_require__(264);
 
 var classof = __webpack_require__(66);
 var ITERATOR = __webpack_require__(4)('iterator');
-var Iterators = __webpack_require__(23);
+var Iterators = __webpack_require__(24);
 module.exports = __webpack_require__(2).isIterable = function (it) {
   var O = Object(it);
   return O[ITERATOR] !== undefined
@@ -43098,7 +43118,7 @@ if (typeof module === 'object' && module.exports) {
 /* 273 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(113).BrotliDecompressBuffer;
+module.exports = __webpack_require__(114).BrotliDecompressBuffer;
 
 
 /***/ }),
@@ -43246,7 +43266,7 @@ var fs = __webpack_require__(9);
  * it's own dictionary. 😜
  */
 exports.init = function() {
-  var BrotliDecompressBuffer = __webpack_require__(113).BrotliDecompressBuffer;
+  var BrotliDecompressBuffer = __webpack_require__(114).BrotliDecompressBuffer;
   var compressed = base64.toByteArray(__webpack_require__(277));
   return BrotliDecompressBuffer(compressed);
 };
@@ -43760,7 +43780,7 @@ exports.kCopyRangeLut = [
    Transformations on dictionary words.
 */
 
-var BrotliDictionary = __webpack_require__(115);
+var BrotliDictionary = __webpack_require__(116);
 
 var kIdentity       = 0;
 var kOmitLast1      = 1;
@@ -43996,7 +44016,7 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
 /* 281 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(__dirname) {// Generated by CoffeeScript 1.12.6
+/* WEBPACK VAR INJECTION */(function(__dirname) {// Generated by CoffeeScript 1.12.7
 (function() {
   var AFMFont, PDFFont, StandardFont, fs,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -44019,7 +44039,7 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
       this.name = name1;
       this.id = id;
       this.font = new AFMFont(STANDARD_FONTS[this.name]());
-      ref = this.font, this.ascender = ref.ascender, this.descender = ref.descender, this.bbox = ref.bbox, this.lineGap = ref.lineGap;
+      ref = this.font, this.ascender = ref.ascender, this.descender = ref.descender, this.bbox = ref.bbox, this.lineGap = ref.lineGap, this.xHeight = ref.xHeight, this.capHeight = ref.capHeight;
     }
 
     StandardFont.prototype.embed = function() {
@@ -44127,7 +44147,7 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
 /* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// Generated by CoffeeScript 1.12.6
+// Generated by CoffeeScript 1.12.7
 (function() {
   var AFMFont, fs;
 
@@ -44168,6 +44188,8 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
       }).call(this);
       this.ascender = +(this.attributes['Ascender'] || 0);
       this.descender = +(this.attributes['Descender'] || 0);
+      this.xHeight = +(this.attributes['XHeight'] || 0);
+      this.capHeight = +(this.attributes['CapHeight'] || 0);
       this.lineGap = (this.bbox[3] - this.bbox[1]) - (this.ascender - this.descender);
     }
 
@@ -44303,7 +44325,7 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
 /* 283 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// Generated by CoffeeScript 1.12.6
+// Generated by CoffeeScript 1.12.7
 (function() {
   var EmbeddedFont, PDFFont, PDFObject,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -44312,7 +44334,7 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
 
   PDFFont = __webpack_require__(49);
 
-  PDFObject = __webpack_require__(26);
+  PDFObject = __webpack_require__(17);
 
   EmbeddedFont = (function(superClass) {
     var toHex;
@@ -44330,6 +44352,8 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
       this.scale = 1000 / this.font.unitsPerEm;
       this.ascender = this.font.ascent * this.scale;
       this.descender = this.font.descent * this.scale;
+      this.xHeight = this.font.xHeight * this.scale;
+      this.capHeight = this.font.capHeight * this.scale;
       this.lineGap = this.font.lineGap * this.scale;
       this.bbox = this.font.bbox;
       this.layoutCache = Object.create(null);
@@ -44543,13 +44567,13 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
 /* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// Generated by CoffeeScript 1.12.6
+// Generated by CoffeeScript 1.12.7
 (function() {
   var LineWrapper, number;
 
   LineWrapper = __webpack_require__(285);
 
-  number = __webpack_require__(26).number;
+  number = __webpack_require__(17).number;
 
   module.exports = {
     initText: function() {
@@ -44629,17 +44653,21 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
       return height;
     },
     list: function(list, x, y, options, wrapper) {
-      var flatten, i, indent, itemIndent, items, level, levels, midLine, r;
+      var flatten, i, indent, itemIndent, items, label, level, levels, listType, midLine, numbers, r, unit;
       options = this._initOptions(x, y, options);
-      midLine = Math.round((this._font.ascender / 1000 * this._fontSize) / 2);
-      r = options.bulletRadius || Math.round((this._font.ascender / 1000 * this._fontSize) / 3);
-      indent = options.textIndent || r * 5;
-      itemIndent = options.bulletIndent || r * 8;
+      listType = options.listType || 'bullet';
+      unit = Math.round(this._font.ascender / 1000 * this._fontSize);
+      midLine = unit / 2;
+      r = options.bulletRadius || unit / 3;
+      indent = options.textIndent || (listType === 'bullet' ? r * 5 : unit * 2);
+      itemIndent = options.bulletIndent || (listType === 'bullet' ? r * 8 : unit * 2);
       level = 1;
       items = [];
       levels = [];
+      numbers = [];
       flatten = function(list) {
-        var i, item, j, len, results;
+        var i, item, j, len, n, results;
+        n = 1;
         results = [];
         for (i = j = 0, len = list.length; j < len; i = ++j) {
           item = list[i];
@@ -44649,27 +44677,51 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
             results.push(level--);
           } else {
             items.push(item);
-            results.push(levels.push(level));
+            levels.push(level);
+            if (listType !== 'bullet') {
+              results.push(numbers.push(n++));
+            } else {
+              results.push(void 0);
+            }
           }
         }
         return results;
       };
       flatten(list);
+      label = function(n) {
+        var letter, text, times;
+        switch (listType) {
+          case 'numbered':
+            return n + ".";
+          case 'lettered':
+            letter = String.fromCharCode((n - 1) % 26 + 65);
+            times = Math.floor((n - 1) / 26 + 1);
+            text = Array(times + 1).join(letter);
+            return text + ".";
+        }
+      };
       wrapper = new LineWrapper(this, options);
       wrapper.on('line', this._line.bind(this));
       level = 1;
       i = 0;
       wrapper.on('firstLine', (function(_this) {
         return function() {
-          var diff, l;
+          var diff, l, text;
           if ((l = levels[i++]) !== level) {
             diff = itemIndent * (l - level);
             _this.x += diff;
             wrapper.lineWidth -= diff;
             level = l;
           }
-          _this.circle(_this.x - indent + r, _this.y + midLine, r);
-          return _this.fill();
+          switch (listType) {
+            case 'bullet':
+              _this.circle(_this.x - indent + r, _this.y + midLine, r);
+              return _this.fill();
+            case 'numbered':
+            case 'lettered':
+              text = label(numbers[i - 1]);
+              return _this._fragment(text, _this.x - indent, _this.y, options);
+          }
         };
       })(this));
       wrapper.on('sectionStart', (function(_this) {
@@ -44754,7 +44806,7 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
       }
     },
     _fragment: function(text, x, y, options) {
-      var addSegment, align, base, characterSpacing, commands, d, encoded, encodedWord, flush, hadOffset, i, j, key, last, len, len1, lineWidth, lineY, m, mode, name, pos, positions, positionsWord, ref, ref1, ref2, renderedWidth, scale, space, spaceWidth, textWidth, val, word, wordSpacing, words;
+      var addSegment, align, base, characterSpacing, commands, d, dy, encoded, encodedWord, flush, hadOffset, i, j, key, last, len, len1, lineWidth, lineY, m, mode, name, pos, positions, positionsWord, ref, ref1, ref2, renderedWidth, scale, skew, space, spaceWidth, textWidth, val, word, wordSpacing, words;
       text = ('' + text).replace(/\n/g, '');
       if (text.length === 0) {
         return;
@@ -44778,8 +44830,40 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
             wordSpacing = Math.max(0, (options.lineWidth - textWidth) / Math.max(1, words.length - 1) - spaceWidth);
         }
       }
+      if (typeof options.baseline === 'number') {
+        dy = -options.baseline;
+      } else {
+        switch (options.baseline) {
+          case 'svg-middle':
+            dy = 0.5 * this._font.xHeight;
+            break;
+          case 'middle':
+          case 'svg-central':
+            dy = 0.5 * (this._font.descender + this._font.ascender);
+            break;
+          case 'bottom':
+          case 'ideographic':
+            dy = this._font.descender;
+            break;
+          case 'alphabetic':
+            dy = 0;
+            break;
+          case 'mathematical':
+            dy = 0.5 * this._font.ascender;
+            break;
+          case 'hanging':
+            dy = 0.8 * this._font.ascender;
+            break;
+          case 'top':
+            dy = this._font.ascender;
+            break;
+          default:
+            dy = this._font.ascender;
+        }
+        dy = dy / 1000 * this._fontSize;
+      }
       renderedWidth = options.textWidth + (wordSpacing * (options.wordCount - 1)) + (characterSpacing * (text.length - 1));
-      if (options.link) {
+      if (options.link != null) {
         this.link(x, y, renderedWidth, this.currentLineHeight(), options.link);
       }
       if (options.underline || options.strike) {
@@ -44800,8 +44884,18 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
         this.restore();
       }
       this.save();
+      if (options.oblique) {
+        if (typeof options.oblique === 'number') {
+          skew = -Math.tan(options.oblique * Math.PI / 180);
+        } else {
+          skew = -0.25;
+        }
+        this.transform(1, 0, 0, 1, x, y);
+        this.transform(1, 0, skew, 1, -skew * dy, 0);
+        this.transform(1, 0, 0, 1, -x, -y);
+      }
       this.transform(1, 0, 0, -1, 0, this.page.height);
-      y = this.page.height - y - (this._font.ascender / 1000 * this._fontSize);
+      y = this.page.height - y - dy;
       if ((base = this.page.fonts)[name = this._font.id] == null) {
         base[name] = this._font.ref();
       }
@@ -44893,7 +44987,7 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
 /* 285 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// Generated by CoffeeScript 1.12.6
+// Generated by CoffeeScript 1.12.7
 (function() {
   var EventEmitter, LineBreaker, LineWrapper,
     extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -44901,7 +44995,7 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
 
   EventEmitter = __webpack_require__(32).EventEmitter;
 
-  LineBreaker = __webpack_require__(117);
+  LineBreaker = __webpack_require__(118);
 
   LineWrapper = (function(superClass) {
     extend(LineWrapper, superClass);
@@ -44968,7 +45062,7 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
     };
 
     LineWrapper.prototype.eachWord = function(text, fn) {
-      var bk, breaker, fbk, l, last, lbk, shouldContinue, w, word, wordWidths;
+      var bk, breaker, fbk, l, last, lbk, mightGrow, mustShrink, shouldContinue, w, word, wordWidths;
       breaker = new LineBreaker(text);
       last = null;
       wordWidths = Object.create(null);
@@ -44979,11 +45073,25 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
           lbk = last;
           fbk = {};
           while (word.length) {
-            l = word.length;
-            while (w > this.spaceLeft) {
-              w = this.wordWidth(word.slice(0, --l));
+            if (w > this.spaceLeft) {
+              l = Math.ceil(this.spaceLeft / (w / word.length));
+              w = this.wordWidth(word.slice(0, l));
+              mightGrow = w <= this.spaceLeft && l < word.length;
+            } else {
+              l = word.length;
             }
-            fbk.required = l < word.length;
+            mustShrink = w > this.spaceLeft && l > 0;
+            while (mustShrink || mightGrow) {
+              if (mustShrink) {
+                w = this.wordWidth(word.slice(0, --l));
+                mustShrink = w > this.spaceLeft && l > 0;
+              } else {
+                w = this.wordWidth(word.slice(0, ++l));
+                mustShrink = w > this.spaceLeft && l > 0;
+                mightGrow = w <= this.spaceLeft && l < word.length;
+              }
+            }
+            fbk.required = bk.required || l < word.length;
             shouldContinue = fn(word.slice(0, l), w, fbk, lbk);
             lbk = {
               required: false
@@ -45051,9 +45159,6 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
             wc++;
           }
           if (bk.required || w > _this.spaceLeft) {
-            if (bk.required) {
-              _this.emit('lastLine', options, _this);
-            }
             lh = _this.document.currentLineHeight(true);
             if ((_this.height != null) && _this.ellipsis && _this.document.y + lh * 2 > _this.maxY && _this.column >= _this.columns) {
               if (_this.ellipsis === true) {
@@ -45061,16 +45166,23 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
               }
               buffer = buffer.replace(/\s+$/, '');
               textWidth = _this.wordWidth(buffer + _this.ellipsis);
-              while (textWidth > _this.lineWidth) {
+              while (buffer && textWidth > _this.lineWidth) {
                 buffer = buffer.slice(0, -1).replace(/\s+$/, '');
                 textWidth = _this.wordWidth(buffer + _this.ellipsis);
               }
-              buffer = buffer + _this.ellipsis;
+              if (textWidth <= _this.lineWidth) {
+                buffer = buffer + _this.ellipsis;
+              }
+              textWidth = _this.wordWidth(buffer);
             }
-            if (bk.required && w > _this.spaceLeft) {
-              buffer = word;
-              textWidth = w;
-              wc = 1;
+            if (bk.required) {
+              if (w > _this.spaceLeft) {
+                emitLine();
+                buffer = word;
+                textWidth = w;
+                wc = 1;
+              }
+              _this.emit('lastLine', options, _this);
             }
             emitLine();
             if (_this.document.y + lh > _this.maxY) {
@@ -45106,7 +45218,7 @@ exports.transformDictionaryWord = function(dst, idx, word, len, transform) {
         if (lc > 1) {
           this.continuedX = 0;
         }
-        this.continuedX += options.textWidth;
+        this.continuedX += options.textWidth || 0;
         return this.document.y = y;
       } else {
         return this.document.x = this.startX;
@@ -45395,7 +45507,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 /* 289 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// Generated by CoffeeScript 1.12.6
+// Generated by CoffeeScript 1.12.7
 (function() {
   var PDFImage;
 
@@ -45512,7 +45624,7 @@ var lookup = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
 /* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {// Generated by CoffeeScript 1.12.6
+/* WEBPACK VAR INJECTION */(function(Buffer) {// Generated by CoffeeScript 1.12.7
 
 /*
 PDFImage - embeds images in PDF documents
@@ -45572,7 +45684,7 @@ By Devon Govett
 /* 291 */
 /***/ (function(module, exports) {
 
-// Generated by CoffeeScript 1.12.6
+// Generated by CoffeeScript 1.12.7
 (function() {
   var Data;
 
@@ -45770,7 +45882,7 @@ By Devon Govett
 /* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
-// Generated by CoffeeScript 1.12.6
+// Generated by CoffeeScript 1.12.7
 (function() {
   var JPEG, fs,
     indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
@@ -45854,7 +45966,7 @@ By Devon Govett
 /* 293 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {// Generated by CoffeeScript 1.12.6
+/* WEBPACK VAR INJECTION */(function(Buffer) {// Generated by CoffeeScript 1.12.7
 (function() {
   var PNG, PNGImage, zlib;
 
@@ -46343,7 +46455,7 @@ By Devon Govett
 /* 295 */
 /***/ (function(module, exports) {
 
-// Generated by CoffeeScript 1.12.6
+// Generated by CoffeeScript 1.12.7
 (function() {
   module.exports = {
     annotate: function(x, y, w, h, options) {
@@ -46382,15 +46494,29 @@ By Devon Govett
       return this.annotate(x, y, w, h, options);
     },
     link: function(x, y, w, h, url, options) {
+      var pages;
       if (options == null) {
         options = {};
       }
       options.Subtype = 'Link';
-      options.A = this.ref({
-        S: 'URI',
-        URI: new String(url)
-      });
-      options.A.end();
+      if (typeof url === 'number') {
+        pages = this._root.data.Pages.data;
+        if (url >= 0 && url < pages.Kids.length) {
+          options.A = this.ref({
+            S: 'GoTo',
+            D: [pages.Kids[url], 'XYZ', null, null, null]
+          });
+          options.A.end();
+        } else {
+          throw new Error("The document has no page " + url);
+        }
+      } else {
+        options.A = this.ref({
+          S: 'URI',
+          URI: new String(url)
+        });
+        options.A.end();
+      }
       return this.annotate(x, y, w, h, options);
     },
     _markup: function(x, y, w, h, options) {
@@ -46482,6 +46608,108 @@ By Devon Govett
 /* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
+// Generated by CoffeeScript 1.12.7
+(function() {
+  var PDFOutline;
+
+  PDFOutline = __webpack_require__(297);
+
+  module.exports = {
+    initOutline: function() {
+      return this.outline = new PDFOutline(this, null, null, null);
+    },
+    endOutline: function() {
+      this.outline.endOutline();
+      if (this.outline.children.length > 0) {
+        this._root.data.Outlines = this.outline.dictionary;
+        return this._root.data.PageMode = 'UseOutlines';
+      }
+    }
+  };
+
+}).call(this);
+
+
+/***/ }),
+/* 297 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// Generated by CoffeeScript 1.12.7
+(function() {
+  var PDFObject, PDFOutline, PDFPage;
+
+  PDFObject = __webpack_require__(17);
+
+  PDFPage = __webpack_require__(86);
+
+  PDFOutline = (function() {
+    function PDFOutline(document, parent, title, dest, options1) {
+      this.document = document;
+      this.options = options1 != null ? options1 : {
+        expanded: false
+      };
+      this.outlineData = {};
+      if (dest !== null) {
+        this.outlineData['Dest'] = [dest.dictionary, 'Fit'];
+      }
+      if (parent !== null) {
+        this.outlineData['Parent'] = parent;
+      }
+      if (title !== null) {
+        this.outlineData['Title'] = new String(title);
+      }
+      this.dictionary = this.document.ref(this.outlineData);
+      this.children = [];
+    }
+
+    PDFOutline.prototype.addItem = function(title, options) {
+      var result;
+      if (options == null) {
+        options = {
+          expanded: false
+        };
+      }
+      result = new PDFOutline(this.document, this.dictionary, title, this.document.page, options);
+      this.children.push(result);
+      return result;
+    };
+
+    PDFOutline.prototype.endOutline = function() {
+      var child, first, i, j, last, ref, ref1;
+      if (this.children.length > 0) {
+        if (this.options.expanded) {
+          this.outlineData.Count = this.children.length;
+        }
+        ref = this.children, first = ref[0], last = ref[ref.length - 1];
+        this.outlineData.First = first.dictionary;
+        this.outlineData.Last = last.dictionary;
+        for (i = j = 0, ref1 = this.children.length; 0 <= ref1 ? j < ref1 : j > ref1; i = 0 <= ref1 ? ++j : --j) {
+          child = this.children[i];
+          if (i > 0) {
+            child.outlineData.Prev = this.children[i - 1].dictionary;
+          }
+          if (i < this.children.length - 1) {
+            child.outlineData.Next = this.children[i + 1].dictionary;
+          }
+          child.endOutline();
+        }
+      }
+      return this.dictionary.end();
+    };
+
+    return PDFOutline;
+
+  })();
+
+  module.exports = PDFOutline;
+
+}).call(this);
+
+
+/***/ }),
+/* 298 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
@@ -46541,20 +46769,20 @@ module.exports = FontProvider;
 
 
 /***/ }),
-/* 297 */
+/* 299 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var TraversalTracker = __webpack_require__(118);
-var DocPreprocessor = __webpack_require__(298);
-var DocMeasure = __webpack_require__(299);
-var DocumentContext = __webpack_require__(120);
-var PageElementWriter = __webpack_require__(301);
+var TraversalTracker = __webpack_require__(119);
+var DocPreprocessor = __webpack_require__(300);
+var DocMeasure = __webpack_require__(301);
+var DocumentContext = __webpack_require__(121);
+var PageElementWriter = __webpack_require__(303);
 var ColumnCalculator = __webpack_require__(76);
-var TableProcessor = __webpack_require__(303);
-var Line = __webpack_require__(121);
+var TableProcessor = __webpack_require__(305);
+var Line = __webpack_require__(122);
 var isString = __webpack_require__(0).isString;
 var isArray = __webpack_require__(0).isArray;
 var pack = __webpack_require__(0).pack;
@@ -46562,7 +46790,7 @@ var offsetVector = __webpack_require__(0).offsetVector;
 var fontStringify = __webpack_require__(0).fontStringify;
 var isFunction = __webpack_require__(0).isFunction;
 var TextTools = __webpack_require__(75);
-var StyleContextStack = __webpack_require__(119);
+var StyleContextStack = __webpack_require__(120);
 
 function addAll(target, otherArray) {
 	otherArray.forEach(function (item) {
@@ -47287,7 +47515,7 @@ module.exports = LayoutBuilder;
 
 
 /***/ }),
-/* 298 */
+/* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47537,7 +47765,7 @@ module.exports = DocPreprocessor;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ }),
-/* 299 */
+/* 301 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -47546,7 +47774,7 @@ module.exports = DocPreprocessor;
 
 
 var TextTools = __webpack_require__(75);
-var StyleContextStack = __webpack_require__(119);
+var StyleContextStack = __webpack_require__(120);
 var ColumnCalculator = __webpack_require__(76);
 var isString = __webpack_require__(0).isString;
 var isNumber = __webpack_require__(0).isNumber;
@@ -47554,7 +47782,7 @@ var isObject = __webpack_require__(0).isObject;
 var isArray = __webpack_require__(0).isArray;
 var fontStringify = __webpack_require__(0).fontStringify;
 var pack = __webpack_require__(0).pack;
-var qrEncoder = __webpack_require__(300);
+var qrEncoder = __webpack_require__(302);
 
 /**
  * @private
@@ -48140,6 +48368,12 @@ DocMeasure.prototype.measureTable = function (node) {
 			vLineColor: function (i, node) {
 				return 'black';
 			},
+			hLineStyle: function (i, node) {
+				return null;
+			},
+			vLineStyle: function (i, node) {
+				return null;
+			},
 			paddingLeft: function (i, node) {
 				return 4;
 			},
@@ -48309,7 +48543,7 @@ module.exports = DocMeasure;
 
 
 /***/ }),
-/* 300 */
+/* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49104,14 +49338,14 @@ module.exports = {
 };
 
 /***/ }),
-/* 301 */
+/* 303 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
 var isUndefined = __webpack_require__(0).isUndefined;
-var ElementWriter = __webpack_require__(302);
+var ElementWriter = __webpack_require__(304);
 
 /**
  * Creates an instance of PageElementWriter - an extended ElementWriter
@@ -49198,7 +49432,7 @@ PageElementWriter.prototype.moveToNextPage = function (pageOrientation) {
 	this.writer.tracker.emit('pageChanged', {
 		prevPage: nextPage.prevPage,
 		prevY: nextPage.prevY,
-		y: nextPage.y
+		y: this.writer.context.y
 	});
 };
 
@@ -49279,17 +49513,17 @@ module.exports = PageElementWriter;
 
 
 /***/ }),
-/* 302 */
+/* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var Line = __webpack_require__(121);
+var Line = __webpack_require__(122);
 var isNumber = __webpack_require__(0).isNumber;
 var pack = __webpack_require__(0).pack;
 var offsetVector = __webpack_require__(0).offsetVector;
-var DocumentContext = __webpack_require__(120);
+var DocumentContext = __webpack_require__(121);
 
 /**
  * Creates an instance of ElementWriter - a line/vector writer, which adds
@@ -49600,7 +49834,7 @@ module.exports = ElementWriter;
 
 
 /***/ }),
-/* 303 */
+/* 305 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49754,6 +49988,12 @@ TableProcessor.prototype.beginRow = function (rowIndex, writer) {
 TableProcessor.prototype.drawHorizontalLine = function (lineIndex, writer, overrideY) {
 	var lineWidth = this.layout.hLineWidth(lineIndex, this.tableNode);
 	if (lineWidth) {
+		var style = this.layout.hLineStyle(lineIndex, this.tableNode);
+		var dash;
+		if (style && style.dash) {
+			dash = style.dash;
+		}
+
 		var offset = lineWidth / 2;
 		var currentLine = null;
 		var body = this.tableNode.table.body;
@@ -49801,6 +50041,7 @@ TableProcessor.prototype.drawHorizontalLine = function (lineIndex, writer, overr
 						y1: y,
 						y2: y,
 						lineWidth: lineWidth,
+						dash: dash,
 						lineColor: isFunction(this.layout.hLineColor) ? this.layout.hLineColor(lineIndex, this.tableNode) : this.layout.hLineColor
 					}, false, overrideY);
 					currentLine = null;
@@ -49817,6 +50058,11 @@ TableProcessor.prototype.drawVerticalLine = function (x, y0, y1, vLineIndex, wri
 	if (width === 0) {
 		return;
 	}
+	var style = this.layout.vLineStyle(vLineIndex, this.tableNode);
+	var dash;
+	if (style && style.dash) {
+		dash = style.dash;
+	}
 	writer.addVector({
 		type: 'line',
 		x1: x + width / 2,
@@ -49824,6 +50070,7 @@ TableProcessor.prototype.drawVerticalLine = function (x, y0, y1, vLineIndex, wri
 		y1: y0,
 		y2: y1,
 		lineWidth: width,
+		dash: dash,
 		lineColor: isFunction(this.layout.vLineColor) ? this.layout.vLineColor(vLineIndex, this.tableNode) : this.layout.vLineColor
 	}, false, true);
 };
@@ -49831,7 +50078,6 @@ TableProcessor.prototype.drawVerticalLine = function (x, y0, y1, vLineIndex, wri
 TableProcessor.prototype.endTable = function (writer) {
 	if (this.cleanUpRepeatables) {
 		writer.popFromRepeatables();
-		this.headerRepeatableHeight = null;
 	}
 };
 
@@ -49863,10 +50109,6 @@ TableProcessor.prototype.endRow = function (rowIndex, writer, pageBreaks) {
 			ys[ys.length - 1].y1 = pageBreak.prevY;
 
 			ys.push({y0: pageBreak.y, page: pageBreak.prevPage + 1});
-
-			if (this.headerRepeatableHeight) {
-				ys[ys.length - 1].y0 += this.headerRepeatableHeight;
-			}
 		}
 	}
 
@@ -49983,7 +50225,6 @@ TableProcessor.prototype.endRow = function (rowIndex, writer, pageBreaks) {
 	}
 
 	if (this.headerRepeatable && (rowIndex === (this.rowsWithoutPageBreak - 1) || rowIndex === this.tableNode.table.body.length - 1)) {
-		this.headerRepeatableHeight = this.headerRepeatable.height;
 		writer.commitUnbreakableBlock();
 		writer.pushToRepeatables(this.headerRepeatable);
 		this.cleanUpRepeatables = true;
@@ -50016,7 +50257,7 @@ module.exports = TableProcessor;
 
 
 /***/ }),
-/* 304 */
+/* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50077,7 +50318,7 @@ module.exports = {
 
 
 /***/ }),
-/* 305 */
+/* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50130,7 +50371,7 @@ module.exports = ImageMeasure;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1).Buffer))
 
 /***/ }),
-/* 306 */
+/* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -50287,7 +50528,7 @@ module.exports = {
 };
 
 /***/ }),
-/* 307 */
+/* 309 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;/* FileSaver.js
@@ -50473,7 +50714,7 @@ var saveAs = saveAs || (function(view) {
 
 if (typeof module !== "undefined" && module.exports) {
   module.exports.saveAs = saveAs;
-} else if (("function" !== "undefined" && __webpack_require__(308) !== null) && (__webpack_require__(309) !== null)) {
+} else if (("function" !== "undefined" && __webpack_require__(310) !== null) && (__webpack_require__(311) !== null)) {
   !(__WEBPACK_AMD_DEFINE_RESULT__ = (function() {
     return saveAs;
   }).call(exports, __webpack_require__, exports, module),
@@ -50482,7 +50723,7 @@ if (typeof module !== "undefined" && module.exports) {
 
 
 /***/ }),
-/* 308 */
+/* 310 */
 /***/ (function(module, exports) {
 
 module.exports = function() {
@@ -50491,7 +50732,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 309 */
+/* 311 */
 /***/ (function(module, exports) {
 
 /* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
