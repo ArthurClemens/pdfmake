@@ -23,6 +23,7 @@
     "gulp-spawn-mocha": "^5.0.1",
     "mocha": "^5.2.0",
     "plugin-error": "^1.0.1",
+    "restructure": "ArthurClemens/restructure",
     "rewire": "^4.0.1",
     "sinon": "^6.1.5",
     "string-replace-webpack-plugin": "^0.1.3",
