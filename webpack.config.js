@@ -7,6 +7,10 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 var banner = '/*! ' + pkg.name + ' v' + pkg.version + ', @license ' + pkg.license + ', @link ' + pkg.homepage + ' */';
 
 module.exports = {
+	node: {
+		global: false,
+		setImmediate: false,
+	},
 	entry: {
 		'pdfmake': './src/browser-extensions/pdfMake.js',
 		'pdfmake.min': './src/browser-extensions/pdfMake.js'
@@ -14,6 +18,7 @@ module.exports = {
 	output: {
 		path: path.join(__dirname, './build'),
 		filename: '[name].js',
+		library: 'pdfmake',
 		libraryTarget: 'umd'
 	},
 	resolve: {
