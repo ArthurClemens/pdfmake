@@ -2,7 +2,6 @@ var path = require('path');
 var StringReplacePlugin = require("string-replace-webpack-plugin");
 var webpack = require('webpack');
 var pkg = require('./package.json');
-const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 var banner = '/*! ' + pkg.name + ' v' + pkg.version + ', @license ' + pkg.license + ', @link ' + pkg.homepage + ' */';
 
@@ -18,7 +17,6 @@ module.exports = {
 	output: {
 		path: path.join(__dirname, './build'),
 		filename: '[name].js',
-		library: 'pdfmake',
 		libraryTarget: 'umd'
 	},
 	resolve: {
@@ -65,23 +63,22 @@ module.exports = {
 			{enforce: 'post', test: /linebreak[/\\]src[/\\]linebreaker.js/, loader: "transform-loader?brfs"}
 		]
 	},
-	optimization: {
-    minimizer: [
-      new UglifyJsPlugin({
-        sourceMap: true,
-        uglifyOptions: {
-          compress: {
-						drop_console: true
-					},
-					mangle: {
-						reserved: ['HeadTable', 'NameTable', 'CmapTable', 'HheaTable', 'MaxpTable', 'HmtxTable', 'PostTable', 'OS2Table', 'LocaTable', 'GlyfTable']
-					}
-        }
-      })
-    ]
-  },
 	plugins: [
 		new StringReplacePlugin(),
+
+		new webpack.optimize.UglifyJsPlugin({
+			include: /\.min\.js$/,
+			sourceMap: true,
+			uglifyOptions: {
+				compress: {
+					drop_console: true
+				},
+				mangle: {
+					reserved: ['HeadTable', 'NameTable', 'CmapTable', 'HheaTable', 'MaxpTable', 'HmtxTable', 'PostTable', 'OS2Table', 'LocaTable', 'GlyfTable']
+				}
+			}
+		}),
+
 		new webpack.BannerPlugin({
 			banner: banner,
 			raw: true
