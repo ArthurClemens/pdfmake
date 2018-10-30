@@ -9,7 +9,7 @@
   "dependencies": {
     "iconv-lite": "^0.4.24",
     "linebreak": "^0.3.0",
-    "pdfkit": "ArthurClemens/pdfkit#795521cb3d4560d176bd240cc50512db0e6bbd9a"
+    "pdfkit": "ArthurClemens/pdfkit#18a4d2f07fdf4905c9e88bd1536ac210d591bbef"
   },
   "devDependencies": {
     "brfs": "^2.0.1",
