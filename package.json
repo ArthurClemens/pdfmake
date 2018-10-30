@@ -9,7 +9,7 @@
   "dependencies": {
     "iconv-lite": "^0.4.24",
     "linebreak": "^0.3.0",
-    "pdfkit": "ArthurClemens/pdfkit"
+    "pdfkit": "ArthurClemens/pdfkit#795521cb3d4560d176bd240cc50512db0e6bbd9a"
   },
   "devDependencies": {
     "brfs": "^2.0.1",
@@ -24,7 +24,7 @@
     "gulp-spawn-mocha": "^5.0.1",
     "mocha": "^5.2.0",
     "plugin-error": "^1.0.1",
-    "restructure": "github:ArthurClemens/restructure#provide-generated-js",
+    "restructure": "ArthurClemens/restructure#7ece1bcf1dd8524d263638096efc07330fc49134",
     "rewire": "^4.0.1",
     "sinon": "^6.1.5",
     "string-replace-webpack-plugin": "^0.1.3",
